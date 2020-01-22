@@ -4,24 +4,24 @@ const axios = require('axios');
 app.use(express.static('assets'));
 const port = 3000
 app.set('view engine', 'ejs');
+const puppeteer = require('puppeteer')
 
 app.get('/genel', (req, res) => {
     const token = req.query.token
     const stream_id = req.query.stream_id
     const start_date = req.query.start_date
     const end_date = req.query.end_date
-    axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
-
-    var current = new Date(start_date);
-    var lastWeekStart = new Date(current.setDate(current.getDate() - 7));
+    var current = new Date(start_date)
+    const betweenDays = Math.round(Math.abs((new Date(start_date) - new Date(end_date)) / (24 * 60 * 60 * 1000)));
+    var lastWeekStart = (new Date(current.setDate(current.getDate() - betweenDays)).toISOString()).slice(0, -1)
     var lastWeekEnd = start_date
-
+    axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
     axios.all([
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/all/stats/histogram?end_date='+end_date+'&start_date='+start_date),
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/all/stats/histogram?end_date='+lastWeekEnd+'&start_date='+lastWeekStart),
-        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/stats/totals?end_date='+lastWeekEnd+'&start_date='+lastWeekStart),
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/stats/totals?end_date='+end_date+'&start_date='+start_date),
         axios.get('http://apple.com')
-      ]).then(axios.spread((currentRes, lastWeekRes,kategoriChartRes) => {
+    ]).then(axios.spread((currentRes, lastWeekRes,kategoriChartRes) => {
         var currentResToplam= 0;
         for(var i=0; i < currentRes.data.stats.length; i++){
             currentResToplam = currentResToplam + currentRes.data.stats[i].doc_count
@@ -48,18 +48,16 @@ app.get('/genel', (req, res) => {
             oran:oran,
             kategoriChartRes:kategoriChartRes.data
         });
-      }))
+    }))
 })
-const puppeteer = require('puppeteer')
-
-app.get('/export/pdf', (req, res) => {
+app.get('/pdf', (req, res) => {
     (async () => {
         const browser = await puppeteer.launch({
-            headless: true,
-            args: ['--disable-dev-shm-usage']
+            headless: true
         })
         const page = await browser.newPage()
         await page.goto('http://127.0.0.1:3000/genel?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999',{ waitUntil: "networkidle2" })
+        //const wait = await page.waitForSelector('#canvas', {'visible' : true, 'timeout' : 0})
         const buffer = await page.pdf({
             path: 'pdfs/general.pdf',
             format: 'A4',
@@ -70,6 +68,4 @@ app.get('/export/pdf', (req, res) => {
         browser.close()
     })()
 })
-
-
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`http://127.0.0.1:${port}`))

@@ -1,200 +1,114 @@
-<!DOCTYPE html>
-<html lang="tr">
+<!doctype html>
+<html>
     <head>
-        <%- include('partials/header') -%>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>TeleskopApp</title>
+        <style>
+            .invoice-box {
+                max-width: 800px;
+                margin: auto;
+                padding: 10px;
+                border: 1px solid #eee;
+                box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+                font-size: 16px;
+                line-height: 24px;
+                font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+                color: #555;
+            }
+            .invoice-box table {
+                width: 100%;
+                line-height: inherit;
+                text-align: left;
+            }
+            .invoice-box table td {
+                padding: 5px;
+                vertical-align: top;
+            }
+            .invoice-box table tr td:nth-child(2) {
+                text-align: right;
+            }
+        </style>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="https://www.chartjs.org/dist/2.9.3/Chart.min.js"></script>
+        <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
     </head>
     <body>
-        <header>
-            <div class="container">
-                <h1> AKIŞ RAPORU</h1>
-                <div class="middle">
-                    <span><%=start_date%> - <%=end_date%></span>
-                    <hr/>
-                </div>
-                <div class="brand">
-                    <div class="logo">
-                        <img src="/logo.png" alt="">
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <main>
-            <div class="container" style="    text-align: justify;padding: 0px !important;">
-                <h1>GENEL ÖZET</h1>
-                    <p>
-                        <b><%=start_date%></b> – <b><%=end_date%></b> tarihleri arasında <b><%=currentRes.stream.name%></b> adlı akışınızda toplam <b><%=currentResToplam%></b> içerik bulunmuştur.
-                        İçeriklerin toplamında bir önceki haftaya göre <%=oran%> mevcuttur.
-                        Akışınızla ilgili detaylı grafikler aşağıda yer almaktadır.
-                    </p>
-                    <br>
-                    <h1>Zamana Göre Toplam İçerik Sayıları</h1>
-                    <script src="https://www.chartjs.org/dist/2.9.3/Chart.min.js"></script>
-                    <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
-                    <style>
-                        canvas {
-                            -moz-user-select: none;
-                            -webkit-user-select: none;
-                            -ms-user-select: none;
-                        }
-                    </style>
-                    <div style="width:100%;">
-                        <canvas id="canvas"></canvas>
-                    </div>
-                    <script>
-                        var config = {
-                            type: 'line',
-                            data: {
-                                labels: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].key_as_string.split("T")[0] %>',<% } %>],
-                                datasets: [{
-                                    label: 'Seçilen Aralık',
-                                    backgroundColor: window.chartColors.red,
-                                    borderColor: window.chartColors.red,
-                                    data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>],
-                                    fill: false,
-                                }, {
-                                    label: 'Önceki Aralık',
-                                    fill: false,
-                                    backgroundColor: window.chartColors.blue,
-                                    borderColor: window.chartColors.blue,
-                                    data: [<% for(var i=0; i < lastWeekRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>],
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                title: {
-                                    display: true,
-                                    text: 'Zamana Göre İçerikler'
-                                },
-                                tooltips: {
-                                    mode: 'index',
-                                    intersect: false,
-                                },
-                                hover: {
-                                    mode: 'nearest',
-                                    intersect: true
-                                },
-                                scales: {
-                                    xAxes: [{
-                                        display: true,
-                                        scaleLabel: {
-                                            display: true,
-                                            labelString: ''
-                                        }
-                                    }],
-                                    yAxes: [{
-                                        display: true,
-                                        scaleLabel: {
-                                            display: true,
-                                            labelString: ''
-                                        }
-                                    }]
-                                }
-                            }
-                        };
-
-                        window.onload = function() {
-                            var ctx = document.getElementById('canvas').getContext('2d');
-                            window.myLine = new Chart(ctx, config);
-                        };
-                    </script>
-                    <br>
-                    <h1>Kategori Bazlı Dağılım</h1>
-                    <div id="kategori"></div>
-                    <script>
-                        var options = {
-                            series: [{
-                                name: '',
-                                data:[
-                                        <%=kategoriChartRes.stats.news %>,
-                                        <%=kategoriChartRes.stats.twitter %>,
-                                        <%=kategoriChartRes.stats.news %>,
-                                        <%=kategoriChartRes.stats.video %>,
-                                        <%=kategoriChartRes.stats.forumblog %>,
-                                        <%=kategoriChartRes.stats.web %>
-                                    ]
-                            }],
-                            chart: {type: 'bar',height: 350},
-                            plotOptions: {
-                                bar: {
-                                    horizontal: false,
-                                    columnWidth: '30%',
-                                    endingShape: 'flat'
-                                },
-                            },
-                            dataLabels: {enabled: false},
-                            stroke: {show: true,width: 2,colors: ['transparent']},
-                            xaxis: {categories: ['Haber', 'Twitter', 'İnstagram', 'Video', 'Forum/Blog', 'Web'],},
-                            yaxis: {title: {text: ''}},
-                            fill: {opacity: 1},
-                            tooltip: {
-                                y: {formatter: function (val) {return val}}
-                            }
-                        };
-                        var chart = new ApexCharts(document.querySelector("#kategori"), options);
-                        chart.render();
-                    </script>
-                    <br><br>
-
-
-
-
-                    
-<!--
-                    <div id="chart3" style="min-height:auto !important;"></div>
-                    <script>
-                        var options = {
-                            series: [
-                                {
+        <div class="invoice-box">
+            <table cellpadding="0" cellspacing="0">
+                <tr class="top">
+                    <td colspan="2">
+                        <table>
+                            <tr>
+                                <td class="title"><img src="/logo.png"></td>
+                                <td>AKIŞ RAPORU<br><%=start_date%> - <%=end_date%></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="information">
+                    <td colspan="2">
+                        <h1 style="text-align: center;">GENEL ÖZET</h1>
+                        <p style="text-align: justify !important;">
+                            <b><%=start_date%></b> – <b><%=end_date%></b> tarihleri arasında <b><%=currentRes.stream.name%></b> adlı akışınızda toplam <b><%=currentResToplam%></b> içerik bulunmuştur.
+                            İçeriklerin toplamında bir önceki haftaya göre <%=oran%> mevcuttur.
+                            Akışınızla ilgili detaylı grafikler aşağıda yer almaktadır.
+                        </p>
+                        <h2 style="text-align: center;">Zamana Göre Toplam İçerik Sayıları</h2>
+                        <div id="chart"></div>
+                        <script>
+                            var options = {
+                                series: [{
                                     name: "Seçilen Aralık",
                                     data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>]
+                                },{
+                                    name: "Önceki Hafta",
+                                    data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>]
+                                }],
+                                chart: {
+                                    height: 300,
+                                    type: 'line',
+                                    zoom: {
+                                        enabled: false
+                                    }
                                 },
-                                {
-                                    name: "Önceki Aralık",
-                                    data: [<% for(var i=0; i < lastWeekRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>]
+                                xaxis: {
+                                    categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].key_as_string.split("T")[0] %>',<% } %>],
                                 }
-                            ],
-                            chart: {
-                                height: 350,
-                                type: 'line',
-                                dropShadow: {
-                                    enabled: true,
-                                    color: '#000',
-                                    top: 18,
-                                    left: 7,
-                                    blur: 10,
-                                    opacity: 0.2
+                            };
+                            var chart = new ApexCharts(document.querySelector("#chart"), options);
+                            chart.render();
+                        </script>
+                        <h2 style="text-align: center;">Kategori Bazlı Dağılım</h2>
+                        <div id="chart2"></div>
+                        <script>
+                            var options = {
+                                series: [{
+                                    name: '',
+                                    data:[
+                                            <%=kategoriChartRes.stats.news %>,
+                                            <%=kategoriChartRes.stats.twitter %>,
+                                            <%=kategoriChartRes.stats.news %>,
+                                            <%=kategoriChartRes.stats.video %>,
+                                            <%=kategoriChartRes.stats.forumblog %>,
+                                            <%=kategoriChartRes.stats.web %>
+                                        ]
+                                }],
+                                chart: {height: 350,type: 'bar',},
+                                plotOptions: {bar: {columnWidth: '50%'}},
+                                grid: {row: {colors: ['#fff', '#fff']}},
+                                xaxis: {
+                                    categories: ['Haber', 'Twitter', 'İnstagram', 'Video', 'Forum/Blog', 'Web'],
+                                    tickPlacement: 'on'
                                 },
-                                toolbar: {show: false}
-                            },
-                            colors: ['#77B6EA', '#545454'],
-                            dataLabels: {enabled: true,},
-                            stroke: {curve: 'smooth'},
-                            title: {text: '.',align: 'left'},
-                            grid: {
-                                borderColor: '#e7e7e7',
-                                row: {
-                                    colors: ['#f3f3f3', 'transparent'],
-                                    opacity: 0.5
-                                },
-                            },
-                            markers: {size: 1},
-                            xaxis: {
-                                categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].key_as_string.split("T")[0] %>',<% } %>],
-                                title: {text: 'Ay'}
-                            },
-                            yaxis: {title: {text: ''}},
-                            legend: {position: 'top',horizontalAlign: 'right',floating: true,offsetY: -25,offsetX: -5}
-                        };
-                        var chart = new ApexCharts(document.querySelector("#chart3"), options);
-                        chart.render();
-                    </script>
-                -->
-
-
-                
-            </div>
-        </main>
-        <%- include('partials/footer') -%>
+                                yaxis: {title: {text: '',},},
+                            };
+                            var chart = new ApexCharts(document.querySelector("#chart2"), options);
+                            chart.render();
+                        </script>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </body>
 </html>
