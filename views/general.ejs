@@ -1,37 +1,7 @@
 <!doctype html>
-<html>
+<html lang="tr">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>TeleskopApp</title>
-        <style>
-            .invoice-box {
-                max-width: 800px;
-                margin: auto;
-                padding: 10px;
-                border: 1px solid #eee;
-                box-shadow: 0 0 10px rgba(0, 0, 0, .15);
-                font-size: 16px;
-                line-height: 24px;
-                font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-                color: #555;
-            }
-            .invoice-box table {
-                width: 100%;
-                line-height: inherit;
-                text-align: left;
-            }
-            .invoice-box table td {
-                padding: 5px;
-                vertical-align: top;
-            }
-            .invoice-box table tr td:nth-child(2) {
-                text-align: right;
-            }
-        </style>
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <script src="https://www.chartjs.org/dist/2.9.3/Chart.min.js"></script>
-        <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
+        <%- include('partials/header') -%>
     </head>
     <body>
         <div class="invoice-box">
@@ -48,67 +18,101 @@
                 </tr>
                 <tr class="information">
                     <td colspan="2">
-                        <h1 style="text-align: center;">GENEL ÖZET</h1>
-                        <p style="text-align: justify !important;">
+                        <h1 style="text-align: center; font-size: 25px;">GENEL ÖZET</h1>
+                        <p style="text-align: justify !important; font-size: 15px;">
                             <b><%=start_date%></b> – <b><%=end_date%></b> tarihleri arasında <b><%=currentRes.stream.name%></b> adlı akışınızda toplam <b><%=currentResToplam%></b> içerik bulunmuştur.
                             İçeriklerin toplamında bir önceki haftaya göre <%=oran%> mevcuttur.
                             Akışınızla ilgili detaylı grafikler aşağıda yer almaktadır.
                         </p>
-                        <h2 style="text-align: center;">Zamana Göre Toplam İçerik Sayıları</h2>
-                        <div id="chart"></div>
+                        <h2 style="text-align: center; font-size: 20px;">Zamana Göre Toplam İçerik Sayıları</h2>
+                        <canvas id="canvas"></canvas>
                         <script>
-                            var options = {
-                                series: [{
-                                    name: "Seçilen Aralık",
-                                    data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>]
-                                },{
-                                    name: "Önceki Hafta",
-                                    data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>]
-                                }],
-                                chart: {
-                                    height: 300,
-                                    type: 'line',
-                                    zoom: {
-                                        enabled: false
-                                    }
-                                },
-                                xaxis: {
-                                    categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].key_as_string.split("T")[0] %>',<% } %>],
-                                }
+                            var lineChartData = {
+                                labels: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].key_as_string.split("T")[0] %>',<% } %>],
+                                datasets: [{
+                                    label: 'Seçilen Aralık',
+                                    borderColor: window.chartColors.red,
+                                    backgroundColor: window.chartColors.red,
+                                    fill: false,
+                                    data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>],
+                                    yAxisID: 'y-axis-1',
+                                }, {
+                                    label: 'Önceki Aralık',
+                                    borderColor: window.chartColors.blue,
+                                    backgroundColor: window.chartColors.blue,
+                                    fill: false,
+                                    data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>],
+                                    yAxisID: 'y-axis-2'
+                                }]
                             };
-                            var chart = new ApexCharts(document.querySelector("#chart"), options);
-                            chart.render();
+                            window.onload = function() {
+                                var ctx = document.getElementById('canvas').getContext('2d');
+                                window.myLine = Chart.Line(ctx, {
+                                    data: lineChartData,
+                                    options: {
+                                        responsive: true,
+                                        hoverMode: 'index',
+                                        stacked: false,
+                                        title: {display: false},
+                                        scales: {
+                                            yAxes: [{
+                                                type: 'linear',
+                                                display: true,
+                                                position: 'left',
+                                                id: 'y-axis-1',
+                                            }, {
+                                                type: 'linear',
+                                                display: true,
+                                                position: 'right',
+                                                id: 'y-axis-2',
+                                                gridLines: {
+                                                    drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                                },
+                                            }],
+                                        }
+                                    }
+                                });
+                            };
                         </script>
-                        <h2 style="text-align: center;">Kategori Bazlı Dağılım</h2>
-                        <div id="chart2"></div>
+                        <h2 style="text-align: center; font-size: 20px;">Kategori Bazlı Dağılım</h2>
+                        <canvas id="canvasKategori"></canvas>
                         <script>
-                            var options = {
-                                series: [{
-                                    name: '',
-                                    data:[
+                            var barChartData = {
+                                labels: ['Haber', 'Twitter', 'İnstagram', 'Video', 'Forum/Blog', 'Web'],
+                                datasets: [{
+                                    label: 'Kategoriler',
+                                    backgroundColor: window.chartColors.red,
+                                    stack: 'Stack 0',
+                                    data: [
                                             <%=kategoriChartRes.stats.news %>,
                                             <%=kategoriChartRes.stats.twitter %>,
                                             <%=kategoriChartRes.stats.news %>,
                                             <%=kategoriChartRes.stats.video %>,
                                             <%=kategoriChartRes.stats.forumblog %>,
                                             <%=kategoriChartRes.stats.web %>
-                                        ]
-                                }],
-                                chart: {height: 350,type: 'bar',},
-                                plotOptions: {bar: {columnWidth: '50%'}},
-                                grid: {row: {colors: ['#fff', '#fff']}},
-                                xaxis: {
-                                    categories: ['Haber', 'Twitter', 'İnstagram', 'Video', 'Forum/Blog', 'Web'],
-                                    tickPlacement: 'on'
-                                },
-                                yaxis: {title: {text: '',},},
+                                    ]
+                                }]
                             };
-                            var chart = new ApexCharts(document.querySelector("#chart2"), options);
-                            chart.render();
+                            var ctx = document.getElementById('canvasKategori').getContext('2d');
+                            window.myBar = new Chart(ctx, {
+                                type: 'bar',
+                                data: barChartData,
+                                options: {
+                                    title: {display: false},
+                                    tooltips: {mode: 'index',intersect: false},
+                                    responsive: true,
+                                    scales: {
+                                        xAxes: [{stacked: true,}],
+                                        yAxes: [{stacked: true}]
+                                    }
+                                }
+                            });
                         </script>
                     </td>
                 </tr>
             </table>
+            <br>
+            <%- include('partials/footer') -%>
         </div>
     </body>
 </html>
