@@ -1,4 +1,24 @@
-http://127.0.0.1:3000/genel?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999
+# TeleskopApp PDF Maker!
 
+This project is for the making pdf files for the specific url and merge them as one.
 
-http://127.0.0.1:3000/export/pdf
+# Usage
+
+Example Urls;
+
+- /genel?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
+	> **token** => get token from the backend
+	> **stream_id** => get stream_id from the backend
+	> **start_date** => starting date range for the pdf
+	> **end_date** => ending date range for the pdf
+
+- /haber-analiz?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
+	> **token** => get token from the backend
+	> **stream_id** => get stream_id from the backend
+	> **start_date** => starting date range for the pdf
+	> **end_date** => ending date range for the pdf
+
+## Making and merging pdf then respond
+
+- /pdf
+	>Just visit the below url and verify that pdfs are made and one pdf which it is named as **final.pdf**  is created under current timestamp folder for example **pdfs/1579878093380/final.pdf**
