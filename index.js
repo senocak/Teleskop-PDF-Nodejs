@@ -244,7 +244,20 @@ app.get('/pdf', (req, res) => {
             await page.goto(pdfUrls[i].url, {waitUntil: 'networkidle2'});
             var pdfFileName =  directory+"/"+pdfUrls[i].name+'.pdf';
             pdfFiles.push(pdfFileName);
-            await page.pdf({path: pdfFileName, format: 'A4'});
+            await page.pdf(
+                {
+                    path: pdfFileName,
+                    format: 'A4',
+                    displayHeaderFooter: true,
+                    footerTemplate:"<footer><div class='container'><p><strong>a:</strong> Mustafa Kemal Mahallesi, 2129. Sokak, No:6/2 Çankaya – ANKARA <strong>t:</strong> 0 850 303 41 05 <strong>m:</strong> info@teleskop.app</p><p><a href='https://report.teleskop.app/'>www.teleskop.app2</a></p></div></footer>",
+                    margin: {
+                      bottom: 70, // minimum required for footer msg to display
+                      left: 25,
+                      right: 35,
+                      top: 30,
+                    }
+                }
+            );
         }
         await browser.close();
         await mergeMultiplePDF(pdfFiles);
