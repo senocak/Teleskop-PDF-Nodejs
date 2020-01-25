@@ -91,6 +91,36 @@
                     });
                 };
             </script>
+            <h2 style="text-align: center; font-size: 20px;">Popüler Kaynaklarda Çıkan Haberlerin Adet Bazlı Değişimi</h2>
+            <canvas id="canvasKategori"></canvas>
+            <script>
+                var barChartData = {
+                    labels: ['Önceki aralık', 'Seçilen aralık'],
+                    datasets: [{
+                        label: 'Kategoriler',
+                        backgroundColor: window.chartColors.red,
+                        stack: 'Stack 0',
+                        data: [
+                                <%=currentResToplam %>,
+                                <%=lastWeekResTotal %>
+                        ]
+                    }]
+                };
+                var ctx = document.getElementById('canvasKategori').getContext('2d');
+                window.myBar = new Chart(ctx, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: {
+                        title: {display: false},
+                        tooltips: {mode: 'index',intersect: false},
+                        responsive: true,
+                        scales: {
+                            xAxes: [{stacked: true,}],
+                            yAxes: [{stacked: true}]
+                        }
+                    }
+                });
+            </script>
             <%- include('partials/footer') -%>
         </div>
     </body>
