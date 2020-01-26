@@ -94,30 +94,6 @@ app.get('/haber-analiz', (req, res) => {
         });
     }))
 })
-app.get('/haber-analiz2', (req, res) => {
-    const token = req.query.token
-    const stream_id = req.query.stream_id
-    const start_date = req.query.start_date
-    const end_date = req.query.end_date
-    axios.defaults.headers.common['Authorization'] = 'Bearer '+token
-    axios.all([
-        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/news/stats/sources?end_date='+end_date+'&start_date='+start_date),
-        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/news/stats/sources?end_date=2020-01-19T18:27:53.212&start_date=2020-01-13T18:27:53.212')
-    ]).then(axios.spread((populerHaberler, iki) => {
-        res.status(200).json(iki.data)
-        var populerHaberlerToplam = 0
-        for(var i=0; i < populerHaberler.data.stats.length; i++){
-            populerHaberlerToplam = populerHaberlerToplam + populerHaberler.data.stats[i].doc_count
-        }
-        var startDate = start_date.replace(/-/g, '.').split("T")[0]
-        var endDate = end_date.replace(/-/g, '.').split("T")[0]
-        res.render('haber-analiz2',{
-            start_date:startDate,
-            end_date:endDate,
-            populerHaberler:populerHaberler.data
-        });
-    }))
-})
 app.get('/twitter', (req, res) => {
     const token = req.query.token
     const stream_id = req.query.stream_id
@@ -220,10 +196,6 @@ app.get('/pdf', (req, res) => {
             "url":"http://127.0.0.1:3000/haber-analiz?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999"
         },
         {
-            "name":"haber-analiz2",
-            "url":"http://127.0.0.1:3000/haber-analiz2?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999"
-        },
-        {
             "name":"twitter",
             "url":"http://127.0.0.1:3000/twitter?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999"
         },
@@ -249,13 +221,15 @@ app.get('/pdf', (req, res) => {
                     path: pdfFileName,
                     format: 'A4',
                     displayHeaderFooter: true,
-                    footerTemplate:"<footer><div class='container'><p><strong>a:</strong> Mustafa Kemal Mahallesi, 2129. Sokak, No:6/2 Çankaya – ANKARA <strong>t:</strong> 0 850 303 41 05 <strong>m:</strong> info@teleskop.app</p><p><a href='https://report.teleskop.app/'>www.teleskop.app2</a></p></div></footer>",
                     margin: {
-                      bottom: 70, // minimum required for footer msg to display
-                      left: 25,
-                      right: 35,
-                      top: 30,
-                    }
+                        bottom: 70,
+                        left: 25,
+                        right: 35,
+                        top: 30,
+                    },
+                    footerTemplate: `<div class='page-footer' style='width:100%; text-align:center; font-size:10px;'>
+                                        <strong>a:</strong> Mustafa Kemal Mahallesi, 2129. Sokak, No:6/2 Çankaya – ANKARA <strong>t:</strong> 0 850 303 41 05 <strong>m:</strong> info@teleskop.app
+                                    </div>`
                 }
             );
         }

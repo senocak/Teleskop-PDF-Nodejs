@@ -28,14 +28,14 @@
                         HABER analizi ile ilgili detaylı grafikler aşağıda yer almaktadır.
                     </p>
                 </div>
-                <h3>Zamana Göre Toplam Gönderi Sayıları</h3>
+                <h3>Zamana Göre Toplam Gönderi Sayıları</h3><br>
                 <div class="chart time-line-chart"></div>
 
-                <h3>Popüler Kaynaklarda Çıkan Haberlerin Adet Bazlı Değişimi</h3>
-                <div id="instagram-daily-chart" class="chart" data-values='{&quot;labels&quot;:[&quot;Cumartesi&quot;,&quot;Pazar&quot;,&quot;Pazartesi&quot;,&quot;Sal\u0131&quot;,&quot;\u00c7ar\u015famba&quot;,&quot;Per\u015fembe&quot;,&quot;Cuma&quot;],&quot;values&quot;:[{&quot;name&quot;:&quot;Se\u00e7ilen aral\u0131k&quot;,&quot;data&quot;:[35695,35627,34868,38794,37154,37532,35341]},{&quot;name&quot;:&quot;\u00d6nceki aral\u0131k&quot;,&quot;data&quot;:[37939,41049,39852,40246,40335,38931,35659]}]}'></div>
+                <h3>Popüler Kaynaklarda Çıkan Haberlerin Adet Bazlı Değişimi</h3><br>
+                <div id="daily-chart" class="chart"></div>
             </div>
         </main>
-    <script>
+        <script>
             $(function () {
                 let timeLineChart = document.querySelectorAll('.time-line-chart')
                 timeLineChart.forEach(element => {
@@ -44,12 +44,8 @@
                             type: 'line',
                             height: 420,
                             width: 800,
-                            toolbar: {
-                                show: false
-                            },
-                            dataLabels: {
-                                enabled: true,
-                            },
+                            toolbar: {show: false},
+                            dataLabels: {enabled: true,},
                             markers: {
                                 size: 5,
                                 discrete: [{
@@ -86,25 +82,23 @@
                         markers: {
                             size: 5
                         },
-                        legend: {
-                            show: true,
-                            labels: {
-                                useSeriesColors: true
-                            }
-                        }
                     }
                     let chart = new ApexCharts(element, options)
                     chart.render()
                 })
                 //Second Chart
-                let instagramDailyChart = document.querySelector('#instagram-daily-chart')
-                let optionsInstagramDaily = {
+                let dailyChart = document.querySelector('#daily-chart')
+                let optionsDaily = {
                     chart: {
                         height: 420,
                         width: 800,
                         type: 'bar',
-                        toolbar: {show: false},
-                        dataLabels: {enabled: true},
+                        toolbar: {
+                            show: false
+                        },
+                        dataLabels: {
+                            enabled: true,
+                        },
                         parentHeightOffset: -5
                     },
                     plotOptions: {
@@ -112,7 +106,7 @@
                             horizontal: false,
                             distributed: false,
                             endingShape: 'flat',
-                            columnWidth: '30%',
+                            columnWidth: '20%',
                             dataLabels: {
                                 position: 'top',
                             },
@@ -122,32 +116,25 @@
                         enabled: true,
                         offsetY: -20,
                         formatter: function (val) {
-                            return val;
+                            return val + " adet";
                         },
                         style: {
                             fontSize: '12px',
                             colors: ['#444444']
                         },
                     },
-                    series: [{
-                                name: 'Önceki Aralık',
-                                data: [<%=currentResToplam %>],
-                                backgroundColor: "red",
-                                borderWidth: 1
-                            },{
-                                name: 'Seçilen Aralık',
-                                data: [<%=lastWeekResTotal %>],
-                                backgroundColor: "blue",
-                                borderWidth: 1
-                            }
-                        ],
+                    series: [
+                        {
+                            data: [<%=currentResToplam %>, <%=lastWeekResTotal %>],
+                        }
+                    ],
                     xaxis: {
-                        categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].day %>',<% } %>],
+                        categories: ["Şimdiki Aralık","Önceki Aralık"],
                     },
                     colors: ['#F47B20', '#005596'],
                 }
-                let chartInstagramDaily = new ApexCharts(instagramDailyChart, optionsInstagramDaily);
-                chartInstagramDaily.render();
+                let chartDaily = new ApexCharts(dailyChart, optionsDaily);
+                chartDaily.render();
             })
         </script>
     </body>
