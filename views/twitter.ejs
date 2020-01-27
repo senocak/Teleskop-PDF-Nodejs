@@ -98,7 +98,6 @@
             })
             //Second Chart
             let instagramDailyChart = document.querySelector('#instagram-daily-chart')
-            let colors = ['#F47B20', '#005596'];
             let optionsInstagramDaily = {
                 chart: {
                     height: 420,
@@ -154,7 +153,7 @@
                 xaxis: {
                     categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].day %>',<% } %>],
                 },
-                colors: colors,
+                colors: ['#F47B20', '#005596'],
                 legend: {
                     show: true,
                     position: 'bottom',
@@ -181,6 +180,7 @@
             })
         </script>
         <div style="page-break-before: always;"></div>
+        <!-- Second Page -->
         <header>
             <div class="container">
                 <h1>TWITTER AKIŞ RAPORU</h1>
@@ -227,6 +227,153 @@
                         </div>
                     <% } %>
                 </div>
+            </div>
+        </main>
+        <br><br><br>
+        <!-- Third Page -->
+        <header>
+            <div class="container">
+                <h1>TWITTER AKIŞ RAPORU</h1>
+                <div class="middle">
+                    <span><%=start_date%> - <%=end_date%></span>
+                    <hr/>
+                </div>
+                <div class="brand">
+                    <div class="logo">
+                        <img src="/logo.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="container">
+                <h3>Cinsiyete Göre Dağılım</h3>
+                <div id="Cinsiyetchart" style="margin: 0px 200px 0px !important;"></div><br>
+                <script>
+                    var optionsCinsiyetchart = {
+                        series: [54, 46],
+                        chart: {
+                            width: 500,
+                            type: 'pie',
+                        },
+                        labels: ['Kadın', 'Erkek'],
+                        colors: ['#F47B20', '#005596'],
+                        responsive: [{
+                        breakpoint: 480,
+                            options: {
+                                chart: {
+                                    width: 200
+                                },
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }],
+                        legend: {
+                            show: true,
+                            position: 'bottom',
+                            offsetY: 0,
+                            labels: {
+                                useSeriesColors: true
+                            },
+                            markers: {
+                                width: 12,
+                                height: 12,
+                                strokeWidth: 0,
+                                strokeColor: '#fff',
+                                fillColors: undefined,
+                                radius: 12,
+                                customHTML: undefined,
+                                onClick: undefined,
+                                offsetX: 0,
+                                offsetY: 0
+                            },
+                        },
+                    };
+                    var Cinsiyetchart = new ApexCharts(document.querySelector("#Cinsiyetchart"), optionsCinsiyetchart);
+                    Cinsiyetchart.render();
+                </script>
+                <h3>Tweetlerin İçerik Türüne Göre Dağılımı</h3><br>
+                <div id="daily-chart" class="chart"></div>
+                <script>
+                    let colors = ['#005596', '#F47B20', '#b12318'];
+                    let options = {
+                        chart: {
+                            width: 800,
+                            height: 420,
+                            type: 'bar',
+                            toolbar: {show: false},
+                            dataLabels: {enabled: true,}
+                        },
+                        colors: colors,
+                        plotOptions: {
+                            bar: {
+                                columnWidth: '45%',
+                                distributed: true,
+                                dataLabels: {position: 'top'},
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            offsetY: -25,
+                            formatter: function (val, opt) {
+                                return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
+                            },
+                            style: {
+                                fontSize: '12px',
+                                colors: colors
+                            },
+                        },
+                        series: [{
+                            data: [<%=hakaretRes.stats.total%>, <%=kufurRes.stats.total%>, <%=siddetRes.stats.total%>],
+                        }],
+                        xaxis: {
+                            categories: ['Küfür', 'Hakaret', 'Şiddet'],
+                            labels: {
+                                style: {
+                                    colors: colors,
+                                    fontSize: '14px'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            theme: 'dark',
+                            x: {show: true},
+                            y: {
+                                title: {
+                                    formatter: function () {
+                                        return ''
+                                    }
+                                }
+                            }
+                        },
+                        fill: {
+                            type: 'gradient',
+                            gradient: {
+                                shade: 'light',
+                                type: 'vertical',
+                                shadeIntensity: 0.1,
+                                gradientToColors: undefined,
+                                inverseColors: true,
+                                opacityFrom: 1,
+                                opacityTo: 1,
+                                stops: [0, 50, 100],
+                                colorStops: []
+                            }
+                        },
+                        legend: {
+                            show: true,
+                            position: 'right',
+                            offsetY: 40,
+                            labels: {
+                                useSeriesColors: true
+                            }
+                        }
+                    }
+                    let dailyChart = document.querySelector('#daily-chart')
+                    let chartDaily = new ApexCharts(dailyChart, options);
+                    chartDaily.render();
+                </script>
             </div>
         </main>
     </body>

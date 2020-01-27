@@ -107,8 +107,11 @@ app.get('/twitter', (req, res) => {
     axios.all([
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/twitter/stats/histogram?end_date='+end_date+'&start_date='+start_date),
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/twitter/stats/histogram?end_date='+lastWeekEnd+'&start_date='+lastWeekStart),
-        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/popular/twitter?end_date='+end_date+'&start_date='+start_date)
-    ]).then(axios.spread((currentRes, lastWeekRes,populerTweetsRes) => {
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/popular/twitter?end_date='+end_date+'&start_date='+start_date),
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/twitter?&start_date='+start_date+'&end_date='+end_date+'&slang=3'),
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/twitter?&start_date='+start_date+'&end_date='+end_date+'&slang=2'),
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/twitter?&start_date='+start_date+'&end_date='+end_date+'&slang=4')
+    ]).then(axios.spread((currentRes, lastWeekRes,populerTweetsRes, hakaretRes, kufurRes, siddetRes) => {
         var gsDayNames = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi']
         var currentResToplam = 0
         for(var i=0; i < currentRes.data.stats.length; i++){
@@ -138,7 +141,10 @@ app.get('/twitter', (req, res) => {
             currentResToplam:currentResToplam,
             lastWeekResTotal:lastWeekResTotal,
             oran:oran,
-            populerTweetsRes:populerTweetsRes.data
+            populerTweetsRes:populerTweetsRes.data,
+            hakaretRes:hakaretRes.data,
+            kufurRes:kufurRes.data,
+            siddetRes:siddetRes.data
         });
     }))
 })
@@ -221,15 +227,16 @@ app.get('/pdf', (req, res) => {
                     path: pdfFileName,
                     format: 'A4',
                     displayHeaderFooter: true,
-                    margin: {
-                        bottom: 70,
-                        left: 25,
-                        right: 35,
-                        top: 30,
-                    },
-                    footerTemplate: `<div class='page-footer' style='width:100%; text-align:center; font-size:10px;'>
+                    fitWindow: true,
+                    footerTemplate: `<div style="width:100%; margin-top:100px; text-align:center; font-size:10px; border-bottom: 20px solid #4e82c9;">
                                         <strong>a:</strong> Mustafa Kemal Mahallesi, 2129. Sokak, No:6/2 Çankaya – ANKARA <strong>t:</strong> 0 850 303 41 05 <strong>m:</strong> info@teleskop.app
-                                    </div>`
+                                    </div>`,
+                    margin: {
+                        top: '0',
+                        bottom: '100px',
+                        right: '0',
+                        left: '0',
+                    },
                 }
             );
         }
