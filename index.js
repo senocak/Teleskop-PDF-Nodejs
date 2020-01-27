@@ -220,33 +220,33 @@ app.get('/pdf', (req, res) => {
     var directory = "pdfs/"+Date.now()
     fs.mkdirSync(directory);
     (async () => {
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({
+            headless: true
+        });
         const page = await browser.newPage();
         var pdfFiles=[];
+        pdfFiles.push(`pdfs/giris.pdf`);
         for(var i=0; i<pdfUrls.length; i++){
-            console.log("Url:"+pdfUrls[i].name);
+            console.log(`Url: ${pdfUrls[i].name}`);
             await page.goto(pdfUrls[i].url, {waitUntil: 'networkidle2'});
-            var pdfFileName =  directory+"/"+pdfUrls[i].name+'.pdf';
+            var pdfFileName =  directory+`/${pdfUrls[i].name}.pdf`;
             pdfFiles.push(pdfFileName);
             await page.pdf(
                 {
                     path: pdfFileName,
                     format: 'A4',
+                    margin: {
+                        bottom: '100px',
+                    },
                     displayHeaderFooter: true,
-                    fitWindow: true,
                     footerTemplate: `<div style="width:100%; margin-top:100px; text-align:center; font-size:10px; border-bottom: 20px solid #4e82c9;">
                                         <strong>a:</strong> Mustafa Kemal Mahallesi, 2129. Sokak, No:6/2 Çankaya – ANKARA <strong>t:</strong> 0 850 303 41 05 <strong>m:</strong> info@teleskop.app
                                     </div>`,
-                    margin: {
-                        top: '0',
-                        bottom: '100px',
-                        right: '0',
-                        left: '0',
-                    },
                 }
             );
         }
         await browser.close();
+        pdfFiles.push(`pdfs/bitis.pdf`);
         await mergeMultiplePDF(pdfFiles);
         res.status(200).json({
             "pdf":directory+"/final.pdf"
