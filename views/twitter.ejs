@@ -177,7 +177,7 @@
             }
             let chartInstagramDaily = new ApexCharts(instagramDailyChart, optionsInstagramDaily);
             chartInstagramDaily.render();
-            })
+        })
         </script>
         <div style="page-break-before: always;"></div>
         <!-- Second Page -->
@@ -229,6 +229,7 @@
                 </div>
             </div>
         </main>
+        <br><br>
         <div style="page-break-before: always;"></div>
         <!-- Third Page -->
         <header>
@@ -251,31 +252,25 @@
                 <div id="Cinsiyetchart" style="margin: 0px 200px 0px !important;"></div><br>
                 <script>
                     var optionsCinsiyetchart = {
-                        series: [54, 46],
+                        series: [<%=genderKadınRes.count%>, <%=genderErkekRes.count%>, <%=genderUniRes.count%>],
                         chart: {
                             width: 500,
                             type: 'pie',
                         },
-                        labels: ['Kadın', 'Erkek'],
-                        colors: ['#F47B20', '#005596'],
+                        labels: ['Kadın', 'Erkek', "UniSex"],
+                        colors: ['#F47B20', '#005596','#313131'],
                         responsive: [{
-                        breakpoint: 480,
+                            breakpoint: 480,
                             options: {
-                                chart: {
-                                    width: 200
-                                },
-                                legend: {
-                                    position: 'bottom'
-                                }
+                                chart: {width: 200},
+                                legend: {position: 'bottom'}
                             }
                         }],
                         legend: {
                             show: true,
                             position: 'bottom',
                             offsetY: 0,
-                            labels: {
-                                useSeriesColors: true
-                            },
+                            labels: {useSeriesColors: true},
                             markers: {
                                 width: 12,
                                 height: 12,

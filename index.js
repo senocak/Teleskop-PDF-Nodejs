@@ -110,8 +110,11 @@ app.get('/twitter', (req, res) => {
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/popular/twitter?end_date='+end_date+'&start_date='+start_date),
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/twitter?&start_date='+start_date+'&end_date='+end_date+'&slang=3'),
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/twitter?&start_date='+start_date+'&end_date='+end_date+'&slang=2'),
-        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/twitter?&start_date='+start_date+'&end_date='+end_date+'&slang=4')
-    ]).then(axios.spread((currentRes, lastWeekRes,populerTweetsRes, hakaretRes, kufurRes, siddetRes) => {
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/twitter?&start_date='+start_date+'&end_date='+end_date+'&slang=4'),
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/twitter/analysis/gender?gender=2?&start_date='+start_date+'&end_date='+end_date),
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/twitter/analysis/gender?gender=1?&start_date='+start_date+'&end_date='+end_date),
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/twitter/analysis/gender?gender=0?&start_date='+start_date+'&end_date='+end_date)
+    ]).then(axios.spread((currentRes, lastWeekRes,populerTweetsRes, hakaretRes, kufurRes, siddetRes, genderKadınRes, genderErkekRes, genderUniRes) => {
         var gsDayNames = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi']
         var currentResToplam = 0
         for(var i=0; i < currentRes.data.stats.length; i++){
@@ -144,7 +147,10 @@ app.get('/twitter', (req, res) => {
             populerTweetsRes:populerTweetsRes.data,
             hakaretRes:hakaretRes.data,
             kufurRes:kufurRes.data,
-            siddetRes:siddetRes.data
+            siddetRes:siddetRes.data,
+            genderKadınRes:genderKadınRes.data,
+            genderErkekRes:genderErkekRes.data,
+            genderUniRes:genderUniRes.data
         });
     }))
 })
