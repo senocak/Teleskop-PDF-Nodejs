@@ -187,6 +187,43 @@
         </header>
         <main>
             <div class="container">
+                <h3>En Fazla İçerik Çıkan Kaynaklar</h3>
+                <hr>
+                <center>
+                    <style>
+                        ul{
+                            width: 75%;
+                            list-style-type: disc;
+                            -webkit-columns: 2;
+                            -moz-columns: 2;
+                            columns: 2;
+                            list-style-position: inside;
+                            list-style-type:none;
+                        }
+                        .divLeft {
+                            width:80%;
+                            display:block;
+                            float: left;
+                            text-align: left;
+                            border-bottom: 0.5px solid black;
+                        }
+                        .divRight {
+                            width:20%;
+                            display:block;
+                            float: right;
+                            text-align: left;
+                            border-bottom: 0.5px solid black;
+                        }
+                    </style>
+                    <ul>
+                        <% for(var i=0; i < popularForumBlogCountRes.stats.sources.length; i++) { %>
+                            <li>
+                                <span class="divLeft"><%= popularForumBlogCountRes.stats.sources[i].source.name %></span>
+                                <span class="divRight"><%= popularForumBlogCountRes.stats.sources[i].doc_count %></span>
+                            </li>
+                        <% } %>
+                    </ul>
+                </center>
                 <h3>En fazla İçerik oluşan Başlıklar</h3>
                 <style>
                     .grid-container {

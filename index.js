@@ -1,12 +1,12 @@
 const express = require('express')
 const app = express()
 const axios = require('axios');
-app.use(express.static('assets'));
-const port = 3000
-app.set('view engine', 'ejs');
 const puppeteer = require('puppeteer')
 const merge = require('easy-pdf-merge');
 const fs = require('fs');
+const port = 3000
+app.use(express.static('assets'));
+app.set('view engine', 'ejs');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 app.get('/genel', (req, res) => {
@@ -52,8 +52,7 @@ app.get('/genel', (req, res) => {
         });
     }))
 })
-app.get('/haber-analiz', (req, res) => {
-    //https://apiv2.teleskop.app/v2.0/streams/5cdbc881d6177a000b74e1b1/news/stats/histogram?end_date=2019-10-31T14:35:45.395&start_date=2019-10-24T14:35:45.395-
+app.get('/haber', (req, res) => {
     const token = req.query.token
     const stream_id = req.query.stream_id
     const start_date = req.query.start_date
@@ -66,8 +65,9 @@ app.get('/haber-analiz', (req, res) => {
     axios.all([
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/news/stats/histogram?end_date='+end_date+'&start_date='+start_date),
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/news/stats/histogram?end_date='+lastWeekEnd+'&start_date='+lastWeekStart),
-        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/popular/news?end_date='+end_date+'&start_date='+start_date)
-    ]).then(axios.spread((currentRes, lastWeekRes, popularNewsRes) => {
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/popular/news?end_date='+end_date+'&start_date='+start_date),
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/news/stats/sources?end_date='+end_date+'&start_date='+start_date)
+    ]).then(axios.spread((currentRes, lastWeekRes, popularNewsRes, popularNewsCountRes) => {
         var currentResToplam= 0;
         for(var i=0; i < currentRes.data.stats.length; i++){
             currentResToplam = currentResToplam + currentRes.data.stats[i].doc_count
@@ -84,7 +84,7 @@ app.get('/haber-analiz', (req, res) => {
         }
         var startDate = start_date.replace(/-/g, '.').split("T")[0]
         var endDate = end_date.replace(/-/g, '.').split("T")[0]
-        res.render('haber-analiz',{
+        res.render('haber',{
             start_date:startDate,
             end_date:endDate,
             currentRes:currentRes.data,
@@ -92,7 +92,8 @@ app.get('/haber-analiz', (req, res) => {
             currentResToplam:currentResToplam,
             lastWeekResTotal:lastWeekResTotal,
             oran:oran,
-            popularNewsRes:popularNewsRes.data
+            popularNewsRes:popularNewsRes.data,
+            popularNewsCountRes:popularNewsCountRes.data
         });
     }))
 })
@@ -212,8 +213,9 @@ app.get('/forumblog', (req, res) => {
     axios.all([
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/forumblog/stats/histogram?end_date='+end_date+'&start_date='+start_date),
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/forumblog/stats/histogram?end_date='+lastWeekEnd+'&start_date='+lastWeekStart),
-        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/popular/analysis/forumblog?end_date='+end_date+'&start_date='+start_date)
-    ]).then(axios.spread((currentRes, lastWeekRes,populerTweetsRes) => {
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/popular/analysis/forumblog?end_date='+end_date+'&start_date='+start_date),
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/forumblog/stats/sources?end_date='+end_date+'&start_date='+start_date)
+    ]).then(axios.spread((currentRes, lastWeekRes,populerTweetsRes, popularForumBlogCountRes) => {
         var gsDayNames = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi']
         var currentResToplam = 0
         for(var i=0; i < currentRes.data.stats.length; i++){
@@ -243,7 +245,8 @@ app.get('/forumblog', (req, res) => {
             currentResToplam:currentResToplam,
             lastWeekResTotal:lastWeekResTotal,
             oran:oran,
-            populerTweetsRes:populerTweetsRes.data
+            populerTweetsRes:populerTweetsRes.data,
+            popularForumBlogCountRes:popularForumBlogCountRes.data
         });
     }))
 })
@@ -260,8 +263,9 @@ app.get('/video', (req, res) => {
     axios.all([
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/video/stats/histogram?end_date='+end_date+'&start_date='+start_date),
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/video/stats/histogram?end_date='+lastWeekEnd+'&start_date='+lastWeekStart),
-        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/popular/analysis/video?end_date='+end_date+'&start_date='+start_date)
-    ]).then(axios.spread((currentRes, lastWeekRes,populerTweetsRes) => {
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/popular/analysis/video?end_date='+end_date+'&start_date='+start_date),
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/video/stats/sources?end_date='+end_date+'&start_date='+start_date)
+    ]).then(axios.spread((currentRes, lastWeekRes, populerTweetsRes, popularVideoCountRes) => {
         var gsDayNames = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi']
         var currentResToplam = 0
         for(var i=0; i < currentRes.data.stats.length; i++){
@@ -291,7 +295,8 @@ app.get('/video', (req, res) => {
             currentResToplam:currentResToplam,
             lastWeekResTotal:lastWeekResTotal,
             oran:oran,
-            populerTweetsRes:populerTweetsRes.data
+            populerTweetsRes:populerTweetsRes.data,
+            popularVideoCountRes:popularVideoCountRes.data
         });
     }))
 })
@@ -302,8 +307,8 @@ app.get('/pdf', (req, res) => {
             "url":"http://127.0.0.1:3000/genel?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999"
         },
         {
-            "name":"haber-analiz",
-            "url":"http://127.0.0.1:3000/haber-analiz?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999"
+            "name":"haber",
+            "url":"http://127.0.0.1:3000/haber?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999"
         },
         {
             "name":"twitter",
