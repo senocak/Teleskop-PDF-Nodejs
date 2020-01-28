@@ -320,19 +320,25 @@ app.get('/pdf', (req, res) => {
             "url":"http://127.0.0.1:3000/video?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999"
         }
     ]
+    async function timeout(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
     console.log("PDF Hazırlanıyor");
     var directory = "pdfs/"+Date.now()
     fs.mkdirSync(directory);
     (async () => {
         const browser = await puppeteer.launch({
-            headless: true
+            headless: true,
+            args: ['--headless','--start-maximized']
         });
         const page = await browser.newPage();
+        await page.setViewport({ width: 2000, height: 768});
         var pdfFiles=[];
         pdfFiles.push(`pdfs/giris.pdf`);
         for(var i=0; i<pdfUrls.length; i++){
             console.log(`Url: ${pdfUrls[i].name}`);
             await page.goto(pdfUrls[i].url, {waitUntil: 'networkidle2'});
+            await timeout(3000);
             var pdfFileName =  directory+`/${pdfUrls[i].name}.pdf`;
             pdfFiles.push(pdfFileName);
             await page.pdf(
@@ -346,6 +352,7 @@ app.get('/pdf', (req, res) => {
                     footerTemplate: `<div style="width:100%; margin-top:100px; text-align:center; font-size:10px; border-bottom: 20px solid #4e82c9;">
                                         <strong>a:</strong> Mustafa Kemal Mahallesi, 2129. Sokak, No:6/2 Çankaya – ANKARA <strong>t:</strong> 0 850 303 41 05 <strong>m:</strong> info@teleskop.app
                                     </div>`,
+                    fullPage: true
                 }
             );
         }
