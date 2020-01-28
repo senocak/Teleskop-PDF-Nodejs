@@ -122,5 +122,94 @@
                 chartDaily.render();
             })
         </script>
+
+
+
+
+
+
+
+
+
+
+
+
+        <div style="page-break-before: always;"></div>
+        <!-- Second Page -->
+        <header>
+            <div class="container">
+                <h1>VİDEO ANALİZİ AKIŞ RAPORU</h1>
+                <div class="middle">
+                    <span><%=start_date%> - <%=end_date%></span>
+                    <hr/>
+                </div>
+                <div class="brand">
+                    <div class="logo">
+                        <img src="/logo.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="container">
+                <h3>Popüler Videolar</h3>
+                <style>
+                    .grid-container {
+                        display: grid;
+                        grid-template-columns: 50% 49% ;
+                        grid-gap: 10px;
+                        background-color: #2196F3;
+                        padding: 10px;
+                    }
+                    .grid-container > div {
+                        background-color: rgba(255, 255, 255, 0.8);
+                        text-align: center;
+                        padding: 20px 0;
+                        font-size: 30px;
+                    }
+                </style>
+                <div class="grid-container">
+                    <% for(var i=0; i < popularNewsRes.documents.length; i++) { %>
+                        <div class="item1">
+                            <img src="<%= popularNewsRes.documents[i].source.favicon %>" style="width: 10%;float: left;" onerror="this.style.display='none'"> <!-- onerror="this.src='fallback-img.jpg'"/-->
+                            <div style="text-align: left;font-size: 10px;margin-left: 50px;">
+                                <b><%= popularNewsRes.documents[i].title %></b>
+                                <br>
+                                <%= popularNewsRes.documents[i].content.substring(0, 200) %>
+                                <br>
+                                <div><a href="<%= popularNewsRes.documents[i].original_url %>"><%= popularNewsRes.documents[i].source.domain %></a></div>
+                                <div style="text-align: right;"><%= popularNewsRes.documents[i].created_at %></div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+                <center>
+                    <table style="width: 40%;">
+                        <tr>
+                            <td style="width: 60%; padding-left: 100px;">
+                                <table>
+                                    <tr>
+                                        <td style="text-align:left;">sondakika.com</td>
+                                        <td style="text-align: right;width: 100%;">6138</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width: 60%; padding-left: 100px;">
+                                <table>
+                                    <tr>
+                                        <td>sondakika.com</td>
+                                        <td style="text-align: right;width: 100%;">6138</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+            </div>
+        </main>
+
+
+
+
     </body>
 </html>

@@ -53,7 +53,7 @@ app.get('/genel', (req, res) => {
     }))
 })
 app.get('/haber-analiz', (req, res) => {
-    //https://apiv2.teleskop.app/v2.0/streams/5cdbc881d6177a000b74e1b1/news/stats/histogram?end_date=2019-10-31T14:35:45.395&start_date=2019-10-24T14:35:45.395
+    //https://apiv2.teleskop.app/v2.0/streams/5cdbc881d6177a000b74e1b1/news/stats/histogram?end_date=2019-10-31T14:35:45.395&start_date=2019-10-24T14:35:45.395-
     const token = req.query.token
     const stream_id = req.query.stream_id
     const start_date = req.query.start_date
@@ -65,8 +65,9 @@ app.get('/haber-analiz', (req, res) => {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
     axios.all([
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/news/stats/histogram?end_date='+end_date+'&start_date='+start_date),
-        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/news/stats/histogram?end_date='+lastWeekEnd+'&start_date='+lastWeekStart)
-    ]).then(axios.spread((currentRes, lastWeekRes) => {
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/news/stats/histogram?end_date='+lastWeekEnd+'&start_date='+lastWeekStart),
+        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/popular/news?end_date='+end_date+'&start_date='+start_date)
+    ]).then(axios.spread((currentRes, lastWeekRes, popularNewsRes) => {
         var currentResToplam= 0;
         for(var i=0; i < currentRes.data.stats.length; i++){
             currentResToplam = currentResToplam + currentRes.data.stats[i].doc_count
@@ -90,7 +91,8 @@ app.get('/haber-analiz', (req, res) => {
             lastWeekRes:lastWeekRes.data,
             currentResToplam:currentResToplam,
             lastWeekResTotal:lastWeekResTotal,
-            oran:oran
+            oran:oran,
+            popularNewsRes:popularNewsRes.data
         });
     }))
 })
