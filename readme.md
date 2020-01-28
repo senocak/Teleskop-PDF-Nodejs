@@ -20,4 +20,4 @@ Example Urls;
 ## Making and merging pdf then respond
 
 - /pdf
-	>Just visit the below url and verify that pdfs are made and one pdf which it is named as **final.pdf**  is created under current timestamp folder for example **pdfs/1579878093380/final.pdf**
+	>Just visit the below url and verify that pdfs are made and one pdf which it is named as **final.pdf**  is created under current timestamp folder for example **pdfs/<timestamp>/final.pdf**

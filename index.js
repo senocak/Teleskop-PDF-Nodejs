@@ -338,9 +338,9 @@ app.get('/pdf', (req, res) => {
         var pdfFiles=[];
         pdfFiles.push(`pdfs/giris.pdf`);
         for(var i=0; i<pdfUrls.length; i++){
-            console.log(`Url: ${pdfUrls[i].name}`);
+            console.log(`İşlem: ${pdfUrls[i].name}`);
             await page.goto(pdfUrls[i].url, {waitUntil: 'networkidle2'});
-            await timeout(3000);
+            await timeout(1000);
             var pdfFileName =  directory+`/${pdfUrls[i].name}.pdf`;
             pdfFiles.push(pdfFileName);
             await page.pdf(
@@ -373,7 +373,7 @@ app.get('/pdf', (req, res) => {
                     console.log(err);
                     reject(err);
                 }
-                console.log('Başarılı');
+                console.log(`Merged PDF: ${directory}/final.pdf`);
                 resolve();
             });
         });
