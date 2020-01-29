@@ -1,11 +1,11 @@
 const express = require('express')
-const app = express()
 const puppeteer = require('puppeteer')
 const merge = require('easy-pdf-merge');
 const fs = require('fs');
-const port = 3000
+const app = express()
 app.use(express.static('assets'));
 app.set('view engine', 'ejs');
+const port = 3000
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 app.get('/genel', require('./controllers/genel').genel_analiz)
