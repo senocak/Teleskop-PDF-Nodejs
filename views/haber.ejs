@@ -143,31 +143,6 @@
                 <h3>Popüler Kaynaklarda Çıkan Haber Sayıları</h3>
                 <hr>
                 <center>
-                    <style>
-                        ul{
-                            width: 75%;
-                            list-style-type: disc;
-                            -webkit-columns: 2;
-                            -moz-columns: 2;
-                            columns: 2;
-                            list-style-position: inside;
-                            list-style-type:none;
-                        }
-                        .divLeft {
-                            width:80%;
-                            display:block;
-                            float: left;
-                            text-align: left;
-                            border-bottom: 0.5px solid black;
-                        }
-                        .divRight {
-                            width:20%;
-                            display:block;
-                            float: right;
-                            text-align: left;
-                            border-bottom: 0.5px solid black;
-                        }
-                    </style>
                     <ul>
                         <% for(var i=0; i < popularNewsCountRes.stats.sources.length; i++) { %>
                             <li>
@@ -177,33 +152,19 @@
                         <% } %>
                     </ul>
                 </center>
+                <br>
                 <h3>Popüler Haberler</h3>
-                <style>
-                    .grid-container {
-                        display: grid;
-                        grid-template-columns: 50% 49% ;
-                        grid-gap: 10px;
-                        background-color: #2196F3;
-                        padding: 10px;
-                    }
-                    .grid-container > div {
-                        background-color: rgba(255, 255, 255, 0.8);
-                        text-align: center;
-                        padding: 20px 0;
-                        font-size: 30px;
-                    }
-                </style>
                 <div class="grid-container">
                     <% for(var i=0; i < popularNewsRes.documents.length; i++) { %>
                         <div class="item1">
-                            <img src="<%= popularNewsRes.documents[i].source.favicon %>" style="width: 10%;float: left;" onerror="this.style.display='none'"> <!-- onerror="this.src='fallback-img.jpg'"/-->
+                            <img src="<%= popularNewsRes.documents[i].source.favicon %>" style="width: 8%;float: left;border-radius: 50%;" onerror="this.style.display='none'"> <!-- onerror="this.src='fallback-img.jpg'"/-->
                             <div style="text-align: left;font-size: 10px;margin-left: 50px;">
                                 <b><%= popularNewsRes.documents[i].title %></b>
                                 <br>
                                 <%= popularNewsRes.documents[i].content.substring(0, 200) %>
                                 <br>
                                 <div><a href="<%= popularNewsRes.documents[i].original_url %>"><%= popularNewsRes.documents[i].source.domain %></a></div>
-                                <div style="text-align: right;"><%= popularNewsRes.documents[i].created_at %></div>
+                                <div style="text-align: right;"><%= moment(popularNewsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
                             </div>
                         </div>
                     <% } %>

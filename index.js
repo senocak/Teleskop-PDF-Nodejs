@@ -7,6 +7,7 @@ app.use(express.static('assets'));
 app.set('view engine', 'ejs');
 const port = 3000
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+app.locals.moment = require('moment'); // Pass throught the moment library to ejs view pages
 
 app.get('/genel', require('./controllers/genel').genel_analiz)
 app.get('/haber', require('./controllers/haber').haber_analiz)

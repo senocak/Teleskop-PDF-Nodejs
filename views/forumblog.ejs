@@ -190,31 +190,6 @@
                 <h3>En Fazla İçerik Çıkan Kaynaklar</h3>
                 <hr>
                 <center>
-                    <style>
-                        ul{
-                            width: 75%;
-                            list-style-type: disc;
-                            -webkit-columns: 2;
-                            -moz-columns: 2;
-                            columns: 2;
-                            list-style-position: inside;
-                            list-style-type:none;
-                        }
-                        .divLeft {
-                            width:80%;
-                            display:block;
-                            float: left;
-                            text-align: left;
-                            border-bottom: 0.5px solid black;
-                        }
-                        .divRight {
-                            width:20%;
-                            display:block;
-                            float: right;
-                            text-align: left;
-                            border-bottom: 0.5px solid black;
-                        }
-                    </style>
                     <ul>
                         <% for(var i=0; i < popularForumBlogCountRes.stats.sources.length; i++) { %>
                             <li>
@@ -225,31 +200,16 @@
                     </ul>
                 </center>
                 <h3>En fazla İçerik oluşan Başlıklar</h3>
-                <style>
-                    .grid-container {
-                        display: grid;
-                        grid-template-columns: 50% 49% ;
-                        grid-gap: 10px;
-                        background-color: #2196F3;
-                        padding: 10px;
-                    }
-                    .grid-container > div {
-                        background-color: rgba(255, 255, 255, 0.8);
-                        text-align: center;
-                        padding: 20px 0;
-                        font-size: 30px;
-                    }
-                </style>
                 <div class="grid-container">
                     <% for(var i=0; i < populerTweetsRes.documents.length; i++) { %>
                         <div class="item1">
-                            <img src="https://linktanitim.com/wp-content/uploads/2019/02/cropped-eksi-sozluk-logo-768x128.png" style="width: 15%;float: left;">
+                            <img src="https://linktanitim.com/wp-content/uploads/2019/02/cropped-eksi-sozluk-logo-768x128.png" style="width: 10%; float: left; border-radius: 50%;" onerror="this.style.display='none'">
                             <div style="text-align: left;font-size: 10px;margin-left: 75px;">
                                 <b><%= populerTweetsRes.documents[i].source.name %></b>
                                 <br>
                                 <%= populerTweetsRes.documents[i].content %>
                                 <br><br>
-                                <%= populerTweetsRes.documents[i].created_at %>
+                                <div style="text-align: right;"><%= moment(populerTweetsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
                             </div>
                         </div>
                     <% } %>

@@ -188,31 +188,16 @@
         <main>
             <div class="container">
                 <h3>Popüler Tweetler</h3>
-                <style>
-                    .grid-container {
-                        display: grid;
-                        grid-template-columns: 50% 49% ;
-                        grid-gap: 10px;
-                        background-color: #2196F3;
-                        padding: 10px;
-                    }
-                    .grid-container > div {
-                        background-color: rgba(255, 255, 255, 0.8);
-                        text-align: center;
-                        padding: 20px 0;
-                        font-size: 30px;
-                    }
-                </style>
                 <div class="grid-container">
                     <% for(var i=0; i < populerTweetsRes.documents.length; i++) { %>
                         <div class="item1">
-                            <img src="<%= populerTweetsRes.documents[i].avatar %>" style="width: 15%;float: left;">
+                            <img src="<%= populerTweetsRes.documents[i].avatar %>" style="width: 10%;float: left; border-radius: 50%;">
                             <div style="text-align: left;font-size: 10px;margin-left: 75px;">
                                 <b>@<%= populerTweetsRes.documents[i].username %></b>
                                 <br>
                                 <%= populerTweetsRes.documents[i].content %>
                                 <br><br>
-                                <%= populerTweetsRes.documents[i].created_at %>
+                                <div style="text-align: right;"><%= moment(populerTweetsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
                             </div>
                         </div>
                     <% } %>

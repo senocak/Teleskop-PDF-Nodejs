@@ -184,31 +184,6 @@
                 <h3>En Fazla İçerik Çıkan Kaynaklar</h3>
                 <hr>
                 <center>
-                    <style>
-                        ul{
-                            width: 75%;
-                            list-style-type: disc;
-                            -webkit-columns: 2;
-                            -moz-columns: 2;
-                            columns: 2;
-                            list-style-position: inside;
-                            list-style-type:none;
-                        }
-                        .divLeft {
-                            width:80%;
-                            display:block;
-                            float: left;
-                            text-align: left;
-                            border-bottom: 0.5px solid black;
-                        }
-                        .divRight {
-                            width:20%;
-                            display:block;
-                            float: right;
-                            text-align: left;
-                            border-bottom: 0.5px solid black;
-                        }
-                    </style>
                     <ul>
                         <% for(var i=0; i < popularVideoCountRes.stats.sources.length; i++) { %>
                             <li>
@@ -219,21 +194,6 @@
                     </ul>
                 </center>
                 <h3>Popüler Videolar</h3>
-                <style>
-                    .grid-container {
-                        display: grid;
-                        grid-template-columns: 50% 49% ;
-                        grid-gap: 10px;
-                        background-color: #2196F3;
-                        padding: 10px;
-                    }
-                    .grid-container > div {
-                        background-color: rgba(255, 255, 255, 0.8);
-                        text-align: center;
-                        padding: 20px 0;
-                        font-size: 30px;
-                    }
-                </style>
                 <div class="grid-container">
                     <% for(var i=0; i < populerTweetsRes.documents.length; i++) { %>
                         <div class="item1">
@@ -245,33 +205,11 @@
                                 <br>
                                 <%= populerTweetsRes.documents[i].content %>
                                 <br><br>
-                                <%= populerTweetsRes.documents[i].created_at %>
+                                <div style="text-align: right;"><%= moment(populerTweetsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
                             </div>
                         </div>
                     <% } %>
                 </div>
-                <center>
-                    <table style="width: 40%;">
-                        <tr>
-                            <td style="width: 60%; padding-left: 100px;">
-                                <table>
-                                    <tr>
-                                        <td style="text-align:left;">sondakika.com</td>
-                                        <td style="text-align: right;width: 100%;">6138</td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td style="width: 60%; padding-left: 100px;">
-                                <table>
-                                    <tr>
-                                        <td>sondakika.com</td>
-                                        <td style="text-align: right;width: 100%;">6138</td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </center>
             </div>
         </main>
     </body>

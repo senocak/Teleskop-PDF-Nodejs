@@ -1,0 +1,40 @@
+/* Resources  */
+ul{
+    width: 75%;
+    list-style-type: disc;
+    -webkit-columns: 2;
+    -moz-columns: 2;
+    columns: 2;
+    list-style-position: inside;
+    list-style-type:none;
+    font-size: 13px;
+}
+.divLeft {
+    width:80%;
+    display:block;
+    float: left;
+    text-align: left;
+    border-bottom: 0.5px solid black;
+}
+.divRight {
+    width:20%;
+    display:block;
+    float: right;
+    text-align: left;
+    border-bottom: 0.5px solid black;
+}
+/* Resources  */
+/* 2 Column Grid For Posts */
+.grid-container {
+    display: grid;
+    grid-template-columns: 50% 49% ;
+    grid-gap: 10px;
+    padding: 10px;
+}
+.grid-container > div {
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    padding: 20px 0;
+    font-size: 30px;
+}
+/* 2 Column Grid For Posts */

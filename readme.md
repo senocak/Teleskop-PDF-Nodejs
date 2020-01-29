@@ -1,6 +1,6 @@
 # TeleskopApp PDF Maker!
 
-This project is for the making pdf files for the specific url and merge them as one.
+This project is for the making pdf files for the specific urls and merge them as one.
 
 # Usage
 
@@ -17,12 +17,10 @@ Example Urls;
 	> **start_date** => starting date range for the pdf
 	> **end_date** => ending date range for the pdf
 
-## Making and merging pdf then respond
+## Making the pdfs then merging the pdfs as one
 
 - /pdf
 	>Just visit the below url and verify that pdfs are made and one pdf which it is named as **final.pdf**  is created under current timestamp folder for example **pdfs/<timestamp>/final.pdf**
-
-
 
 ## Screenshoots
 
