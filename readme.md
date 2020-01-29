@@ -26,21 +26,16 @@ Example Urls;
 
 ## Screenshoots
 
-<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-01.jpg?raw=true"  width="250px"/>
-<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-02.jpg?raw=true"  width="250px"/>
-<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-03.jpg?raw=true"  width="250px"/>
-<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-04.jpg?raw=true"  width="250px"/>
-<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-05.jpg?raw=true"  width="250px"/>
-<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-06.jpg?raw=true"  width="250px"/>
-<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-07.jpg?raw=true"  width="250px"/>
-<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-08.jpg?raw=true"  width="250px"/>
-<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-09.jpg?raw=true"  width="250px"/>
-<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-10.jpg?raw=true"  width="250px"/>
-<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-11.jpg?raw=true"  width="250px"/>
-<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-12.jpg?raw=true"  width="250px"/>
-<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-13.jpg?raw=true"  width="250px"/>
-
-
-Solarized dark             |  Solarized Ocean
-:-------------------------:|:-------------------------:
-![](https://...Dark.png)  |  ![](https://...Ocean.png)
+<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-01.jpg?raw=true"  width="250px"/> |
+<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-02.jpg?raw=true"  width="250px"/> |
+<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-03.jpg?raw=true"  width="250px"/> |
+<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-04.jpg?raw=true"  width="250px"/> |
+<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-05.jpg?raw=true"  width="250px"/> |
+<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-06.jpg?raw=true"  width="250px"/> |
+<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-07.jpg?raw=true"  width="250px"/> |
+<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-08.jpg?raw=true"  width="250px"/> |
+<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-09.jpg?raw=true"  width="250px"/> |
+<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-10.jpg?raw=true"  width="250px"/> |
+<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-11.jpg?raw=true"  width="250px"/> |
+<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-12.jpg?raw=true"  width="250px"/> |
+<img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-13.jpg?raw=true"  width="250px"/> |
