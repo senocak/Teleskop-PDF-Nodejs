@@ -39,3 +39,8 @@ Example Urls;
 <img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-11.jpg?raw=true"  width="250px"/>
 <img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-12.jpg?raw=true"  width="250px"/>
 <img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-13.jpg?raw=true"  width="250px"/>
+
+
+Solarized dark             |  Solarized Ocean
+:-------------------------:|:-------------------------:
+![](https://...Dark.png)  |  ![](https://...Ocean.png)
