@@ -1,9 +1,7 @@
 const express = require('express')
 const app = express()
-const axios = require('axios');
 const puppeteer = require('puppeteer')
 const merge = require('easy-pdf-merge');
-const moment = require('moment');
 const fs = require('fs');
 const port = 3000
 app.use(express.static('assets'));
