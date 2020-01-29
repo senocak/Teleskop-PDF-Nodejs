@@ -2,15 +2,21 @@ const moment = require('moment');
 const axios = require('axios');
 
 exports.video_analiz = async function (req, res, next) {
-
     const token = req.query.token
     const stream_id = req.query.stream_id
-    const start_date = req.query.start_date
+    const start_date = req.query.start_date //2020-01-12T20:21:00.000
     const end_date = req.query.end_date
-    var current = new Date(start_date)
-    const betweenDays = Math.round(Math.abs((new Date(start_date) - new Date(end_date)) / (24 * 60 * 60 * 1000)));
-    var lastWeekStart = (new Date(current.setDate(current.getDate() - betweenDays)).toISOString()).slice(0, -1)
+
+    var startDate = moment(start_date)
+    var startDateFormat = startDate.format("D.MM.Y") // formatted day. example: 12.01.2020
+
+    var endDate = moment(end_date)
+    var endDateFormat = endDate.format("D.MM.Y") // formatted day. example: 12.01.2020
+    const betweenDays = startDate.diff(endDate, 'days') // Day number example: 5
+
+    var lastWeekStart = startDate.day(betweenDays).format('YYYY-MM-DDTHH:mm:ss.sss') // formatted day of the last week. example: 12.01.2020
     var lastWeekEnd = start_date
+
     axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
     axios.all([
         axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/video/stats/histogram?end_date='+end_date+'&start_date='+start_date),
@@ -37,11 +43,9 @@ exports.video_analiz = async function (req, res, next) {
         for(var i=0; i < populerTweetsRes.data.documents.length; i++){
             populerTweetsRes.data.documents[i].created_at = new Date(populerTweetsRes.data.documents[i].created_at).toLocaleDateString("en-US",{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
         }
-        var startDate = start_date.replace(/-/g, '.').split("T")[0]
-        var endDate = end_date.replace(/-/g, '.').split("T")[0]
         res.render('video',{
-            start_date:startDate,
-            end_date:endDate,
+            start_date:startDateFormat,
+            end_date:endDateFormat,
             currentRes:currentRes.data,
             lastWeekRes:lastWeekRes.data,
             currentResToplam:currentResToplam,

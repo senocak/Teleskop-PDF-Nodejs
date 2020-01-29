@@ -2,7 +2,6 @@ const moment = require('moment');
 const axios = require('axios');
 
 exports.genel_analiz = async function (req, res, next) {
-    
     const token = req.query.token
     const stream_id = req.query.stream_id
     const start_date = req.query.start_date //2020-01-12T20:21:00.000
