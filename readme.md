@@ -37,3 +37,8 @@ Example Urls;
 <img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-11.jpg?raw=true"  width="250px"/> |
 <img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-12.jpg?raw=true"  width="250px"/> |
 <img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-13.jpg?raw=true"  width="250px"/> |
+
+
+docker build -t pdf:1.0 .
+docker run -d -p 3000:3000 --name pdf pdf:1.0
+docker exec -it pdf bash
