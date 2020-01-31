@@ -52,7 +52,7 @@ app.get('/pdf', (req, res) => {
     (async () => {
         const browser = await puppeteer.launch({
             headless: true,
-            args: ['--headless','--start-maximized']
+            args: ['--headless', '--start-maximized', '--no-sandbox']
         });
         const page = await browser.newPage();
         await page.setViewport({ width: 2000, height: 768});
