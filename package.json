@@ -9,11 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
-    "ejs": "^3.0.1",
     "axios": "^0.19.1",
+    "easy-pdf-merge": "^0.2.2",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
     "moment": "^2.24.0",
-    "puppeteer": "^2.0.0",
-    "easy-pdf-merge": "^0.2.2"
+    "nodemon": "^2.0.2",
+    "puppeteer": "^2.0.0"
   }
 }
