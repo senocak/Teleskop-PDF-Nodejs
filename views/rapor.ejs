@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="tr">
+    <head>
+        <title>Teleskop App</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <style>
+            body {
+                font: 400 15px Lato, sans-serif;
+                line-height: 1.8;
+                color: #818181;
+                margin: 0;
+            }
+            h2 {
+                font-size: 24px;
+                text-transform: uppercase;
+                color: #303030;
+                font-weight: 600;
+                margin-bottom: 30px;
+            }
+            h4 {
+                font-size: 19px;
+                line-height: 1.375em;
+                color: #303030;
+                font-weight: 400;
+                margin-bottom: 20px;
+            }
+            .logo-small {
+                color: #f4511e;
+                font-size: 50px;
+            }
+            iframe {
+                border: none;
+                width: 100%;
+                height: -webkit-fill-available;
+            }
+            #loader {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                z-index: 1;
+                width: 150px;
+                height: 150px;
+                margin: -75px 0 0 -75px;
+                border: 16px solid #f3f3f3;
+                border-radius: 50%;
+                border-top: 16px solid #f4511edb;
+                width: 120px;
+                height: 120px;
+                -webkit-animation: spin 2s linear infinite;
+                animation: spin 2s linear infinite;
+            }
+            @-webkit-keyframes spin {
+                0% { -webkit-transform: rotate(0deg); }
+                100% { -webkit-transform: rotate(360deg); }
+            }
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            .animate-bottom {
+                position: relative;
+                -webkit-animation-name: animatebottom;
+                -webkit-animation-duration: 1s;
+                animation-name: animatebottom;
+                animation-duration: 1s
+            }
+            @-webkit-keyframes animatebottom {
+                from { bottom:-100px; opacity:0 }
+                to { bottom:0px; opacity:1 }
+            }
+            @keyframes animatebottom {
+                from{ bottom:-100px; opacity:0 }
+                to{ bottom:0; opacity:1 }
+            }
+        </style>
+    </head>
+    <body onload="myFunction()" style="margin:0;">
+        <div id="loader"></div>
+        <div class="text-center" style="display: none;" id="text_center">
+            <h2>Teleskop App</h2>
+            <div class="row slideanim">
+                <div class="col-sm-4">
+                    <i class="fa fa-info logo-small" style="font-size: 50px;" data-toggle="modal" data-target="#modalGenel"></i>
+                    <h4>Genel</h4>
+                    <p>Genel Analiz</p>
+                    <div class="modal fade" id="modalGenel" role="dialog">
+                        <div class="modal-dialog " style="width: 5%; height: 95% !important;">
+                            <div class="modal-content" style="height: 95%;">
+                                <div class="modal-body">
+                                    <iframe src="/genel?token=<%=token%>&stream_id=<%=stream_id%>&start_date=<%=start_date%>&end_date=<%=end_date%>" frameborder="0"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <i class="fa fa-newspaper logo-small" style="font-size: 50px;" data-toggle="modal" data-target="#modalHaber"></i>
+                    <h4>Haber</h4>
+                    <p>Haber Analizi</p>
+                    <div class="modal fade" id="modalHaber" role="dialog">
+                        <div class="modal-dialog " style="width: 95%; height: 95% !important;">
+                            <div class="modal-content" style="height: 95%;">
+                                <div class="modal-body">
+                                    <iframe src="/haber?token=<%=token%>&stream_id=<%=stream_id%>&start_date=<%=start_date%>&end_date=<%=end_date%>" frameborder="0"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <i class="fab fa-twitter logo-small" style="font-size: 50px;" data-toggle="modal" data-target="#modalTwitter"></i>
+                    <h4>Twitter</h4>
+                    <p>Twitter Analizi</p>
+                    <div class="modal fade" id="modalTwitter" role="dialog">
+                        <div class="modal-dialog " style="width: 95%; height: 95% !important;">
+                            <div class="modal-content" style="height: 95%;">
+                                <div class="modal-body">
+                                    <iframe src="/twitter?token=<%=token%>&stream_id=<%=stream_id%>&start_date=<%=start_date%>&end_date=<%=end_date%>" frameborder="0"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row slideanim">
+                <div class="col-sm-4">
+                    <i class="fab fa-instagram logo-small" style="font-size: 50px;" data-toggle="modal" data-target="#modalInstagram"></i>
+                    <h4>İnstagram</h4>
+                    <p>İnstagram Analizi</p>
+                    <div class="modal fade" id="modalInstagram" role="dialog">
+                        <div class="modal-dialog " style="width: 95%; height: 95% !important;">
+                            <div class="modal-content" style="height: 95%;">
+                                <div class="modal-body">
+                                    <iframe src="/instagram?token=<%=token%>&stream_id=<%=stream_id%>&start_date=<%=start_date%>&end_date=<%=end_date%>" frameborder="0"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <i class="fab fa-free-code-camp logo-small" style="font-size: 50px;" data-toggle="modal" data-target="#modalForumBlog"></i>
+                    <h4>Forum Blog</h4>
+                    <p>Forum Blog Analizi</p>
+                    <div class="modal fade" id="modalForumBlog" role="dialog">
+                        <div class="modal-dialog " style="width: 95%; height: 95% !important;">
+                            <div class="modal-content" style="height: 95%;">
+                                <div class="modal-body">
+                                    <iframe src="/forumblog?token=<%=token%>&stream_id=<%=stream_id%>&start_date=<%=start_date%>&end_date=<%=end_date%>" frameborder="0"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <i class="fas fa-video logo-small" style="font-size: 50px;" data-toggle="modal" data-target="#modalVideo"></i>
+                    <h4>Video</h4>
+                    <p>Video Analizi</p>
+                    <div class="modal fade" id="modalVideo" role="dialog">
+                        <div class="modal-dialog " style="width: 95%; height: 95% !important;">
+                            <div class="modal-content" style="height: 95%;">
+                                <div class="modal-body">
+                                    <iframe src="/video?token=<%=token%>&stream_id=<%=stream_id%>&start_date=<%=start_date%>&end_date=<%=end_date%>" frameborder="0"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <script>
+            function myFunction() {
+                setTimeout(showPage, 0);
+            }
+            function showPage() {
+                document.getElementById("loader").style.display = "none";
+                document.getElementById("text_center").style.display = "block";
+            }
+        </script>
+    </body>
+</html>
+

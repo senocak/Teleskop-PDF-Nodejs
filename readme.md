@@ -45,4 +45,3 @@ docker run -d -p 3000:3000 --name pdf pdf:1.0
 docker exec -it pdf bash
 	npm i -g pm2
 	pm2 start index.js
-

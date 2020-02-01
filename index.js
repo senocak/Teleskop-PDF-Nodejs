@@ -15,6 +15,14 @@ app.get('/twitter', require('./controllers/twitter').twitter_analiz)
 app.get('/instagram', require('./controllers/instagram').instagram_analiz)
 app.get('/forumblog', require('./controllers/forumblog').forumblog_analiz)
 app.get('/video', require('./controllers/video').video_analiz)
+app.get('/rapor', (req, res)=>{
+    res.render('rapor',{
+        token : req.query.token,
+        stream_id : req.query.stream_id,
+        start_date : req.query.start_date,
+        end_date : req.query.end_date
+    });
+})
 
 app.get('/pdf', (req, res) => {
     var pdfUrls = [
