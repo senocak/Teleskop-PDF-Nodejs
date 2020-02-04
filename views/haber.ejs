@@ -36,6 +36,7 @@
             </div>
         </main>
         <script>
+            let colors = ['#F47B20', '#005596'];
             $(function () {
                 let timeLineChart = document.querySelectorAll('.time-line-chart')
                 timeLineChart.forEach(element => {
@@ -63,7 +64,7 @@
                         xaxis: {
                             categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].key_as_string.split("T")[0] %>',<% } %>]
                         },
-                        colors: ['#df8244', '#4d73be'],
+                        colors: colors,
                         markers: {
                             size: 5
                         },
@@ -75,49 +76,72 @@
                 let dailyChart = document.querySelector('#daily-chart')
                 let optionsDaily = {
                     chart: {
-                        height: 420,
                         width: 800,
+                        height: 420,
                         type: 'bar',
                         toolbar: {
                             show: false
                         },
                         dataLabels: {
-                            enabled: true,
-                        },
-                        parentHeightOffset: -5
+                            enabled: true
+                        }
                     },
+                    colors: colors,
                     plotOptions: {
                         bar: {
-                            horizontal: false,
-                            distributed: false,
-                            endingShape: 'flat',
-                            columnWidth: '20%',
+                            columnWidth: '30%',
+                            distributed: true,
                             dataLabels: {
-                                position: 'top',
-                            },
-                        },
+                                position: 'top'
+                            }
+                        }
                     },
                     dataLabels: {
                         enabled: true,
-                        offsetY: -20,
+                        offsetY: -25,
                         formatter: function (val) {
-                            return val + " adet";
+                            return val + ' adet';
                         },
                         style: {
                             fontSize: '12px',
-                            colors: ['#444444']
-                        },
-                    },
-                    series: [
-                        {
-                            data: [<%=currentResToplam %>, <%=lastWeekResTotal %>],
+                            colors: ['#3b65b7']
                         }
-                    ],
+                    },
+                    series: [{
+                        data: [<%=currentResToplam %>, <%=lastWeekResTotal %>]
+                    }],
                     xaxis: {
                         categories: ["Şimdiki Aralık","Önceki Aralık"],
+                        labels: {
+                            style: {
+                                colors: colors,
+                                fontSize: '14px'
+                            }
+                        }
                     },
-                    colors: ['#F47B20', '#005596'],
-                }
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            shade: 'light',
+                            type: 'vertical',
+                            shadeIntensity: 0.1,
+                            gradientToColors: undefined, // optional, if not defined - uses the shades of same color in series
+                            inverseColors: true,
+                            opacityFrom: 1,
+                            opacityTo: 1,
+                            stops: [0, 50, 100],
+                            colorStops: []
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        position: 'right',
+                        offsetY: 40,
+                        labels: {
+                            useSeriesColors: true
+                        }
+                    }
+                };
                 let chartDaily = new ApexCharts(dailyChart, optionsDaily);
                 chartDaily.render();
             })
