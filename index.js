@@ -4,9 +4,10 @@ const   express = require('express'),
         merge = require('easy-pdf-merge'),
         fs = require('fs'),
         logger = require('morgan'),
-        port = 3000;
+        port = 3000,
+        moment = require('moment');
+app.locals.moment = moment; // Pass throught the moment library to ejs view pages
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-app.locals.moment = require('moment'); // Pass throught the moment library to ejs view pages
 app.use(logger('dev'));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/pdfs'));
@@ -61,7 +62,8 @@ app.get('/pdf', (req, res) => {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
     console.log("PDF Hazırlanıyor");
-    const directoryDate = Date.now()
+    //const directoryDate = Date.now()
+    const directoryDate = moment().format('DD_MM_YYYY__HH_mm_ss_a') + "_" + stream_id
     var directory = "assets/pdfs/" + directoryDate
     fs.mkdirSync(directory);
     (async () => {
