@@ -1,13 +1,16 @@
-const express = require('express')
-const puppeteer = require('puppeteer')
-const merge = require('easy-pdf-merge');
-const fs = require('fs');
-const app = express()
-app.use(express.static('assets'));
-app.set('view engine', 'ejs');
-const port = 3000
+const   express = require('express'),
+        app = express(),
+        puppeteer = require('puppeteer'),
+        merge = require('easy-pdf-merge'),
+        fs = require('fs'),
+        logger = require('morgan'),
+        port = 3000;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 app.locals.moment = require('moment'); // Pass throught the moment library to ejs view pages
+app.use(logger('dev'));
+app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/pdfs'));
+app.use(express.static(__dirname + '/assets'));
 
 app.get('/genel', require('./controllers/genel').genel_analiz)
 app.get('/haber', require('./controllers/haber').haber_analiz)
@@ -23,39 +26,43 @@ app.get('/rapor', (req, res)=>{
         end_date : req.query.end_date
     });
 })
-
 app.get('/pdf', (req, res) => {
+    const token = req.query.token
+    const stream_id = req.query.stream_id
+    const start_date = req.query.start_date
+    const end_date = req.query.end_date
     var pdfUrls = [
         {
             "name":"genel",
-            "url":"http://127.0.0.1:3000/genel?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999"
+            "url":"http://127.0.0.1:"+port+"/genel?token="+token+"&stream_id="+stream_id+"&start_date="+start_date+"&end_date="+end_date+""
         },
         {
             "name":"haber",
-            "url":"http://127.0.0.1:3000/haber?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999"
+            "url":"http://127.0.0.1:"+port+"/haber?token="+token+"&stream_id="+stream_id+"&start_date="+start_date+"&end_date="+end_date+""
         },
         {
             "name":"twitter",
-            "url":"http://127.0.0.1:3000/twitter?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999"
+            "url":"http://127.0.0.1:"+port+"/twitter?token="+token+"&stream_id="+stream_id+"&start_date="+start_date+"&end_date="+end_date+""
         },
         {
             "name":"instagram",
-            "url":"http://127.0.0.1:3000/instagram?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999"
+            "url":"http://127.0.0.1:"+port+"/instagram?token="+token+"&stream_id="+stream_id+"&start_date="+start_date+"&end_date="+end_date+""
         },
         {
             "name":"forumblog",
-            "url":"http://127.0.0.1:3000/forumblog?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999"
+            "url":"http://127.0.0.1:"+port+"/forumblog?token="+token+"&stream_id="+stream_id+"&start_date="+start_date+"&end_date="+end_date+""
         },
         {
             "name":"video",
-            "url":"http://127.0.0.1:3000/video?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzkzNTEwNzUsIm5iZiI6MTU3OTM1MTA3NSwianRpIjoiMGEwNDcwYmItNTRjMy00MjczLWE4MzgtZGJmODdkNmJiOWE5IiwiaWRlbnRpdHkiOiJzZXJ2ZXRAYmlsZ2ltZWR5YS5jb20udHIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.tIII43uoMHAm4f-2Ss7unjfFv7UMigRvAY0KxzO9wOo&stream_id=5debd0e928c70a000c7c3eb4&start_date=2020-01-12T20:21:00.000&end_date=2020-01-18T20:59:59.999"
+            "url":"http://127.0.0.1:"+port+"/video?token="+token+"&stream_id="+stream_id+"&start_date="+start_date+"&end_date="+end_date+""
         }
     ]
     async function timeout(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
     console.log("PDF Hazırlanıyor");
-    var directory = "pdfs/"+Date.now()
+    const directoryDate = Date.now()
+    var directory = "assets/pdfs/" + directoryDate
     fs.mkdirSync(directory);
     (async () => {
         const browser = await puppeteer.launch({
@@ -65,7 +72,7 @@ app.get('/pdf', (req, res) => {
         const page = await browser.newPage();
         await page.setViewport({ width: 2000, height: 768});
         var pdfFiles=[];
-        pdfFiles.push(`pdfs/giris.pdf`);
+        pdfFiles.push(`assets/pdfs/giris.pdf`);
         for(var i=0; i<pdfUrls.length; i++){
             console.log(`İşlem: ${pdfUrls[i].name}`);
             await page.goto(pdfUrls[i].url, {waitUntil: 'networkidle2'});
@@ -88,10 +95,11 @@ app.get('/pdf', (req, res) => {
             );
         }
         await browser.close();
-        pdfFiles.push(`pdfs/bitis.pdf`);
+        pdfFiles.push(`assets/pdfs/bitis.pdf`);
         await mergeMultiplePDF(pdfFiles);
         res.status(200).json({
-            "pdf":directory+"/final.pdf"
+            success:true,
+            "path":"/pdfs/"+directoryDate+"/final.pdf"
         })
         //res.download(directory+'./pdfs/final.pdf')
     })();
