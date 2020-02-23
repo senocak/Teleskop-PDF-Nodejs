@@ -39,9 +39,9 @@ Example Urls;
 <img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-13.jpg?raw=true"  width="250px"/> |
 
 
-docker build -t pdf:1.0 .
-docker rm -f pdf
-docker run -d -p 3000:3000 --name pdf pdf:1.0
-docker exec -it pdf bash
-	npm i -g pm2
-	pm2 start index.js
+- docker build -t pdf:1.0 .
+- docker rm -f pdf
+- docker run -d -p 3000:3000 --name pdf pdf:1.0
+- docker exec -it pdf bash
+	- npm i -g pm2
+	- pm2 start index.js

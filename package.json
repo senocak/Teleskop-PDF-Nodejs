@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.1",
+    "dotenv": "^8.2.0",
     "easy-pdf-merge": "^0.2.2",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
