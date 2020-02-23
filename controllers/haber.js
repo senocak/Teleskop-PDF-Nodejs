@@ -1,53 +1,51 @@
-const moment = require('moment');
-const axios = require('axios');
+const   moment = require('moment'),
+        axios = require('axios');
 
 exports.haber_analiz = async function (req, res, next) {
-    const token = req.query.token
-    const stream_id = req.query.stream_id
-    const start_date = req.query.start_date //2020-01-12T20:21:00.000
-    const end_date = req.query.end_date
+    const   token = req.query.token,
+            stream_id = req.query.stream_id,
+            start_date = req.query.start_date,
+            end_date = req.query.end_date
 
-    var startDate = moment(start_date)
-    var startDateFormat = startDate.format("D.MM.Y") // formatted day. example: 12.01.2020
+    var     startDate = moment(start_date),
+            endDate = moment(end_date),
+            betweenDays = endDate.diff(startDate, `days`),
+            lastWeekStart = startDate.subtract(betweenDays, `days`).format(`YYYY-MM-DDTHH:mm:ss.sss`),
+            lastWeekEnd = start_date
 
-    var endDate = moment(end_date)
-    var endDateFormat = endDate.format("D.MM.Y") // formatted day. example: 12.01.2020
-    const betweenDays = startDate.diff(endDate, 'days') // Day number example: 5
-
-    var lastWeekStart = startDate.day(betweenDays).format('YYYY-MM-DDTHH:mm:ss.sss') // formatted day of the last week. example: 12.01.2020
-    var lastWeekEnd = start_date
-
-    axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
-    axios.all([
-        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/news/stats/histogram?end_date='+end_date+'&start_date='+start_date),
-        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/news/stats/histogram?end_date='+lastWeekEnd+'&start_date='+lastWeekStart),
-        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/popular/news?end_date='+end_date+'&start_date='+start_date),
-        axios.get('https://apiv2.teleskop.app/v2.0/streams/'+stream_id+'/news/stats/sources?end_date='+end_date+'&start_date='+start_date)
-    ]).then(axios.spread((currentRes, lastWeekRes, popularNewsRes, popularNewsCountRes) => {
-        var currentResToplam= 0;
-        for(var i=0; i < currentRes.data.stats.length; i++){
-            currentResToplam = currentResToplam + currentRes.data.stats[i].doc_count
-        }
-        var lastWeekResTotal = 0;
-        for(var i=0; i < lastWeekRes.data.stats.length; i++){
-            lastWeekResTotal = lastWeekResTotal + lastWeekRes.data.stats[i].doc_count
-        }
-        var oran = "";
-        if (currentResToplam > lastWeekResTotal) {
-            oran = "%"+((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2)+" oranında artma";
-        } else {
-            oran = "%"+((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2)+" oranında azalma";
-        }
-        res.render('haber',{
-            start_date:startDateFormat,
-            end_date:endDateFormat,
-            currentRes:currentRes.data,
-            lastWeekRes:lastWeekRes.data,
-            currentResToplam:currentResToplam,
-            lastWeekResTotal:lastWeekResTotal,
-            oran:oran,
-            popularNewsRes:popularNewsRes.data,
-            popularNewsCountRes:popularNewsCountRes.data
-        });
-    }))
+    axios.defaults.headers.common[`Authorization`] = `Bearer ${token}`;
+    // Current Week datas
+    const currentRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/histogram?end_date=${end_date}&start_date=`+start_date)
+    var currentResToplam= 0
+    for(var i=0; i < currentRes.data.stats.length; i++){
+        currentResToplam = currentResToplam + currentRes.data.stats[i].doc_count
+    }
+    // Before Week datas
+    const lastWeekRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/histogram?end_date=${lastWeekEnd}&start_date=`+lastWeekStart)
+    var lastWeekResTotal= 0
+    for(var i=0; i < lastWeekRes.data.stats.length; i++){
+        lastWeekResTotal = lastWeekResTotal + lastWeekRes.data.stats[i].doc_count
+    }
+    // Oran
+    var oran = ``;
+    if (currentResToplam > lastWeekResTotal) {
+        oran = `%${((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2) } oranında artma`;
+    } else {
+        oran = `%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2)} oranında azalma`;
+    }
+    //Popüler Kaynaklarda Çıkan Haber Sayıları
+    const popularNewsCountRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}`)
+    //Popüler Haberler
+    const popularNewsRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/popular/news?end_date=${end_date}&start_date=${start_date}`)
+    res.render('haber',{
+        start_date: startDate.format("D.MM.Y"),
+        end_date: endDate.format("D.MM.Y"),
+        currentRes: currentRes.data,
+        currentResToplam: currentResToplam,
+        lastWeekRes: lastWeekRes.data,
+        lastWeekResTotal: lastWeekResTotal,
+        oran: oran,
+        popularNewsCountRes: popularNewsCountRes.data,
+        popularNewsRes: popularNewsRes.data
+    });
 }

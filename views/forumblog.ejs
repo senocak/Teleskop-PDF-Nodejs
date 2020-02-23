@@ -25,7 +25,7 @@
                     <p style="text-align: justify !important;">
                         <b><%=start_date%></b> – <b><%=end_date%></b> tarihleri arasında <b><%=currentRes.stream.name%></b> adlı akışınızda toplam <b><%=currentResToplam%></b> içerik bulunmuştur.
                         İçeriklerin toplamında bir önceki haftaya göre <%=oran%> mevcuttur.
-                        BLOG FORUM ANALİZİ ile ilgili detaylı grafikler aşağıda yer almaktadır.
+                        Blog Forum Analizi ile ilgili detaylı grafikler aşağıda yer almaktadır.
                     </p>
                 </div>
                 <h3>Zamana Göre Toplam Gönderi Sayıları</h3>
@@ -114,7 +114,7 @@
                 },
                 dataLabels: {
                     enabled: true,
-                    offsetY: -20,
+                    offsetY: -10,
                     formatter: function (val) {
                         return val;
                     },
@@ -207,7 +207,7 @@
                             <div style="text-align: left;font-size: 10px;margin-left: 75px;">
                                 <b><%= populerTweetsRes.documents[i].source.name %></b>
                                 <br>
-                                <%= populerTweetsRes.documents[i].content %>
+                                <%= populerTweetsRes.documents[i].content.substring(0, 400) %>...
                                 <br><br>
                                 <div style="text-align: right;"><%= moment(populerTweetsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
                             </div>
