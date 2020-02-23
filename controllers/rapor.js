@@ -5,9 +5,7 @@ const   moment  = require(`moment`),
         fs = require('fs')
 exports.rapor = async function (req, res, next) {
     var uuid = req.query.uuid
-    var data = await axios.get(`https://apiv2.teleskop.app/v2.0/analysis/params/${uuid}`).then(function (response) {
-        return response.data.params
-    })
+    var data = await axios.get(`https://apiv2.teleskop.app/v2.0/analysis/params/${uuid}`).then(function (response) { return response.data.params })
     async function date(date) {
         return date.split('+')[0];
     }
