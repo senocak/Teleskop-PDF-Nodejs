@@ -1,5 +1,5 @@
-const   moment = require(`moment`),
-        axios = require(`axios`);
+const   moment  = require(`moment`),
+        axios   = require(`axios`);
 
 exports.twitter_analiz = async function (req, res, next) {
     const   token = req.query.token,
@@ -49,19 +49,19 @@ exports.twitter_analiz = async function (req, res, next) {
             genderErkekRes  = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/twitter/analysis/gender?gender=1`),
             genderUniRes    = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/twitter/analysis/gender?gender=0`)
     res.render(`twitter`,{
-        start_date: startDate.format("D.MM.Y"),
-        end_date: endDate.format("D.MM.Y"),
-        currentRes: currentRes.data,
-        lastWeekRes: lastWeekRes.data,
+        start_date      : startDate.format("D.MM.Y"),
+        end_date        : endDate.format("D.MM.Y"),
+        currentRes      : currentRes.data,
+        lastWeekRes     : lastWeekRes.data,
         currentResToplam: currentResToplam,
         lastWeekResTotal: lastWeekResTotal,
-        oran: oran,
+        oran            : oran,
         populerTweetsRes: populerTweetsRes.data,
-        hakaretRes: hakaretRes.data,
-        kufurRes: kufurRes.data,
-        siddetRes: siddetRes.data,
-        genderKadınRes: genderKadınRes.data,
-        genderErkekRes: genderErkekRes.data,
-        genderUniRes: genderUniRes.data
+        hakaretRes      : hakaretRes.data,
+        kufurRes        : kufurRes.data,
+        siddetRes       : siddetRes.data,
+        genderKadınRes  : genderKadınRes.data,
+        genderErkekRes  : genderErkekRes.data,
+        genderUniRes    : genderUniRes.data
     });
 }

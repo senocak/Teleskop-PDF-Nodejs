@@ -1,5 +1,5 @@
-const   moment = require(`moment`),
-        axios = require(`axios`);
+const   moment  = require(`moment`),
+        axios   = require(`axios`);
 
 exports.genel_analiz = async function (req, res, next) {
     const
@@ -36,13 +36,13 @@ exports.genel_analiz = async function (req, res, next) {
     }
     const kategoriChartRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/stats/totals?end_date=${end_date}&start_date=`+start_date)
     res.render(`general`,{
-        start_date: startDate.format(`D.MM.Y`),
-        end_date: endDate.format(`D.MM.Y`),
-        currentRes: currentRes.data,
-        lastWeekRes: lastWeekRes.data,
-        currentResToplam: currentResToplam,
-        lastWeekResTotal: lastWeekResTotal,
-        oran: oran,
-        kategoriChartRes: kategoriChartRes.data
+        start_date          : startDate.format(`D.MM.Y`),
+        end_date            : endDate.format(`D.MM.Y`),
+        currentRes          : currentRes.data,
+        lastWeekRes         : lastWeekRes.data,
+        currentResToplam    : currentResToplam,
+        lastWeekResTotal    : lastWeekResTotal,
+        oran                : oran,
+        kategoriChartRes    : kategoriChartRes.data
     });
 }

@@ -1,4 +1,3 @@
-/* Resources  */
 ul{
     width: 75%;
     list-style-type: disc;
@@ -23,8 +22,6 @@ ul{
     text-align: left;
     border-bottom: 0.5px solid black;
 }
-/* Resources  */
-/* 2 Column Grid For Posts */
 .grid-container {
     display: grid;
     grid-template-columns: 50% 49% ;
@@ -37,4 +34,3 @@ ul{
     padding: 20px 0;
     font-size: 30px;
 }
-/* 2 Column Grid For Posts */

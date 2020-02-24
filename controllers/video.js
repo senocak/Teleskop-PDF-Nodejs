@@ -1,5 +1,5 @@
-const   moment = require('moment'),
-        axios = require('axios');
+const   moment  = require('moment'),
+        axios   = require('axios');
 
 exports.video_analiz = async function (req, res, next) {
     const   token = req.query.token,
@@ -43,14 +43,14 @@ exports.video_analiz = async function (req, res, next) {
     // En Fazla İçerik Çıkan Kaynaklar
     const popularVideoCountRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/video/stats/sources?end_date=${end_date}&start_date=${start_date}`)
     res.render('video',{
-        start_date: startDate.format("D.MM.Y"),
-        end_date: endDate.format("D.MM.Y"),
-        currentRes: currentRes.data,
-        lastWeekRes: lastWeekRes.data,
-        currentResToplam: currentResToplam,
-        lastWeekResTotal: lastWeekResTotal,
-        oran: oran,
-        populerTweetsRes: populerTweetsRes.data,
+        start_date          : startDate.format("D.MM.Y"),
+        end_date            : endDate.format("D.MM.Y"),
+        currentRes          : currentRes.data,
+        lastWeekRes         : lastWeekRes.data,
+        currentResToplam    : currentResToplam,
+        lastWeekResTotal    : lastWeekResTotal,
+        oran                : oran,
+        populerTweetsRes    : populerTweetsRes.data,
         popularVideoCountRes:popularVideoCountRes.data
     })
 }

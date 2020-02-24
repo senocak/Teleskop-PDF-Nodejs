@@ -1,5 +1,5 @@
-const   moment = require('moment'),
-        axios = require('axios');
+const   moment  = require('moment'),
+        axios   = require('axios');
 
 exports.haber_analiz = async function (req, res, next) {
     const   token = req.query.token,
@@ -38,14 +38,14 @@ exports.haber_analiz = async function (req, res, next) {
     //Popüler Haberler
     const popularNewsRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/popular/news?end_date=${end_date}&start_date=${start_date}`)
     res.render('haber',{
-        start_date: startDate.format("D.MM.Y"),
-        end_date: endDate.format("D.MM.Y"),
-        currentRes: currentRes.data,
-        currentResToplam: currentResToplam,
-        lastWeekRes: lastWeekRes.data,
-        lastWeekResTotal: lastWeekResTotal,
-        oran: oran,
-        popularNewsCountRes: popularNewsCountRes.data,
-        popularNewsRes: popularNewsRes.data
+        start_date          : startDate.format("D.MM.Y"),
+        end_date            : endDate.format("D.MM.Y"),
+        currentRes          : currentRes.data,
+        currentResToplam    : currentResToplam,
+        lastWeekRes         : lastWeekRes.data,
+        lastWeekResTotal    : lastWeekResTotal,
+        oran                : oran,
+        popularNewsCountRes : popularNewsCountRes.data,
+        popularNewsRes      : popularNewsRes.data
     });
 }

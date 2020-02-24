@@ -1,5 +1,5 @@
-const   moment = require('moment'),
-        axios = require('axios');
+const   moment  = require('moment'),
+        axios   = require('axios');
 
 exports.instagram_analiz = async function (req, res, next) {
     const   token = req.query.token,
@@ -36,12 +36,12 @@ exports.instagram_analiz = async function (req, res, next) {
         oran = `%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2)} oranında azalma`;
     }
     res.render('instagram',{
-        start_date: startDate.format("D.MM.Y"),
-        end_date: endDate.format("D.MM.Y"),
-        currentRes: currentRes.data,
-        lastWeekRes: lastWeekRes.data,
+        start_date      : startDate.format("D.MM.Y"),
+        end_date        : endDate.format("D.MM.Y"),
+        currentRes      : currentRes.data,
+        lastWeekRes     : lastWeekRes.data,
         currentResToplam: currentResToplam,
         lastWeekResTotal: lastWeekResTotal,
-        oran: oran
+        oran            : oran
     });
 }

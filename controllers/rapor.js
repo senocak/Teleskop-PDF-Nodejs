@@ -1,19 +1,19 @@
-const   moment  = require(`moment`),
-        axios   = require(`axios`),
-        puppeteer = require('puppeteer'),
-        merge = require('easy-pdf-merge'),
-        fs = require('fs')
+const   moment      = require(`moment`),
+        axios       = require(`axios`),
+        puppeteer   = require('puppeteer'),
+        merge       = require('easy-pdf-merge'),
+        fs          = require('fs')
 exports.rapor = async function (req, res, next) {
-    var uuid = req.query.uuid
-    var data = await axios.get(`https://apiv2.teleskop.app/v2.0/analysis/params/${uuid}`).then(function (response) { return response.data.params })
+    var     uuid = req.query.uuid,
+            data = await axios.get(`https://apiv2.teleskop.app/v2.0/analysis/params/${uuid}`).then(function (response) { return response.data.params })
     async function date(date) {
         return date.split('+')[0];
     }
     res.render('rapor',{
-        token : data.token,
-        stream_id : data.stream_id,
-        start_date : await date(data.start_date),
-        end_date : await date(data.end_date)
+        token       : data.token,
+        stream_id   : data.stream_id,
+        start_date  : await date(data.start_date),
+        end_date    : await date(data.end_date)
     });
 }
 exports.pdf = async function (req, res, next) {
@@ -58,13 +58,13 @@ exports.pdf = async function (req, res, next) {
     }
     console.log(`PDF Hazırlanıyor`);
     //const directoryDate = Date.now()
-    const directoryDate = moment().format('DD_MM_YYYY__HH_mm_ss_a') + `_` + uuid
-    var directory = `assets/pdfs/` + directoryDate
+    const   directoryDate   = moment().format('DD_MM_YYYY__HH_mm_ss_a') + `_` + uuid,
+            directory       = `assets/pdfs/` + directoryDate
     fs.mkdirSync(directory);
     (async () => {
         const browser = await puppeteer.launch({
             headless: true,
-            args: ['--headless', '--start-maximized', '--no-sandbox']
+            args    : ['--headless', '--start-maximized', '--no-sandbox']
         });
         const page = await browser.newPage();
         await page.setViewport({ width: 2000, height: 768});
@@ -78,9 +78,9 @@ exports.pdf = async function (req, res, next) {
             pdfFiles.push(pdfFileName);
             await page.pdf(
                 {
-                    path: pdfFileName,
-                    format: 'A4',
-                    margin: {
+                    path    : pdfFileName,
+                    format  : 'A4',
+                    margin  : {
                         bottom: '100px',
                     },
                     displayHeaderFooter: true,
@@ -95,8 +95,8 @@ exports.pdf = async function (req, res, next) {
         pdfFiles.push(`assets/pdfs/bitis.pdf`);
         await mergeMultiplePDF(pdfFiles);
         res.status(200).json({
-            success:true,
-            'path':`/pdfs/${directoryDate}/final.pdf`
+            success :true,
+            'path'  :`/pdfs/${directoryDate}/final.pdf`
         })
         //res.download(directory+'./pdfs/final.pdf')
     })();
