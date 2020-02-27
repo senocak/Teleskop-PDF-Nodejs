@@ -19,4 +19,5 @@ app.get('/forumblog', require('./controllers/forumblog').forumblog_analiz)
 app.get('/video', require('./controllers/video').video_analiz)
 app.get('/rapor', require('./controllers/rapor').rapor)//http://127.0.0.1:3000/rapor?uuid=5e4e7469011d78000b86bbef
 app.get('/pdf', require('./controllers/rapor').pdf)
+app.get('/a', require('./controllers/rapor').a)
 app.listen(process.env.PORT, () => console.log(`http://127.0.0.1:${process.env.PORT}`))
