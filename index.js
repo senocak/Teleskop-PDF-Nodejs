@@ -10,7 +10,6 @@ app.use(logger('dev'));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/pdfs'));
 app.use(express.static(__dirname + '/assets'));
-
 app.get('/genel', require('./controllers/genel').genel_analiz)
 app.get('/haber', require('./controllers/haber').haber_analiz)
 app.get('/twitter', require('./controllers/twitter').twitter_analiz)
