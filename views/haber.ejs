@@ -36,7 +36,7 @@
             </div>
         </main>
         <script>
-            let colors = ['#F47B20', '#005596'];
+            let colors = ['#F47B20', '#005596','#313132', 'pink'];
             $(function () {
                 let timeLineChart = document.querySelectorAll('.time-line-chart')
                 timeLineChart.forEach(element => {
@@ -774,7 +774,8 @@
                 </center>
                 <br>
                 <h3>Türkiye Bölgesel/Ulusal/Yerel Dağılımı</h3>
-                <div id="ulusalBolgeselYerelGrafikId" style="margin: 0px 200px 0px !important;"></div><br>
+                <div id="ulusalBolgeselYerelGrafikId" style="margin: 0px 200px 0px !important;"></div>
+                <br>
                 <script>
                     var optionsUlusalBolgeselYerelGrafik = {
                         series: [<%= ulusalBolgeselYerelGrafik["bölgesel"] %>,<%= ulusalBolgeselYerelGrafik["ulusal"] %>,<%= ulusalBolgeselYerelGrafik["yerel"] %>],
@@ -782,37 +783,12 @@
                             width: 500,
                             type: 'pie',
                         },
-                        labels: ['Bölgesel', 'Ulusal', "Yerel"],
-                        colors: ['#F47B20', '#005596','#313132'],
-                        responsive: [{
-                            breakpoint: 480,
-                            options: {
-                                chart: {width: 200},
-                                legend: {position: 'bottom'}
-                            }
-                        }],
-                        legend: {
-                            show: true,
-                            position: 'bottom',
-                            offsetY: 0,
-                            labels: {useSeriesColors: true},
-                            markers: {
-                                width: 12,
-                                height: 12,
-                                strokeWidth: 0,
-                                strokeColor: '#fff',
-                                fillColors: undefined,
-                                radius: 12,
-                                customHTML: undefined,
-                                onClick: undefined,
-                                offsetX: 0,
-                                offsetY: 0
-                            },
-                        },
+                        labels: ['Bölgesel', 'Ulusal', "Yerel", "Toplam: "+<%= ulusalBolgeselYerelGrafik["bölgesel"] + ulusalBolgeselYerelGrafik["ulusal"] + ulusalBolgeselYerelGrafik["yerel"] %>],
+                        colors: colors,
                     };
                     var ulusalBolgeselYerelGrafikchart = new ApexCharts(document.querySelector("#ulusalBolgeselYerelGrafikId"), optionsUlusalBolgeselYerelGrafik);
                     ulusalBolgeselYerelGrafikchart.render();
-                </script>                
+                </script>
             </div>
         </main>
     </body>
