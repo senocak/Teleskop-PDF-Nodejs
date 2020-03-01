@@ -2,7 +2,7 @@ const   express = require('express'),
         app     = express(),
         logger  = require('morgan'),
         moment  = require('moment'),
-        dotenv  = require('dotenv')
+        dotenv  = require('dotenv').config()
 const
         GenelController     = require('./controllers/genel'),
         HaberController     = require('./controllers/haber'),
@@ -11,7 +11,6 @@ const
         ForumController     = require('./controllers/forumblog'),
         VideoController     = require('./controllers/video'),
         RaporController     = require('./controllers/rapor')
-dotenv.config();
 app.locals.moment = moment; // Pass throught the moment library to ejs view pages
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 app.use(logger('dev'));
