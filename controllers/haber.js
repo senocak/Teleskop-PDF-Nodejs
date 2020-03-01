@@ -40,7 +40,6 @@ exports.haber_analiz = async function (req, res, next) {
     const turkiyeIlHaritasi = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/city/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
     const turkiyeBolgeHaritasi = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/state/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
     const ulusalBolgeselYerelGrafik = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/natloc/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
-    console.log(turkiyeBolgeHaritasi.count)
     res.render('haber',{
         start_date                  : startDate.format("D.MM.Y"),
         end_date                    : endDate.format("D.MM.Y"),
