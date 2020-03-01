@@ -113,13 +113,3 @@ exports.pdf = async function (req, res, next) {
         });
     };
 }
-exports.a = async function (req, res, next) {
-    const   token = req.query.token,
-            stream_id = req.query.stream_id,
-            start_date = req.query.start_date,
-            end_date = req.query.end_date
-    axios.defaults.headers.common[`Authorization`] = `Bearer `+token;
-    const turkiyeHaritasi = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/city/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
-    const ulusalBolgeselYerelGrafik = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/natloc/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
-    res.json(turkiyeHaritasi)
-}
