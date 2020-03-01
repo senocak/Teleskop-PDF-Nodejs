@@ -16,7 +16,6 @@ app.locals.moment = moment; // Pass throught the moment library to ejs view page
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 app.use(logger('dev'));
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/pdfs'));
 app.use(express.static(__dirname + '/assets'));
 app.get('/genel', GenelController.genel_analiz)
 app.get('/haber', HaberController.haber_analiz)
