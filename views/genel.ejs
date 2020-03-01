@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="tr">
     <head>
         <%- include('partials/header') -%>
     </head>
     <body>
         <header>
             <div class="container">
-                <h1>INSTAGRAM AKIŞ RAPORU</h1>
+                <h1>GENEL ÖZET AKIŞ RAPORU</h1>
                 <div class="middle">
                     <span><%=start_date%> - <%=end_date%></span>
                     <hr/>
@@ -20,18 +20,18 @@
         </header>
         <main>
             <div class="container">
-                <h1>INSTAGRAM ANALİZİ</h1>
+                <h1>GENEL ÖZET</h1>
                 <div class="text">
                     <p style="text-align: justify !important;">
                         <b><%=start_date%></b> – <b><%=end_date%></b> tarihleri arasında <b><%=currentRes.stream.name%></b> adlı akışınızda toplam <b><%=currentResToplam%></b> içerik bulunmuştur.
                         İçeriklerin toplamında bir önceki haftaya göre <%=oran%> mevcuttur.
-                        Instagram analizi ile ilgili detaylı grafikler aşağıda yer almaktadır.
+                        Akışınızla ilgili detaylı grafikler aşağıda yer almaktadır.
                     </p>
                 </div>
                 <h3>Zamana Göre Toplam Gönderi Sayıları</h3>
                 <div id="timeLineChart" class="chart"></div>
 
-                <h3>Günlük Gönderi Dağılımı</h3>
+                <h3>Kategori Bazlı Dağılım</h3>
                 <div id="dailyChart" class="chart"></div>
             </div>
         </main>
@@ -41,19 +41,15 @@
                     type: 'line',
                     height: 420,
                     width: 800,
-                    toolbar: {
-                        show: false
-                    },
-                    dataLabels: {
-                        enabled: true,
-                    }
+                    toolbar: {show: false},
+                    dataLabels: {enabled: true,},
                 },
                 series: [{
                     name: 'Seçilen aralık',
-                    data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>],
+                    data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>]
                 }, {
                     name: 'Önceki aralık',
-                    data: [<% for(var i=0; i < lastWeekRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>],
+                    data: [<% for(var i=0; i < lastWeekRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>]
                 }],
                 xaxis: {
                     categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].key_as_string.split("T")[0] %>',<% } %>]
@@ -61,12 +57,12 @@
                 colors: colors,
                 markers: {
                     size: 5
-                }
+                },
             }
-            let chartTimeLineChart = new ApexCharts(document.getElementById('timeLineChart'), optionsTimeLineChart)
+            let chartTimeLineChart = new ApexCharts(document.querySelector('#timeLineChart'), optionsTimeLineChart)
             chartTimeLineChart.render()
             //Second Chart
-            let optionsInstagramDaily = {
+            let optionsDaily = {
                 chart: {
                     height: 420,
                     width: 800,
@@ -76,7 +72,8 @@
                     },
                     dataLabels: {
                         enabled: true,
-                    }
+                    },
+                    parentHeightOffset: -5
                 },
                 plotOptions: {
                     bar: {
@@ -91,9 +88,9 @@
                 },
                 dataLabels: {
                     enabled: true,
-                    offsetY: -10,
+                    offsetY: -20,
                     formatter: function (val) {
-                        return val;
+                        return val + " adet";
                     },
                     style: {
                         fontSize: '12px',
@@ -101,24 +98,24 @@
                     },
                 },
                 series: [{
-                            name: 'Önceki Aralık',
-                            data: [<% for(var i=0; i < lastWeekRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>],
-                            backgroundColor: "red",
-                            borderWidth: 1
-                        },{
-                            name: 'Seçilen Aralık',
-                            data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>],
-                            backgroundColor: "blue",
-                            borderWidth: 1
+                            name: 'Kategoriler',
+                            data: [
+                                <%=kategoriChartRes.stats.news %>,
+                                <%=kategoriChartRes.stats.twitter %>,
+                                <%=kategoriChartRes.stats.news %>,
+                                <%=kategoriChartRes.stats.video %>,
+                                <%=kategoriChartRes.stats.forumblog %>,
+                                <%=kategoriChartRes.stats.web %>
+                            ]
                         }
                     ],
                 xaxis: {
-                    categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].day %>',<% } %>],
+                    categories: ['Haber', 'Twitter', 'İnstagram', 'Video', 'Forum/Blog', 'Web'],
                 },
-                colors: colors
+                colors: colors,
             }
-            let chartInstagramDaily = new ApexCharts(document.getElementById('dailyChart'), optionsInstagramDaily);
-            chartInstagramDaily.render();
+            let chartDaily = new ApexCharts(document.querySelector('#dailyChart'), optionsDaily);
+            chartDaily.render();
         </script>
     </body>
 </html>

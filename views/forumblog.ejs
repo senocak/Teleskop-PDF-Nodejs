@@ -29,66 +29,44 @@
                     </p>
                 </div>
                 <h3>Zamana Göre Toplam Gönderi Sayıları</h3>
-                <div class="chart time-line-chart"></div>
+                <div id="timeLineChart" class="chart"></div>
 
                 <h3>Günlük Gönderi Dağılımı</h3>
-                <div id="instagram-daily-chart" class="chart" data-values='{&quot;labels&quot;:[&quot;Cumartesi&quot;,&quot;Pazar&quot;,&quot;Pazartesi&quot;,&quot;Sal\u0131&quot;,&quot;\u00c7ar\u015famba&quot;,&quot;Per\u015fembe&quot;,&quot;Cuma&quot;],&quot;values&quot;:[{&quot;name&quot;:&quot;Se\u00e7ilen aral\u0131k&quot;,&quot;data&quot;:[35695,35627,34868,38794,37154,37532,35341]},{&quot;name&quot;:&quot;\u00d6nceki aral\u0131k&quot;,&quot;data&quot;:[37939,41049,39852,40246,40335,38931,35659]}]}'></div>
+                <div id="dailyChart" class="chart"></div>
             </div>
         </main>
         <script>
-        $(function () {
-            let timeLineChart = document.querySelectorAll('.time-line-chart')
-            timeLineChart.forEach(element => {
-                let options = {
-                    chart: {
-                        type: 'line',
-                        height: 420,
-                        width: 800,
-                        toolbar: {
-                            show: false
-                        },
-                        dataLabels: {
-                            enabled: true,
-                        }
+            let optionsTimeLineChart = {
+                chart: {
+                    type: 'line',
+                    height: 420,
+                    width: 800,
+                    toolbar: {
+                        show: false
                     },
-                    series: [{
-                        name: 'Seçilen aralık',
-                        data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>],
-                        backgroundColor: "#afafaf3d",
-                        borderColor: "black",
-                        borderWidth: 2
-                    }, {
-                        name: 'Önceki aralık',
-                        data: [<% for(var i=0; i < lastWeekRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>],
-                        backgroundColor: "#fff70038",
-                        borderColor: ["red"],
-                        borderWidth: 2
-                    }],
-                    xaxis: {
-                        categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].key_as_string.split("T")[0] %>',<% } %>]
-                    },
-                    yaxis: {
-                        show: true,
-                        min: 0,
-                        forceNiceScale: true,
-                    },
-                    colors: ['#df8244', '#4d73be'],
-                    markers: {
-                        size: 5
-                    },
-                    legend: {
-                        show: true,
-                        labels: {
-                            useSeriesColors: true
-                        }
+                    dataLabels: {
+                        enabled: true,
                     }
+                },
+                series: [{
+                    name: 'Seçilen aralık',
+                    data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>]
+                }, {
+                    name: 'Önceki aralık',
+                    data: [<% for(var i=0; i < lastWeekRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>]
+                }],
+                xaxis: {
+                    categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].key_as_string.split("T")[0] %>',<% } %>]
+                },
+                colors: colors,
+                markers: {
+                    size: 5
                 }
-                let chart = new ApexCharts(element, options)
-                chart.render()
-            })
+            }
+            let chartTimeLineChart = new ApexCharts(document.querySelector('#timeLineChart'), optionsTimeLineChart)
+            chartTimeLineChart.render()
             //Second Chart
-            let instagramDailyChart = document.querySelector('#instagram-daily-chart')
-            let optionsInstagramDaily = {
+            let optionsDailyChart = {
                 chart: {
                     height: 420,
                     width: 800,
@@ -123,51 +101,20 @@
                         colors: ['#444444']
                     },
                 },
-                stroke: {
-                    show: true,
-                    width: 1,
-                    colors: ['#fff']
-                },
                 series: [{
                             name: 'Önceki Aralık',
-                            data: [<% for(var i=0; i < lastWeekRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>],
-                            backgroundColor: "red",
-                            borderWidth: 1
+                            data: [<% for(var i=0; i < lastWeekRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>]
                         },{
                             name: 'Seçilen Aralık',
-                            data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>],
-                            backgroundColor: "blue",
-                            borderWidth: 1
-                        }
-                    ],
+                            data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>]
+                        }],
                 xaxis: {
                     categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].day %>',<% } %>],
                 },
-                colors: ['#F47B20', '#005596'],
-                legend: {
-                    show: true,
-                    position: 'bottom',
-                    offsetY: 0,
-                    labels: {
-                        useSeriesColors: true
-                    },
-                    markers: {
-                        width: 12,
-                        height: 12,
-                        strokeWidth: 0,
-                        strokeColor: '#fff',
-                        fillColors: undefined,
-                        radius: 12,
-                        customHTML: undefined,
-                        onClick: undefined,
-                        offsetX: 0,
-                        offsetY: 0
-                    },
-                },
+                colors: colors,
             }
-            let chartInstagramDaily = new ApexCharts(instagramDailyChart, optionsInstagramDaily);
-            chartInstagramDaily.render();
-        })
+            let chartDailyChart = new ApexCharts(document.querySelector('#dailyChart'), optionsDailyChart);
+            chartDailyChart.render();
         </script>
         <div style="page-break-before: always;"></div>
         <!-- Second Page -->
