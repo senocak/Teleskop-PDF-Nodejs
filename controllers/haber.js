@@ -15,13 +15,13 @@ exports.haber_analiz = async function (req, res, next) {
 
     axios.defaults.headers.common[`Authorization`] = `Bearer ${token}`;
     // Current Week datas
-    const currentRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/histogram?end_date=${end_date}&start_date=`+start_date)
+    const currentRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/histogram?end_date=${end_date}&start_date=${start_date}&populer=1`)
     var currentResToplam= 0
     for(var i=0; i < currentRes.data.stats.length; i++){
         currentResToplam = currentResToplam + currentRes.data.stats[i].doc_count
     }
     // Before Week datas
-    const lastWeekRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/histogram?end_date=${lastWeekEnd}&start_date=`+lastWeekStart)
+    const lastWeekRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/histogram?end_date=${lastWeekEnd}&start_date=${lastWeekStart}&populer=1`)
     var lastWeekResTotal= 0
     for(var i=0; i < lastWeekRes.data.stats.length; i++){
         lastWeekResTotal = lastWeekResTotal + lastWeekRes.data.stats[i].doc_count
@@ -35,12 +35,15 @@ exports.haber_analiz = async function (req, res, next) {
     }
     //Popüler Kaynaklarda Çıkan Haber Sayıları
     const popularNewsCountRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}&populer=1`)
-    console.log(popularNewsCountRes.data)
     //Popüler Haberler
     const popularNewsRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/popular/news?end_date=${end_date}&start_date=${start_date}`)
     const turkiyeIlHaritasi = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/city/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
     const turkiyeBolgeHaritasi = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/state/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
     const ulusalBolgeselYerelGrafik = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/natloc/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
+
+
+
+
     res.render('haber',{
         start_date                  : startDate.format("D.MM.Y"),
         end_date                    : endDate.format("D.MM.Y"),
