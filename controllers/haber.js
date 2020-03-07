@@ -34,25 +34,29 @@ exports.haber_analiz = async function (req, res, next) {
         oran = `%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2)} oranında azalma`;
     }
     //Popüler Kaynaklarda Çıkan Haber Sayıları
-    const popularNewsCountRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}&populer=1`)
-    //Popüler Haberler
+    const kaynaklardaCikanHaberSayilari = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}&populer=1`)
+    const populerKaynaklardaCikanHaberSayilari = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}`)
+    
+
+    
     const popularNewsRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/popular/news?end_date=${end_date}&start_date=${start_date}`)
     const turkiyeIlHaritasi = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/city/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
     const turkiyeBolgeHaritasi = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/state/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
     const ulusalBolgeselYerelGrafik = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/natloc/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
     res.render('haber',{
-        start_date                  : startDate.format("D.MM.Y"),
-        end_date                    : endDate.format("D.MM.Y"),
-        currentRes                  : currentRes.data,
-        currentResToplam            : currentResToplam,
-        lastWeekRes                 : lastWeekRes.data,
-        lastWeekResTotal            : lastWeekResTotal,
-        oran                        : oran,
-        popularNewsCountRes         : popularNewsCountRes.data,
-        popularNewsRes              : popularNewsRes.data,
-        turkiyeIlHaritasi           : turkiyeIlHaritasi.count,
-        turkiyeBolgeHaritasi        : turkiyeBolgeHaritasi.count,
-        ulusalBolgeselYerelGrafik   : ulusalBolgeselYerelGrafik.count
+        start_date                              : startDate.format("D.MM.Y"),
+        end_date                                : endDate.format("D.MM.Y"),
+        currentRes                              : currentRes.data,
+        currentResToplam                        : currentResToplam,
+        lastWeekRes                             : lastWeekRes.data,
+        lastWeekResTotal                        : lastWeekResTotal,
+        oran                                    : oran,
+        kaynaklardaCikanHaberSayilari           : kaynaklardaCikanHaberSayilari.data,
+        populerKaynaklardaCikanHaberSayilari    : populerKaynaklardaCikanHaberSayilari.data,
+        popularNewsRes                          : popularNewsRes.data,
+        turkiyeIlHaritasi                       : turkiyeIlHaritasi.count,
+        turkiyeBolgeHaritasi                    : turkiyeBolgeHaritasi.count,
+        ulusalBolgeselYerelGrafik               : ulusalBolgeselYerelGrafik.count
     });
 }
 
