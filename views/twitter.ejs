@@ -175,12 +175,12 @@
                 <div id="Cinsiyetchart" style="margin: 0px 200px 0px !important;"></div><br>
                 <script>
                     var optionsCinsiyetchart = {
-                        series: [<%=genderKadınRes.count%>, <%=genderErkekRes.count%>, <%=genderUniRes.count%>],
+                        series: [<%=genderKadınRes.count%>, <%=genderErkekRes.count%>],
                         chart: {
                             width: 500,
-                            type: 'pie',
+                            type: 'donut',
                         },
-                        labels: ['Kadın', 'Erkek', "UniSex"],
+                        labels: ['Kadın', 'Erkek'],
                         colors: colors,
                         responsive: [{
                             breakpoint: 480,
