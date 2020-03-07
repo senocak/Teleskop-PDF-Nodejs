@@ -608,8 +608,8 @@
                                 <%}%>],
                         colors: colors,
                     };
-                    var ulusalBolgeselYerelGrafikchart = new ApexCharts(document.querySelector("#IlPastaGrafikId"), optionsUlusalBolgeselYerelGrafik);
-                    ulusalBolgeselYerelGrafikchart.render();
+                    var IlPastaGrafikIdChart = new ApexCharts(document.querySelector("#IlPastaGrafikId"), optionsUlusalBolgeselYerelGrafik);
+                    IlPastaGrafikIdChart.render();
                 </script>
                 <!-- İl Bazlı Dağılım -->
             </div>
@@ -779,21 +779,21 @@
                     </ul>
                 </center>
                 <br>
-                <h3>Türkiye Bölgesel/Ulusal/Yerel Dağılımı</h3>
+                <h3>Türkiye Ulusal - Bölgesel Dağılımı</h3>
                 <div id="ulusalBolgeselYerelGrafikId" style="margin: 0px 200px 0px !important;"></div>
                 <br>
                 <script>
                     var optionsUlusalBolgeselYerelGrafik = {
-                        series: [<%= ulusalBolgeselYerelGrafik["bölgesel"] %>,<%= ulusalBolgeselYerelGrafik["ulusal"] %>,<%= ulusalBolgeselYerelGrafik["yerel"] %>],
+                        series: [<%= ulusalBolgeselYerelGrafik["ulusal"] %>,<%= ulusalBolgeselYerelGrafik["bölgesel"] + ulusalBolgeselYerelGrafik["yerel"] %>],
                         chart: {
                             width: 500,
                             type: 'pie',
                         },
-                        labels: ['Bölgesel', 'Ulusal', "Yerel", "Toplam: "+<%= ulusalBolgeselYerelGrafik["bölgesel"] + ulusalBolgeselYerelGrafik["ulusal"] + ulusalBolgeselYerelGrafik["yerel"] %>],
+                        labels: ['Ulusal', "Yerel", "Toplam: "+<%= ulusalBolgeselYerelGrafik["bölgesel"] + ulusalBolgeselYerelGrafik["ulusal"] + ulusalBolgeselYerelGrafik["yerel"] %>],
                         colors: colors,
                     };
-                    var ulusalBolgeselYerelGrafikchart = new ApexCharts(document.querySelector("#ulusalBolgeselYerelGrafikId"), optionsUlusalBolgeselYerelGrafik);
-                    ulusalBolgeselYerelGrafikchart.render();
+                    var ulusalBolgeselYerelGrafikIdChart = new ApexCharts(document.querySelector("#ulusalBolgeselYerelGrafikId"), optionsUlusalBolgeselYerelGrafik);
+                    ulusalBolgeselYerelGrafikIdChart.render();
                 </script>
                 <!-- Bölgesel Bazlı Dağılım -->
             </div>
