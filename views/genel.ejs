@@ -84,6 +84,7 @@
                         dataLabels: {
                             position: 'top',
                         },
+                        distributed: true
                     },
                 },
                 dataLabels: {
@@ -112,7 +113,7 @@
                 xaxis: {
                     categories: ['Haber', 'Twitter', 'İnstagram', 'Video', 'Forum/Blog', 'Web'],
                 },
-                colors: colors,
+                colors: ['#003f5c', '#444e86', '#955196','#dd5182','#ff6e54','#ffa600'],
             }
             let chartDaily = new ApexCharts(document.querySelector('#dailyChart'), optionsDaily);
             chartDaily.render();
