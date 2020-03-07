@@ -224,10 +224,10 @@
                             },
                         },
                         series: [{
-                            data: [<%=hakaretRes.stats.total%>, <%=kufurRes.stats.total%>, <%=siddetRes.stats.total%>],
+                            data: [<%=hakaretRes.stats.total%>, <%=kufurRes.stats.total%>, <%=siddetRes.stats.total%>, <%=hakaretRes.stats.total + kufurRes.stats.total + siddetRes.stats.total%>],
                         }],
                         xaxis: {
-                            categories: ['Küfür', 'Hakaret', 'Şiddet'],
+                            categories: ['Küfür', 'Hakaret', 'Şiddet', 'Toplam'],
                             labels: {
                                 style: {
                                     colors: colors,
