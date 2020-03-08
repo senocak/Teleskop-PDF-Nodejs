@@ -22,6 +22,9 @@ Example Urls;
 - /pdf
 	>Just visit the below url and verify that pdfs are made and one pdf which it is named as **final.pdf**  is created under current timestamp folder for example **pdfs/<timestamp>/final.pdf**
 
+- /rapor
+	>Just visit the below url and verify that all pdfs are embedded
+
 ## Screenshoots
 
 <img src="https://github.com/senocak/NodeJsPDF/blob/master/assets/final/final-01.jpg?raw=true"  width="250px"/> |
