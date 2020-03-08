@@ -45,8 +45,8 @@ exports.pdf = async function (req, res, next) {
             'url':`http://127.0.0.1:${port}/instagram?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
         },
         {
-            'name':`forumblog`,
-            'url':`http://127.0.0.1:${port}/forumblog?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
+            'name':`blogforum`,
+            'url':`http://127.0.0.1:${port}/blogforum?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
         },
         {
             'name':`video`,

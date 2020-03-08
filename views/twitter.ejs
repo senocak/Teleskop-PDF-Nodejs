@@ -160,11 +160,7 @@
                 <h3>Tweetlerin İçerik Türüne Göre Dağılımı</h3><br>
                 <div id="tweetChart3" class="chart"></div>
                 <script>
-                    const colorTwitter = ['#005596', '#F47B20', '#931c0d', '#343232'];
                     let optionsTweetChart3 = {
-                        legend: {
-                            show: false,
-                        },
                         series: [
                             {
                                 name: 'Tweet',
@@ -186,17 +182,10 @@
                             dataLabels: {enabled: true,},
                             stacked: true,
                         },
-                        colors: colorTwitter,
-                        plotOptions: {
-                            bar: {
-                                columnWidth: '25%'
-                            }
-                        },
-                        labels: ['Hakaret', 'Küfür', 'Şiddet'],
+                        colors: colors,
                         yaxis: [
+                            {title: {text: ''}},
                             {
-                                title: {text: ''},
-                            }, {
                                 opposite: true,
                                 title: {
                                     text: 'Toplam',
@@ -204,11 +193,7 @@
                             }
                         ],
                         xaxis: {
-                            categories: [
-                                ['Hakaret'],
-                                ['Küfür'],
-                                ['Şiddet'], 
-                            ],
+                            categories: [['Hakaret'],['Küfür'],['Şiddet']],
                             tooltip: {
                                 enabled: false
                             }
@@ -223,7 +208,22 @@
                                             </div>
                                         </div>`);
                             }
-                        },         
+                        },
+                        legend: {
+                            show: false,
+                        },
+                        plotOptions: {
+                            bar: {
+                                horizontal: false,
+                                endingShape: 'flat',
+                                columnWidth: '30%',
+                                dataLabels: {
+                                    position: 'top',
+                                },
+                                distributed: true
+                            },
+                        },
+                        
                     }
                     let chartTweetChart3 = new ApexCharts(document.getElementById('tweetChart3'), optionsTweetChart3);
                     chartTweetChart3.render();

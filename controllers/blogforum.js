@@ -1,7 +1,7 @@
 const   moment  = require(`moment`),
         axios   = require(`axios`);
 
-exports.forumblog_analiz = async function (req, res, next) {
+exports.blogforum_analiz = async function (req, res, next) {
     const   token = req.query.token,
             stream_id = req.query.stream_id,
             start_date = req.query.start_date,
