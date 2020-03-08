@@ -161,42 +161,6 @@
                         <% } %>
                     </ul>
                 </center>
-                <h3>Popüler Haberler</h3>
-                <div class="grid-container">
-                    <% for(var i=0; i < popularNewsRes.documents.length; i++) { %>
-                        <div class="item1">
-                            <img src="<%= popularNewsRes.documents[i].source.favicon %>" style="width: 8%;float: left;border-radius: 50%;" onerror="this.src='/haber.svg'"> <!-- onerror="this.src='fallback-img.jpg'"/-->
-                            <div style="text-align: left;font-size: 10px;margin-left: 50px;">
-                                <b><%= popularNewsRes.documents[i].title %></b>
-                                <br>
-                                <%= popularNewsRes.documents[i].content.substring(0, 200) %>
-                                <br>
-                                <div><a href="<%= popularNewsRes.documents[i].original_url %>"><%= popularNewsRes.documents[i].source.domain %></a></div>
-                                <div style="text-align: right;"><%= moment(popularNewsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
-                            </div>
-                        </div>
-                    <% } %>
-                </div>
-            </div>
-        </main>
-        <div style="page-break-before: always;"></div>
-        <!-- Third Page -->
-        <header>
-            <div class="container">
-                <h1>HABER ANALİZİ AKIŞ RAPORU</h1>
-                <div class="middle">
-                    <span><%=start_date%> - <%=end_date%></span>
-                    <hr/>
-                </div>
-                <div class="brand">
-                    <div class="logo">
-                        <img src="/logo.png" alt="">
-                    </div>
-                </div>
-            </div>
-        </header>
-        <main>
-            <div class="container">
                 <!-- İl Bazlı Dağılım -->
                 <h3>Türkiye İl Haritası</h3>
                 <hr>
@@ -805,6 +769,42 @@
                     ulusalBolgeselYerelGrafikIdChart.render();
                 </script>
                 <!-- Bölgesel Bazlı Dağılım -->
+            </div>
+        </main>
+        <div style="page-break-before: always;"></div>
+        <!-- Third Page -->
+        <header>
+            <div class="container">
+                <h1>HABER ANALİZİ AKIŞ RAPORU</h1>
+                <div class="middle">
+                    <span><%=start_date%> - <%=end_date%></span>
+                    <hr/>
+                </div>
+                <div class="brand">
+                    <div class="logo">
+                        <img src="/logo.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="container">
+                <h3>Popüler Haberler</h3>
+                <div class="grid-container">
+                    <% for(var i=0; i < popularNewsRes.documents.length; i++) { %>
+                        <div class="item1">
+                            <img src="<%= popularNewsRes.documents[i].source.favicon %>" style="width: 8%;float: left;border-radius: 50%;" onerror="this.src='/haber.svg'"> <!-- onerror="this.src='fallback-img.jpg'"/-->
+                            <div style="text-align: left;font-size: 10px;margin-left: 50px;">
+                                <b><%= popularNewsRes.documents[i].title %></b>
+                                <br>
+                                <%= popularNewsRes.documents[i].content.substring(0, 200) %>
+                                <br>
+                                <div><a href="<%= popularNewsRes.documents[i].original_url %>"><%= popularNewsRes.documents[i].source.domain %></a></div>
+                                <div style="text-align: right;"><%= moment(popularNewsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
             </div>
         </main>
     </body>
