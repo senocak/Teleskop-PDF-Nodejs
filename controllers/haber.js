@@ -1,5 +1,6 @@
-const   moment  = require('moment'),
-        axios   = require('axios');
+const   moment      = require('moment'),
+        axios       = require('axios'),
+        sortValues  = require('sort-values');;
 
 exports.haber_analiz = async function (req, res, next) {
     const   token = req.query.token,
@@ -36,12 +37,11 @@ exports.haber_analiz = async function (req, res, next) {
     //Popüler Kaynaklarda Çıkan Haber Sayıları
     const kaynaklardaCikanHaberSayilari = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}&populer=1`)
     const populerKaynaklardaCikanHaberSayilari = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}`)
-    
-
-    
     const popularNewsRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/popular/news?end_date=${end_date}&start_date=${start_date}`)
     const turkiyeIlHaritasi = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/city/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
+    const turkiyeIlHaritasiSorted = sortValues(turkiyeIlHaritasi.count, 'desc');
     const turkiyeBolgeHaritasi = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/state/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
+    const turkiyeBolgeHaritasiSorted = sortValues(turkiyeBolgeHaritasi.count, 'desc');
     const ulusalBolgeselYerelGrafik = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/natloc/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
     res.render('haber',{
         start_date                              : startDate.format("D.MM.Y"),
@@ -54,8 +54,8 @@ exports.haber_analiz = async function (req, res, next) {
         kaynaklardaCikanHaberSayilari           : kaynaklardaCikanHaberSayilari.data,
         populerKaynaklardaCikanHaberSayilari    : populerKaynaklardaCikanHaberSayilari.data,
         popularNewsRes                          : popularNewsRes.data,
-        turkiyeIlHaritasi                       : turkiyeIlHaritasi.count,
-        turkiyeBolgeHaritasi                    : turkiyeBolgeHaritasi.count,
+        turkiyeIlHaritasi                       : turkiyeIlHaritasiSorted,
+        turkiyeBolgeHaritasi                    : turkiyeBolgeHaritasiSorted,
         ulusalBolgeselYerelGrafik               : ulusalBolgeselYerelGrafik.count
     });
 }

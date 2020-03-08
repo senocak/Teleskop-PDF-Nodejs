@@ -196,15 +196,17 @@
                 <h3>Tweetlerin İçerik Türüne Göre Dağılımı</h3><br>
                 <div id="tweetChart3" class="chart"></div>
                 <script>
+                const colorTwitter = ['#005596', '#F47B20', '#931c0d', '#343232'];
                     let optionsTweetChart3 = {
                         chart: {
                             width: 800,
                             height: 420,
                             type: 'bar',
                             toolbar: {show: false},
-                            dataLabels: {enabled: true,}
+                            dataLabels: {enabled: true,},
+                            stacked: true,
                         },
-                        colors: colors,
+                        colors: colorTwitter,
                         plotOptions: {
                             bar: {
                                 columnWidth: '45%',
@@ -220,20 +222,14 @@
                             },
                             style: {
                                 fontSize: '12px',
-                                colors: colors
+                                colors: colorTwitter
                             },
                         },
                         series: [{
-                            data: [<%=hakaretRes.stats.total%>, <%=kufurRes.stats.total%>, <%=siddetRes.stats.total%>, <%=hakaretRes.stats.total + kufurRes.stats.total + siddetRes.stats.total%>],
+                            data: [<%=hakaretRes.stats.total + kufurRes.stats.total + siddetRes.stats.total%>, <%=hakaretRes.stats.total%>, <%=kufurRes.stats.total%>, <%=siddetRes.stats.total%>],
                         }],
                         xaxis: {
-                            categories: ['Küfür', 'Hakaret', 'Şiddet', 'Toplam'],
-                            labels: {
-                                style: {
-                                    colors: colors,
-                                    fontSize: '14px'
-                                }
-                            }
+                            categories: ['Toplam', 'Küfür', 'Hakaret', 'Şiddet']
                         },
                         tooltip: {
                             theme: 'dark',

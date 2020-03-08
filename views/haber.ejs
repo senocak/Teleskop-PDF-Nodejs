@@ -165,7 +165,7 @@
                 <div class="grid-container">
                     <% for(var i=0; i < popularNewsRes.documents.length; i++) { %>
                         <div class="item1">
-                            <img src="<%= popularNewsRes.documents[i].source.favicon %>" style="width: 8%;float: left;border-radius: 50%;" onerror="this.style.display='none'"> <!-- onerror="this.src='fallback-img.jpg'"/-->
+                            <img src="<%= popularNewsRes.documents[i].source.favicon %>" style="width: 8%;float: left;border-radius: 50%;" onerror="this.src='/haber.svg'"> <!-- onerror="this.src='fallback-img.jpg'"/-->
                             <div style="text-align: left;font-size: 10px;margin-left: 50px;">
                                 <b><%= popularNewsRes.documents[i].title %></b>
                                 <br>
