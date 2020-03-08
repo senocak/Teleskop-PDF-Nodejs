@@ -23,7 +23,7 @@ Example Urls;
 	>Just visit the below url and verify that pdfs are made and one pdf which it is named as **final.pdf**  is created under current timestamp folder for example **pdfs/<timestamp>/final.pdf**
 
 - /rapor
-	>Just visit the below url and verify that all pdfs are embedded
+	>Just visit the url and verify that all pdfs are embedded
 
 ## Screenshoots
 

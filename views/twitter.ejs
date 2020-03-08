@@ -160,12 +160,28 @@
                 <h3>Tweetlerin İçerik Türüne Göre Dağılımı</h3><br>
                 <div id="tweetChart3" class="chart"></div>
                 <script>
-                const colorTwitter = ['#005596', '#F47B20', '#931c0d', '#343232'];
+                    const colorTwitter = ['#005596', '#F47B20', '#931c0d', '#343232'];
                     let optionsTweetChart3 = {
+                        legend: {
+                            show: false,
+                        },
+                        series: [
+                            {
+                                name: 'Tweet',
+                                type: 'column',
+                                data: [<%=hakaretRes.stats.total%>, <%=kufurRes.stats.total%>, <%=siddetRes.stats.total%>],
+                                categories: ['Hakaret', 'Küfür', 'Şiddet'],
+                            }, {
+                                name: 'Toplam',
+                                type: 'line',
+                                data: [<%=currentResToplam%>, <%=currentResToplam%>, <%=currentResToplam%>],
+                                categories: ['Hakaret', 'Küfür', 'Şiddet'],
+                            }
+                        ],
                         chart: {
                             width: 800,
                             height: 420,
-                            type: 'bar',
+                            type: 'line',
                             toolbar: {show: false},
                             dataLabels: {enabled: true,},
                             stacked: true,
@@ -173,39 +189,41 @@
                         colors: colorTwitter,
                         plotOptions: {
                             bar: {
-                                columnWidth: '45%',
-                                distributed: true,
-                                dataLabels: {position: 'top'},
+                                columnWidth: '25%'
                             }
                         },
-                        dataLabels: {
-                            enabled: true,
-                            offsetY: -10,
-                            formatter: function (val, opt) {
-                                return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
-                            },
-                            style: {
-                                fontSize: '12px',
-                                colors: colorTwitter
-                            },
-                        },
-                        series: [{
-                            data: [<%=currentResToplam%>, <%=hakaretRes.stats.total%>, <%=kufurRes.stats.total%>, <%=siddetRes.stats.total%>],
-                        }],
-                        xaxis: {
-                            categories: ['Toplam', 'Küfür', 'Hakaret', 'Şiddet']
-                        },
-                        tooltip: {
-                            theme: 'dark',
-                            x: {show: true},
-                            y: {
+                        labels: ['Hakaret', 'Küfür', 'Şiddet'],
+                        yaxis: [
+                            {
+                                title: {text: ''},
+                            }, {
+                                opposite: true,
                                 title: {
-                                    formatter: function () {
-                                        return ''
-                                    }
+                                    text: 'Toplam',
                                 }
                             }
-                        }
+                        ],
+                        xaxis: {
+                            categories: [
+                                ['Hakaret'],
+                                ['Küfür'],
+                                ['Şiddet'], 
+                            ],
+                            tooltip: {
+                                enabled: false
+                            }
+                        },
+                        tooltip: {
+                            custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                            return (`
+                                        <div class="custom-tooltip">
+                                            <div class="group">
+                                                <div>${w.config.series[1].categories[dataPointIndex]} : ${series[0][dataPointIndex]}</div>
+                                                <div class="group2">Toplam Tweet : ${series[1][dataPointIndex]}</div>
+                                            </div>
+                                        </div>`);
+                            }
+                        },         
                     }
                     let chartTweetChart3 = new ApexCharts(document.getElementById('tweetChart3'), optionsTweetChart3);
                     chartTweetChart3.render();
