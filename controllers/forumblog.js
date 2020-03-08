@@ -36,9 +36,9 @@ exports.forumblog_analiz = async function (req, res, next) {
         oran = `%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2)} oranında azalma`;
     }
     // En fazla İçerik oluşan Başlıklar
-    const populerTweetsRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/popular/analysis/forumblog?end_date=${end_date}&start_date=${start_date}`)
-    for(var i=0; i < populerTweetsRes.data.documents.length; i++){
-        populerTweetsRes.data.documents[i].created_at = new Date(populerTweetsRes.data.documents[i].created_at).toLocaleDateString("en-US",{ weekday: `long`, year: `numeric`, month: `long`, day: `numeric` })
+    const populerForumBlogsRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/popular/analysis/forumblog?end_date=${end_date}&start_date=${start_date}`)
+    for(var i=0; i < populerForumBlogsRes.data.documents.length; i++){
+        populerForumBlogsRes.data.documents[i].created_at = new Date(populerForumBlogsRes.data.documents[i].created_at).toLocaleDateString("en-US",{ weekday: `long`, year: `numeric`, month: `long`, day: `numeric` })
     }
     // En Fazla İçerik Çıkan Kaynaklar
     const popularForumBlogCountRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/forumblog/stats/sources?end_date=${end_date}&start_date=${start_date}`)
@@ -50,7 +50,7 @@ exports.forumblog_analiz = async function (req, res, next) {
         currentResToplam        : currentResToplam,
         lastWeekResTotal        : lastWeekResTotal,
         oran                    : oran,
-        populerTweetsRes        : populerTweetsRes.data,
+        populerForumBlogsRes    : populerForumBlogsRes.data,
         popularForumBlogCountRes: popularForumBlogCountRes.data
     })
 }

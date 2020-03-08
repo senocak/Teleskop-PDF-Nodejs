@@ -799,7 +799,7 @@
                                 <br>
                                 <%= popularNewsRes.documents[i].content.substring(0, 200) %>
                                 <br>
-                                <div><a href="<%= popularNewsRes.documents[i].original_url %>"><%= popularNewsRes.documents[i].source.domain %></a></div>
+                                <div><a href="<%= popularNewsRes.documents[i].original_url %>" target="_blank"><%= popularNewsRes.documents[i].source.domain %></a></div>
                                 <div style="text-align: right;"><%= moment(popularNewsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
                             </div>
                         </div>

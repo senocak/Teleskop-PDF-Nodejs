@@ -148,15 +148,16 @@
                 </center>
                 <h3>En fazla İçerik oluşan Başlıklar</h3>
                 <div class="grid-container">
-                    <% for(var i=0; i < populerTweetsRes.documents.length; i++) { %>
+                    <% for(var i=0; i < populerForumBlogsRes.documents.length; i++) { %>
                         <div class="item1">
-                            <img src="https://linktanitim.com/wp-content/uploads/2019/02/cropped-eksi-sozluk-logo-768x128.png" style="width: 10%; float: left; border-radius: 50%;" onerror="this.src='https://login.teleskop.app/img/blog.bb64a2d1.svg'">
+                            <img src="<%= populerForumBlogsRes.documents[i].source.favicon %>" style="width: 8%; float: left; border-radius: 50%;" onerror="this.src='/blog.svg'">
                             <div style="text-align: left;font-size: 10px;margin-left: 75px;">
-                                <b><%= populerTweetsRes.documents[i].source.name %></b>
+                                <b><%= populerForumBlogsRes.documents[i].title %></b>
                                 <br>
-                                <%= populerTweetsRes.documents[i].content.substring(0, 400) %>...
+                                <%= populerForumBlogsRes.documents[i].content.substring(0, 400) %>...
                                 <br><br>
-                                <div style="text-align: right;"><%= moment(populerTweetsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
+                                <div><a href="<%= populerForumBlogsRes.documents[i].original_url %>" target="_blank"><%= populerForumBlogsRes.documents[i].source.name %></a></div>
+                                <div style="text-align: right;"><%= moment(populerForumBlogsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
                             </div>
                         </div>
                     <% } %>
