@@ -13,10 +13,23 @@ exports.haber_analiz = async function (req, res, next) {
             betweenDays = endDate.diff(startDate, `days`),
             lastWeekStart = startDate.subtract(betweenDays, `days`).format(`YYYY-MM-DDTHH:mm:ss.sss`),
             lastWeekEnd = start_date
-
     axios.defaults.headers.common[`Authorization`] = `Bearer ${token}`;
     const currentRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/histogram?end_date=${end_date}&start_date=${start_date}&populer=1`)
     const lastWeekRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/histogram?end_date=${lastWeekEnd}&start_date=${lastWeekStart}&populer=1`)
+    var currentResToplam    = 0,
+        lastWeekResTotal    = 0,
+        oran                = ``;
+    for(var i=0; i < currentRes.data.stats.length; i++){
+        currentResToplam = currentResToplam + currentRes.data.stats[i].doc_count
+    }
+    for(var i=0; i < lastWeekRes.data.stats.length; i++){
+        lastWeekResTotal = lastWeekResTotal + lastWeekRes.data.stats[i].doc_count
+    }
+    if (currentResToplam > lastWeekResTotal) {
+        oran = `%${((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2) } oranında artma`;
+    } else {
+        oran = `%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2)} oranında azalma`;
+    }
     const kaynaklardaCikanHaberSayilari = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}&populer=1`)
     const populerKaynaklardaCikanHaberSayilari = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}`)
     const popularNewsRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/popular/news?end_date=${end_date}&start_date=${start_date}`)
@@ -25,21 +38,15 @@ exports.haber_analiz = async function (req, res, next) {
     const turkiyeBolgeHaritasi = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/state/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
     const turkiyeBolgeHaritasiSorted = sortValues(turkiyeBolgeHaritasi.count, 'desc');
     const ulusalBolgeselYerelGrafik = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/analysis/natloc/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
-    const currentResToplamRequest = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/populer/histogram?end_date=${end_date}&start_date=${start_date}`)
-    var currentResToplam= 0
+    const currentResToplamRequest = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/populer/histogram?end_date=${end_date}&start_date=${start_date}`)    
+    var currentResToplamBarChart = 0;
     for(var i=0; i < currentResToplamRequest.data.stats.length; i++){
-        currentResToplam = currentResToplam + currentResToplamRequest.data.stats[i].doc_count
+        currentResToplamBarChart += currentResToplamRequest.data.stats[i].doc_count
     }
-    const lastWeekResRequest = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/populer/histogram?end_date=${lastWeekEnd}&start_date=${lastWeekStart}`)
-    var lastWeekResTotal= 0
-    for(var i=0; i < lastWeekResRequest.data.stats.length; i++){
-        lastWeekResTotal = lastWeekResTotal + lastWeekResRequest.data.stats[i].doc_count
-    }
-    var oran = ``;
-    if (currentResToplam > lastWeekResTotal) {
-        oran = `%${((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2) } oranında artma`;
-    } else {
-        oran = `%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2)} oranında azalma`;
+    const beforeResToplamRequest = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/news/stats/populer/histogram?end_date=${lastWeekEnd}&start_date=${lastWeekStart}`)
+    var beforeResToplamBarChart = 0;
+    for(var i=0; i < beforeResToplamRequest.data.stats.length; i++){
+        beforeResToplamBarChart += beforeResToplamRequest.data.stats[i].doc_count
     }
     res.render('haber',{
         start_date                              : startDate.format("D.MM.Y"),
@@ -54,7 +61,9 @@ exports.haber_analiz = async function (req, res, next) {
         popularNewsRes                          : popularNewsRes.data,
         turkiyeIlHaritasi                       : turkiyeIlHaritasiSorted,
         turkiyeBolgeHaritasi                    : turkiyeBolgeHaritasiSorted,
-        ulusalBolgeselYerelGrafik               : ulusalBolgeselYerelGrafik.count
+        ulusalBolgeselYerelGrafik               : ulusalBolgeselYerelGrafik.count,
+        currentResToplamBarChart                : currentResToplamBarChart,
+        beforeResToplamBarChart                 : beforeResToplamBarChart
     });
 }
 

@@ -24,7 +24,7 @@
                 <div class="text">
                     <p style="text-align: justify !important;">
                         <b><%=start_date%></b> – <b><%=end_date%></b> tarihleri arasında <b><%=currentRes.stream.name%></b> adlı akışınızda toplam <b><%=currentResToplam%></b> içerik bulunmuştur.
-                        İçeriklerin toplamında bir önceki haftaya göre <%=oran%> mevcuttur.
+                        İçeriklerin toplamında bir önceki aralığa göre <%=oran%> mevcuttur.
                         Twitter analizi ile ilgili detaylı grafikler aşağıda yer almaktadır.
                     </p>
                 </div>
@@ -190,7 +190,7 @@
                             },
                         },
                         series: [{
-                            data: [<%=hakaretRes.stats.total + kufurRes.stats.total + siddetRes.stats.total%>, <%=hakaretRes.stats.total%>, <%=kufurRes.stats.total%>, <%=siddetRes.stats.total%>],
+                            data: [<%=currentResToplam%>, <%=hakaretRes.stats.total%>, <%=kufurRes.stats.total%>, <%=siddetRes.stats.total%>],
                         }],
                         xaxis: {
                             categories: ['Toplam', 'Küfür', 'Hakaret', 'Şiddet']
@@ -236,7 +236,7 @@
                         <div class="item1">
                             <img src="<%= populerTweetsRes.documents[i].avatar %>" style="width: 10%;float: left; border-radius: 50%;">
                             <div style="text-align: left;font-size: 10px;margin-left: 75px;">
-                                <b>@<%= populerTweetsRes.documents[i].username %></b>
+                                <b><a href="<%= populerTweetsRes.documents[i].original_url %>" target="_blank">@<%= populerTweetsRes.documents[i].username %></a></b>
                                 <br>
                                 <%= populerTweetsRes.documents[i].content %>
                                 <br><br>

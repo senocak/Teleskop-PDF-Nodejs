@@ -24,7 +24,7 @@
                 <div class="text">
                     <p style="text-align: justify !important;">
                         <b><%=start_date%></b> – <b><%=end_date%></b> tarihleri arasında <b><%=currentRes.stream.name%></b> adlı akışınızda toplam <b><%=currentResToplam%></b> içerik bulunmuştur.
-                        İçeriklerin toplamında bir önceki haftaya göre <%=oran%> mevcuttur.
+                        İçeriklerin toplamında bir önceki aralığa göre <%=oran%> mevcuttur.
                         Video Analizi ile ilgili detaylı grafikler aşağıda yer almaktadır.
                     </p>
                 </div>
@@ -158,12 +158,10 @@
                         <div class="item1">
                             <img src="<%= populerTweetsRes.documents[i].source.favicon %>" style="width: 10%;float: left;">
                             <div style="text-align: left;font-size: 10px;margin-left: 50px;">
-                                <a href="<%= populerTweetsRes.documents[i].embed %>"><b><%= populerTweetsRes.documents[i].source.name %></b></a>
-                                <br>
-                                <i><%= populerTweetsRes.documents[i].title %></i>
+                                <a href="<%= populerTweetsRes.documents[i].embed %>" target="_blank"><b><i><%= populerTweetsRes.documents[i].title %></i></b></a>
                                 <br>
                                 <%= populerTweetsRes.documents[i].content %>
-                                <br><br>
+                                <br>
                                 <div style="text-align: right;"><%= moment(populerTweetsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
                             </div>
                         </div>
