@@ -118,42 +118,6 @@
             chartDaily.render();
         </script>
         <div style="page-break-before: always;"></div>
-        <!-- Second Page -->
-        <header>
-            <div class="container">
-                <h1>TWITTER AKIŞ RAPORU</h1>
-                <div class="middle">
-                    <span><%=start_date%> - <%=end_date%></span>
-                    <hr/>
-                </div>
-                <div class="brand">
-                    <div class="logo">
-                        <img src="/logo.png" alt="">
-                    </div>
-                </div>
-            </div>
-        </header>
-        <main>
-            <div class="container">
-                <h3>Popüler Tweetler</h3>
-                <div class="grid-container">
-                    <% for(var i=0; i < populerTweetsRes.documents.length; i++) { %>
-                        <div class="item1">
-                            <img src="<%= populerTweetsRes.documents[i].avatar %>" style="width: 10%;float: left; border-radius: 50%;">
-                            <div style="text-align: left;font-size: 10px;margin-left: 75px;">
-                                <b>@<%= populerTweetsRes.documents[i].username %></b>
-                                <br>
-                                <%= populerTweetsRes.documents[i].content %>
-                                <br><br>
-                                <div style="text-align: right;"><%= moment(populerTweetsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
-                            </div>
-                        </div>
-                    <% } %>
-                </div>
-            </div>
-        </main>
-        <br><br>
-        <div style="page-break-before: always;"></div>
         <!-- Third Page -->
         <header>
             <div class="container">
@@ -248,5 +212,41 @@
                 </script>
             </div>
         </main>
+        <div style="page-break-before: always;"></div>
+        <!-- Second Page -->
+        <header>
+            <div class="container">
+                <h1>TWITTER AKIŞ RAPORU</h1>
+                <div class="middle">
+                    <span><%=start_date%> - <%=end_date%></span>
+                    <hr/>
+                </div>
+                <div class="brand">
+                    <div class="logo">
+                        <img src="/logo.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="container">
+                <h3>Popüler Tweetler</h3>
+                <div class="grid-container">
+                    <% for(var i=0; i < populerTweetsRes.documents.length; i++) { %>
+                        <div class="item1">
+                            <img src="<%= populerTweetsRes.documents[i].avatar %>" style="width: 10%;float: left; border-radius: 50%;">
+                            <div style="text-align: left;font-size: 10px;margin-left: 75px;">
+                                <b>@<%= populerTweetsRes.documents[i].username %></b>
+                                <br>
+                                <%= populerTweetsRes.documents[i].content %>
+                                <br><br>
+                                <div style="text-align: right;"><%= moment(populerTweetsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </main>
+        <br><br>
     </body>
 </html>
