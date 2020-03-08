@@ -6,7 +6,7 @@
     <body>
         <header>
             <div class="container">
-                <h1>BLOG FORUM ANALİZİ AKIŞ RAPORU</h1>
+                <h1><%=currentRes.stream.name.toLocaleUpperCase()%> AKIŞ RAPORU</h1>
                 <div class="middle">
                     <span><%=start_date%> - <%=end_date%></span>
                     <hr/>
@@ -20,7 +20,7 @@
         </header>
         <main>
             <div class="container">
-                <h1>BLOG FORUM ANALİZİ ANALİZİ</h1>
+                <h1>BLOG FORUM ANALİZİ</h1>
                 <div class="text">
                     <p style="text-align: justify !important;">
                         <b><%=start_date%></b> – <b><%=end_date%></b> tarihleri arasında <b><%=currentRes.stream.name%></b> adlı akışınızda toplam <b><%=currentResToplam%></b> içerik bulunmuştur.
@@ -120,7 +120,7 @@
         <!-- Second Page -->
         <header>
             <div class="container">
-                <h1>BLOG FORUM ANALİZİ AKIŞ RAPORU</h1>
+                <h1><%=currentRes.stream.name.toLocaleUpperCase()%> AKIŞ RAPORU</h1>
                 <div class="middle">
                     <span><%=start_date%> - <%=end_date%></span>
                     <hr/>
