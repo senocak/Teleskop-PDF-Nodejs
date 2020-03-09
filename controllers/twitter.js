@@ -1,5 +1,6 @@
-const   moment  = require(`moment`),
-        axios   = require(`axios`);
+const   moment      = require(`moment`),
+        axios       = require(`axios`),
+        TELESKOP_URL= process.env.TELESKOP_URL;
 
 exports.twitter_analiz = async function (req, res, next) {
     const   token = req.query.token,
@@ -16,14 +17,14 @@ exports.twitter_analiz = async function (req, res, next) {
     axios.defaults.headers.common[`Authorization`] = `Bearer `+token;
     // Current Week datas
     var gsDayNames = [`Pazar`,`Pazartesi`,`Salı`,`Çarşamba`,`Perşembe`,`Cuma`,`Cumartesi`]
-    const currentRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/twitter/stats/histogram?end_date=${end_date}&start_date=`+start_date)
+    const currentRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/twitter/stats/histogram?end_date=${end_date}&start_date=`+start_date)
     var currentResToplam= 0
     for(var i=0; i < currentRes.data.stats.length; i++){
         currentRes.data.stats[i].day = gsDayNames[(new Date(currentRes.data.stats[i].key_as_string)).getDay()]
         currentResToplam += currentRes.data.stats[i].doc_count
     }
     // Last week datas
-    const lastWeekRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/twitter/stats/histogram?end_date=${lastWeekEnd}&start_date=`+lastWeekStart)
+    const lastWeekRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/twitter/stats/histogram?end_date=${lastWeekEnd}&start_date=`+lastWeekStart)
     var lastWeekResTotal = 0;
     for(var i=0; i < lastWeekRes.data.stats.length; i++){
         lastWeekResTotal += lastWeekRes.data.stats[i].doc_count
@@ -36,18 +37,18 @@ exports.twitter_analiz = async function (req, res, next) {
         oran = `%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2)} oranında azalma`;
     }
     //Popüler Tweetler
-    const populerTweetsRes = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/popular/twitter?end_date=${end_date}&start_date=${start_date}`)
+    const populerTweetsRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/popular/twitter?end_date=${end_date}&start_date=${start_date}`)
     for(var i=0; i < populerTweetsRes.data.documents.length; i++){
         populerTweetsRes.data.documents[i].created_at = new Date(populerTweetsRes.data.documents[i].created_at).toLocaleDateString("en-US",{ weekday: `long`, year: `numeric`, month: `long`, day: `numeric` })
     }
     // Pie Chart
     const
-            hakaretRes      = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/twitter?&start_date=${start_date}&end_date=${end_date}&slang=3`),
-            kufurRes        = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/twitter?&start_date=${start_date}&end_date=${end_date}&slang=2`),
-            siddetRes       = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/twitter?&start_date=${start_date}&end_date=${end_date}&slang=4`),
-            genderKadınRes  = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/twitter/analysis/gender?gender=2`),
-            genderErkekRes  = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/twitter/analysis/gender?gender=1`),
-            genderUniRes    = await axios.get(`https://apiv2.teleskop.app/v2.0/streams/${stream_id}/twitter/analysis/gender?gender=0`)
+            hakaretRes      = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/twitter?&start_date=${start_date}&end_date=${end_date}&slang=3`),
+            kufurRes        = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/twitter?&start_date=${start_date}&end_date=${end_date}&slang=2`),
+            siddetRes       = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/twitter?&start_date=${start_date}&end_date=${end_date}&slang=4`),
+            genderKadınRes  = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/twitter/analysis/gender?gender=2`),
+            genderErkekRes  = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/twitter/analysis/gender?gender=1`),
+            genderUniRes    = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/twitter/analysis/gender?gender=0`)
     res.render(`twitter`,{
         start_date      : startDate.format("D.MM.Y"),
         end_date        : endDate.format("D.MM.Y"),

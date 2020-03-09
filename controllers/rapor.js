@@ -2,10 +2,11 @@ const   moment      = require(`moment`),
         axios       = require(`axios`),
         puppeteer   = require('puppeteer'),
         merge       = require('easy-pdf-merge'),
-        fs          = require('fs')
+        fs          = require('fs'),
+        TELESKOP_URL= process.env.TELESKOP_URL;
 exports.rapor = async function (req, res, next) {
     var     uuid = req.query.uuid,
-            data = await axios.get(`https://apiv2.teleskop.app/v2.0/analysis/params/${uuid}`).then(function (response) { return response.data.params })
+            data = await axios.get(`${TELESKOP_URL}/analysis/params/${uuid}`).then(function (response) { return response.data.params })
     async function date(date) {
         return date.split('+')[0];
     }
@@ -19,7 +20,7 @@ exports.rapor = async function (req, res, next) {
 exports.pdf = async function (req, res, next) {
     const   uuid        = req.query.uuid,
             port        = process.env.PORT,
-            data        = await axios.get(`https://apiv2.teleskop.app/v2.0/analysis/params/${uuid}`).then(function (response) { return response.data.params }),
+            data        = await axios.get(`${TELESKOP_URL}/analysis/params/${uuid}`).then(function (response) { return response.data.params }),
             token       = data.token,
             stream_id   = data.stream_id,
             start_date  = await date(data.start_date),
@@ -30,27 +31,27 @@ exports.pdf = async function (req, res, next) {
     var pdfUrls = [
         {
             'name':'genel',
-            'url':`http://127.0.0.1:${port}/genel?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
+            'url':`genel?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
         },
         {
             'name':'haber',
-            'url':`http://127.0.0.1:${port}/haber?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
+            'url':`haber?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
         },
         {
             'name':`twitter`,
-            'url':`http://127.0.0.1:${port}/twitter?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
+            'url':`twitter?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
         },
         {
             'name':`instagram`,
-            'url':`http://127.0.0.1:${port}/instagram?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
+            'url':`instagram?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
         },
         {
             'name':`blogforum`,
-            'url':`http://127.0.0.1:${port}/blogforum?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
+            'url':`blogforum?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
         },
         {
             'name':`video`,
-            'url':`http://127.0.0.1:${port}/video?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
+            'url':`video?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
         }
     ]
     async function timeout(ms) {
@@ -72,7 +73,7 @@ exports.pdf = async function (req, res, next) {
         pdfFiles.push(`assets/pdfs/giris.pdf`);
         for(var i=0; i<pdfUrls.length; i++){
             console.log(`İşlem: ${pdfUrls[i].name}`);
-            await page.goto(pdfUrls[i].url, {waitUntil: 'networkidle2'});
+            await page.goto(``+pdfUrls[i].url, {waitUntil: 'networkidle2'});
             await timeout(1000);
             var pdfFileName =  directory+`/${pdfUrls[i].name}.pdf`;
             pdfFiles.push(pdfFileName);
