@@ -99,6 +99,7 @@ exports.pdf = async function (req, res, next) {
             success :true,
             'path'  :`/pdfs/${directoryDate}/final.pdf`
         })
+        console.log('\x1b[33m%s\x1b[0m', "Rapor");
         //res.download(directory+'./pdfs/final.pdf')
     })();
     const mergeMultiplePDF = (pdfFiles) => {

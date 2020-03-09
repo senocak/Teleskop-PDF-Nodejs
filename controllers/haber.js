@@ -66,6 +66,5 @@ exports.haber_analiz = async function (req, res, next) {
         currentResToplamBarChart                : currentResToplamBarChart,
         beforeResToplamBarChart                 : beforeResToplamBarChart
     });
+    console.log('\x1b[33m%s\x1b[0m', "Haber");
 }
-
-

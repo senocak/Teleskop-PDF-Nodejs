@@ -45,4 +45,5 @@ exports.instagram_analiz = async function (req, res, next) {
         lastWeekResTotal: lastWeekResTotal,
         oran            : oran
     });
+    console.log('\x1b[33m%s\x1b[0m', "Instagram");
 }

@@ -46,4 +46,5 @@ exports.genel_analiz = async function (req, res, next) {
         oran                : oran,
         kategoriChartRes    : kategoriChartRes.data
     });
+    console.log('\x1b[33m%s\x1b[0m', "Genel");
 }

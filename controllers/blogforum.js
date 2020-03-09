@@ -54,4 +54,5 @@ exports.blogforum_analiz = async function (req, res, next) {
         populerForumBlogsRes    : populerForumBlogsRes.data,
         popularForumBlogCountRes: popularForumBlogCountRes.data
     })
+    console.log('\x1b[33m%s\x1b[0m', "Blog Forum");
 }

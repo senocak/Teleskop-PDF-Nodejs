@@ -65,4 +65,5 @@ exports.twitter_analiz = async function (req, res, next) {
         genderErkekRes  : genderErkekRes.data,
         genderUniRes    : genderUniRes.data
     });
+    console.log('\x1b[33m%s\x1b[0m', "Twitter");
 }
