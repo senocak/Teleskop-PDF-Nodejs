@@ -38,7 +38,7 @@ exports.video_analiz = async function (req, res, next) {
     // Popüler Videolar
     const populerTweetsRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/popular/analysis/video?end_date=${end_date}&start_date=${start_date}`)
     for(var i=0; i < populerTweetsRes.data.documents.length; i++){
-        populerTweetsRes.data.documents[i].created_at = new Date(populerTweetsRes.data.documents[i].created_at).toLocaleDateString("en-US",{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+        populerTweetsRes.data.documents[i].created_at = moment(populerTweetsRes.data.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss')
     }
     // En Fazla İçerik Çıkan Kaynaklar
     const popularVideoCountRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/video/stats/sources?end_date=${end_date}&start_date=${start_date}`)
@@ -53,5 +53,5 @@ exports.video_analiz = async function (req, res, next) {
         populerTweetsRes    : populerTweetsRes.data,
         popularVideoCountRes:popularVideoCountRes.data
     })
-    console.log('\x1b[33m%s\x1b[0m', "Video Page");
+    console.log('\x1b[33m%s\x1b[0m', "Video");
 }
