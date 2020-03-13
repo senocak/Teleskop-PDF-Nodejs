@@ -268,7 +268,17 @@
                         series: [{
                             data: [<%=hakaretRes.stats.total%>, <%=kufurRes.stats.total%>, <%=siddetRes.stats.total%>],
                         }],
-                        labels: ['Haraket', "Küfür", "Şiddet: ", "Toplam"+3],
+                        tooltip: {
+                            theme: 'dark',
+                            x: {show: true},
+                            y: {
+                                title: {
+                                    formatter: function () {
+                                        return ''
+                                    }
+                                }
+                            }
+                        },
                     }
                     let chartTweetChart3 = new ApexCharts(document.getElementById('tweetChart3'), optionsTweetChart3);
                     chartTweetChart3.render();
