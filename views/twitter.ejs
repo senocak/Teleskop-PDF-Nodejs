@@ -160,7 +160,9 @@
                 <h3>Tweetlerin İçerik Türüne Göre Dağılımı</h3><br>
                 <div id="tweetChart3" class="chart"></div>
                 <script>
+                    /*
                     let optionsTweetChart3 = {
+                        //This is for the each bar and total line
                         series: [
                             {
                                 name: 'Tweet',
@@ -223,7 +225,50 @@
                                 distributed: true
                             },
                         },
-                        
+                    }
+                    */
+                    const colorTwitter = ['#005596', '#F47B20', '#931c0d', '#343232'];
+                    let optionsTweetChart3 = {
+                        chart: {
+                            width: 800,
+                            height: 420,
+                            type: 'bar',
+                            toolbar: {show: false},
+                            dataLabels: {enabled: false,},
+                            stacked: false,
+                        },
+                        colors: colorTwitter,
+                        plotOptions: {
+                            bar: {
+                                columnWidth: '45%',
+                                distributed: true,
+                                dataLabels: {position: 'top'},
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            offsetY: -10,
+                            formatter: function (val, opt) {
+                                return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
+                            },
+                            style: {
+                                fontSize: '12px',
+                                colors: colorTwitter
+                            },
+                        },
+                        xaxis: {
+                            categories: [['Hakaret'],['Küfür'],['Şiddet'],["Toplam: "+<%=hakaretRes.stats.total +kufurRes.stats.total +siddetRes.stats.total%>]],
+                            tooltip: {
+                                enabled: false
+                            },
+                            labels: {
+                                show: false,
+                            }
+                        },
+                        series: [{
+                            data: [<%=hakaretRes.stats.total%>, <%=kufurRes.stats.total%>, <%=siddetRes.stats.total%>],
+                        }],
+                        labels: ['Haraket', "Küfür", "Şiddet: ", "Toplam"+3],
                     }
                     let chartTweetChart3 = new ApexCharts(document.getElementById('tweetChart3'), optionsTweetChart3);
                     chartTweetChart3.render();
