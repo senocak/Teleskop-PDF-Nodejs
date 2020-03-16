@@ -149,15 +149,17 @@
                 <h3>En fazla İçerik oluşan Başlıklar</h3>
                 <div class="grid-container">
                     <% for(var i=0; i < populerForumBlogsRes.documents.length; i++) { %>
-                        <div class="item1">
-                            <img src="<%= populerForumBlogsRes.documents[i].source.favicon %>" style="width: 8%; float: left; border-radius: 50%;" onerror="this.src='/blog.svg'">
-                            <div style="text-align: left;font-size: 10px;margin-left: 75px;">
+                        <div class="item1" style="box-shadow: 1px 1px 3px 0px rgba(0,0,0,0.75);border: none !important;padding: 20px !important;">
+                            <img src="<%= populerForumBlogsRes.documents[i].source.favicon %>" style="width: 8%;float: left;border-radius: 50%;" onerror="this.src='/blog.svg'">
+                            <div style="text-align: left;font-size: 10px;margin-left: 50px;">
                                 <b><%= populerForumBlogsRes.documents[i].title %></b>
                                 <br>
-                                <%= populerForumBlogsRes.documents[i].content.substring(0, 400) %>...
+                                <%= populerForumBlogsRes.documents[i].content.substring(0, 200) %>...
                                 <br><br>
-                                <div><a href="<%= populerForumBlogsRes.documents[i].original_url %>" target="_blank"><%= populerForumBlogsRes.documents[i].source.name %></a></div>
-                                <div style="text-align: right;"><%= moment(populerForumBlogsRes.documents[i].created_at).format('DD.MM.YYYY HH:mm:ss') %></div>
+                                <section>
+                                    <div style="width: 20%;float: left;"><a href="<%= populerForumBlogsRes.documents[i].original_url %>" target="_blank"><%= populerForumBlogsRes.documents[i].source.domain %></a></div>
+                                    <div style="float: right;"><%= moment(populerForumBlogsRes.documents[i].publish_date).format('DD.MM.YYYY HH:mm:ss') %></div>
+                                </section>
                             </div>
                         </div>
                     <% } %>
