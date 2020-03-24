@@ -1,5 +1,6 @@
 const   moment      = require(`moment`),
         axios       = require(`axios`),
+        numeral     = require('numeral');//currentResToplam: numeral(currentResToplam).format('0,0'),var ;
         TELESKOP_URL= process.env.TELESKOP_URL;
 
 exports.twitter_analiz = async function (req, res, next) {
@@ -54,7 +55,7 @@ exports.twitter_analiz = async function (req, res, next) {
         end_date        : endDate.format("D.MM.Y"),
         currentRes      : currentRes.data,
         lastWeekRes     : lastWeekRes.data,
-        currentResToplam: currentResToplam,
+        currentResToplam: currentResToplam.toLocaleString(),
         lastWeekResTotal: lastWeekResTotal,
         oran            : oran,
         populerTweetsRes: populerTweetsRes.data,

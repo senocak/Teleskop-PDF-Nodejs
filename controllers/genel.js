@@ -41,7 +41,7 @@ exports.genel_analiz = async function (req, res, next) {
         end_date            : endDate.format(`D.MM.Y`),
         currentRes          : currentRes.data,
         lastWeekRes         : lastWeekRes.data,
-        currentResToplam    : currentResToplam,
+        currentResToplam    : currentResToplam.toLocaleString(),
         lastWeekResTotal    : lastWeekResTotal,
         oran                : oran,
         kategoriChartRes    : kategoriChartRes.data

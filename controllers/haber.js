@@ -53,7 +53,7 @@ exports.haber_analiz = async function (req, res, next) {
         start_date                              : startDate.format("D.MM.Y"),
         end_date                                : endDate.format("D.MM.Y"),
         currentRes                              : currentRes.data,
-        currentResToplam                        : currentResToplam,
+        currentResToplam                        : currentResToplam.toLocaleString(),
         lastWeekRes                             : lastWeekRes.data,
         lastWeekResTotal                        : lastWeekResTotal,
         oran                                    : oran,

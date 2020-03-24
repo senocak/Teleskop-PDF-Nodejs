@@ -90,7 +90,7 @@
                     },
                     dataLabels: {
                         enabled: true,
-                        offsetY: -10,
+                        offsetY: -20,
                         formatter: function (val, opt) {
                             return val
                         },
@@ -145,7 +145,7 @@
                         <% for(var i=0; i < kaynaklardaCikanHaberSayilari.stats.sources.length; i++) { %>
                             <li>
                                 <span class="divLeft"><%= kaynaklardaCikanHaberSayilari.stats.sources[i].source.name %></span>
-                                <span class="divRight"><%= kaynaklardaCikanHaberSayilari.stats.sources[i].doc_count %></span>
+                                <span class="divRight"><%= kaynaklardaCikanHaberSayilari.stats.sources[i].doc_count.toLocaleString() %></span>
                             </li>
                         <% } %>
                     </ul>
@@ -156,7 +156,7 @@
                         <% for(var i=0; i < populerKaynaklardaCikanHaberSayilari.stats.sources.length; i++) { %>
                             <li>
                                 <span class="divLeft"><%= populerKaynaklardaCikanHaberSayilari.stats.sources[i].source.name %></span>
-                                <span class="divRight"><%= populerKaynaklardaCikanHaberSayilari.stats.sources[i].doc_count %></span>
+                                <span class="divRight"><%= populerKaynaklardaCikanHaberSayilari.stats.sources[i].doc_count.toLocaleString() %></span>
                             </li>
                         <% } %>
                     </ul>
@@ -509,7 +509,7 @@
                         <%for (var il in turkiyeIlHaritasi){%>
                             <li>
                                 <span class="divLeft"><%=il.toLocaleUpperCase()  %></span>
-                                <span class="divRight"><%=turkiyeIlHaritasi[il]%></span>
+                                <span class="divRight"><%=turkiyeIlHaritasi[il].toLocaleString()%></span>
                             </li>
                         <%}%>
                     </ul>
@@ -746,7 +746,7 @@
                         <%for (var bolge in turkiyeBolgeHaritasi){%>
                             <li>
                                 <span class="divLeft"><%=bolge.toLocaleUpperCase()  %></span>
-                                <span class="divRight"><%=turkiyeBolgeHaritasi[bolge]%></span>
+                                <span class="divRight"><%=turkiyeBolgeHaritasi[bolge].toLocaleString()%></span>
                             </li>
                         <%}%>
                     </ul>

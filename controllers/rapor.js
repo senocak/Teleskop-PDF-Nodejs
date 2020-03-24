@@ -73,7 +73,7 @@ exports.pdf = async function (req, res, next) {
         pdfFiles.push(`assets/pdfs/giris.pdf`);
         for(var i=0; i<pdfUrls.length; i++){
             console.log(`İşlem: ${pdfUrls[i].name}`);
-            await page.goto(``+pdfUrls[i].url, {waitUntil: 'networkidle2'});
+            await page.goto(`http://127.0.0.1:${process.env.PORT}/${pdfUrls[i].url}`, {waitUntil: 'networkidle2'});
             await timeout(1000);
             var pdfFileName =  directory+`/${pdfUrls[i].name}.pdf`;
             pdfFiles.push(pdfFileName);

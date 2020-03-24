@@ -92,7 +92,7 @@
                 },
                 dataLabels: {
                     enabled: true,
-                    offsetY: -10,
+                    offsetY: -20,
                     formatter: function (val) {
                         return val;
                     },
@@ -147,7 +147,7 @@
                         <% for(var i=0; i < popularVideoCountRes.stats.sources.length; i++) { %>
                             <li>
                                 <span class="divLeft"><%= popularVideoCountRes.stats.sources[i].source.name %></span>
-                                <span class="divRight"><%= popularVideoCountRes.stats.sources[i].doc_count %></span>
+                                <span class="divRight"><%= popularVideoCountRes.stats.sources[i].doc_count.toLocaleString() %></span>
                             </li>
                         <% } %>
                     </ul>
