@@ -101,16 +101,9 @@ exports.pdf = async function (req, res, next) {
         const gonder = await axios.post(`${process.env.TELESKOP_URL}/analysis/path/uuid/${uuid}`, {
             "path": path
         });
-        res.json(gonder.data)
-
         res.status(200).json({
             success :true,
             'path'  :path
-        })
-
-        res.status(200).json({
-            success :true,
-            'path'  :`/pdfs/${directoryDate}/final.pdf`
         })
         console.log('\x1b[33m%s\x1b[0m', "Rapor");
         //res.download(directory+'./pdfs/final.pdf')
