@@ -3,7 +3,8 @@ const   moment      = require(`moment`),
         puppeteer   = require('puppeteer'),
         merge       = require('easy-pdf-merge'),
         fs          = require('fs'),
-        TELESKOP_URL= process.env.TELESKOP_URL;
+        TELESKOP_URL= process.env.TELESKOP_URL,
+        path        = require("path");
 exports.rapor = async function (req, res, next) {
     var     uuid = req.query.uuid,
             data = await axios.get(`${TELESKOP_URL}/analysis/params/${uuid}`).then(function (response) { return response.data.params })
@@ -95,6 +96,18 @@ exports.pdf = async function (req, res, next) {
         await browser.close();
         pdfFiles.push(`assets/pdfs/bitis.pdf`);
         await mergeMultiplePDF(pdfFiles);
+
+        const path = `/pdfs/${directoryDate}/final.pdf`;
+        const gonder = await axios.post(`${process.env.TELESKOP_URL}/analysis/path/uuid/${uuid}`, {
+            "path": path
+        });
+        res.json(gonder.data)
+
+        res.status(200).json({
+            success :true,
+            'path'  :path
+        })
+
         res.status(200).json({
             success :true,
             'path'  :`/pdfs/${directoryDate}/final.pdf`
@@ -114,4 +127,9 @@ exports.pdf = async function (req, res, next) {
             });
         });
     };
+}
+exports.report = async function (req, res, next) {
+    var     uuid = req.query.uuid,
+            data = await axios.get(`${TELESKOP_URL}/analysis/params/${uuid}`).then(function (response) { return response.data.params })
+    res.download(rootDir+"\\assets"+data.pdf_path);
 }
