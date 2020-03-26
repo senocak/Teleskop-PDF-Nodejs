@@ -124,5 +124,6 @@ exports.pdf = async function (req, res, next) {
 exports.report = async function (req, res, next) {
     var     uuid = req.query.uuid,
             data = await axios.get(`${TELESKOP_URL}/analysis/params/${uuid}`).then(function (response) { return response.data.params })
-    res.download(rootDir+"\\assets"+data.pdf_path);
+    const file = path.join(path.join(rootDir,"assets"),data.pdf_path);
+    res.download(file);
 }
