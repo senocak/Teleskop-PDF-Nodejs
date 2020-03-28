@@ -3,17 +3,14 @@ const   moment      = require(`moment`),
         TELESKOP_URL=process.env.TELESKOP_URL;
 
 exports.blogforum_analiz = async function (req, res, next) {
-    const   token = req.query.token,
-            stream_id = req.query.stream_id,
-            start_date = req.query.start_date,
-            end_date = req.query.end_date
-
-    var     startDate = moment(start_date),
-            endDate = moment(end_date),
-            betweenDays = endDate.diff(startDate, `days`),
-            lastWeekStart = startDate.subtract(betweenDays, `days`).format(`YYYY-MM-DDTHH:mm:ss.sss`),
-            lastWeekEnd = start_date,
-            dayNames = [`Pazar`,`Pazartesi`,`Salı`,`Çarşamba`,`Perşembe`,`Cuma`,`Cumartesi`]
+    const   token           = req.query.token,
+            stream_id       = req.query.stream_id,
+            start_date      = moment(req.query.start_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`),
+            end_date        = moment(req.query.end_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`),
+            betweenDays     = moment(end_date).diff(moment(start_date), `days`),
+            lastWeekStart   = moment(start_date).subtract(betweenDays, `days`).format(`YYYY-MM-DDTHH:mm:ss.sss`),
+            lastWeekEnd     = start_date,
+            dayNames        = [`Pazar`,`Pazartesi`,`Salı`,`Çarşamba`,`Perşembe`,`Cuma`,`Cumartesi`]
 
     axios.defaults.headers.common[`Authorization`] = `Bearer `+token;
     // Current Week datas
@@ -44,8 +41,8 @@ exports.blogforum_analiz = async function (req, res, next) {
     // En Fazla İçerik Çıkan Kaynaklar
     const popularForumBlogCountRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/forumblog/stats/sources?end_date=${end_date}&start_date=${start_date}`)
     res.render(`blogforum`,{
-        start_date              : startDate.format("D.MM.Y"),
-        end_date                : endDate.format("D.MM.Y"),
+        start_date              : moment(start_date).format("D.MM.Y"),
+        end_date                : moment(end_date).format("D.MM.Y"),
         currentRes              : currentRes.data,
         lastWeekRes             : lastWeekRes.data,
         currentResToplam        : currentResToplam.toLocaleString(),
