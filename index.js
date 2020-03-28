@@ -9,7 +9,7 @@ const
         HaberController     = require('./controllers/haber'),
         TwitterController   = require('./controllers/twitter'),
         InstagramController = require('./controllers/instagram'),
-        BlogController     = require('./controllers/blogforum'),
+        BlogController      = require('./controllers/blogforum'),
         VideoController     = require('./controllers/video'),
         RaporController     = require('./controllers/rapor')
 app.locals.moment = moment; // Pass throught the moment library to ejs view pages
