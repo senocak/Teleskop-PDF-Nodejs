@@ -27,9 +27,9 @@ exports.genel_analiz = async function (req, res, next) {
     // Oran
     var oran = ``;
     if (currentResToplam > lastWeekResTotal) {
-        oran = `<b>%${((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2) }</b> oranında artma`;
+        oran = `<b>%${((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2) }</b> oranında artış`;
     } else {
-        oran = `<b>%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2) }</b> oranında azalma`;
+        oran = `<b>%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2) }</b> oranında azalış`;
     }
     const kategoriChartRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/stats/totals?end_date=${end_date}&start_date=`+start_date)
     res.render(`genel`,{

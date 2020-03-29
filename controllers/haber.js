@@ -25,9 +25,9 @@ exports.haber_analiz = async function (req, res, next) {
         lastWeekResTotal = lastWeekResTotal + lastWeekRes.data.stats[i].doc_count
     }
     if (currentResToplam > lastWeekResTotal) {
-        oran = `<b>%${((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2) }</b> oranında artma`;
+        oran = `<b>%${((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2) }</b> oranında artış`;
     } else {
-        oran = `<b>%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2) }</b> oranında azalma`;
+        oran = `<b>%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2) }</b> oranında azalış`;
     }
     const kaynaklardaCikanHaberSayilari = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}&populer=1`)
     const populerKaynaklardaCikanHaberSayilari = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}`)

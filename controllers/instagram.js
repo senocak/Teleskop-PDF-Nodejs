@@ -29,9 +29,9 @@ exports.instagram_analiz = async function (req, res, next) {
     // Oran
     var oran = ``;
     if (currentResToplam > lastWeekResTotal) {
-        oran = `<b>%${((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2) }</b> oranında artma`;
+        oran = `<b>%${((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2) }</b> oranında artış`;
     } else {
-        oran = `<b>%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2) }<b> oranında azalma`;
+        oran = `<b>%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2) }<b> oranında azalış`;
     }
     res.render('instagram',{
         start_date      : moment(start_date).format("D.MM.Y"),
