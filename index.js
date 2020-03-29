@@ -30,4 +30,3 @@ app.get('/rapor', RaporController.rapor)
 app.get('/pdf', RaporController.pdf)
 app.get('/report', RaporController.report)
 app.listen(process.env.PORT, () => console.log(`http://127.0.0.1:${process.env.PORT}`))
-//uuid=5e4e7469011d78000b86bbef
