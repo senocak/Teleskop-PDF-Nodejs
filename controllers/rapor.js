@@ -5,9 +5,34 @@ const   moment      = require(`moment`),
         fs          = require('fs'),
         TELESKOP_URL= process.env.TELESKOP_URL,
         path        = require("path");
-exports.rapor = async function (req, res, next) {
+
+exports.report = async function (req, res, next) {
     var     uuid = req.query.uuid,
-            data = await axios.get(`${TELESKOP_URL}/analysis/params/${uuid}`).then(function (response) { return response.data.params })
+            data = await axios.get(`${TELESKOP_URL}/analysis/params/${uuid}`).then(function (response) { return response.data.params }).catch(function (error) {
+                res.status(500).json({
+                    "hata": error.response.data.message
+                })
+            });
+    if (!Object.keys(data).length > 0 ) {
+        res.status(500).json({
+            "hata": "Invalid UUID"
+        })
+    }
+    const file = path.join(path.join(rootDir,"assets"),data.pdf_path);
+    res.download(file);
+}
+exports.rapor = async function (req, res, next) {
+    const   uuid = req.query.uuid,
+            data = await axios.get(`${TELESKOP_URL}/analysis/params/${uuid}`).then(function (response) { return response.data.params }).catch(function (error) {
+                res.status(500).json({
+                    "hata": error.response.data.message
+                })
+            });
+    if (!Object.keys(data).length > 0 ) {
+        res.status(500).json({
+            "hata": "Invalid UUID"
+        })
+    }
     async function date(date) {
         return date.split('+')[0];
     }
@@ -21,11 +46,20 @@ exports.rapor = async function (req, res, next) {
 exports.pdf = async function (req, res, next) {
     const   uuid        = req.query.uuid,
             port        = process.env.PORT,
-            data        = await axios.get(`${TELESKOP_URL}/analysis/params/${uuid}`).then(function (response) { return response.data.params }),
+            data        = await axios.get(`${TELESKOP_URL}/analysis/params/${uuid}`).then(function (response) { return response.data.params }).catch(function (error) {
+                res.status(500).json({
+                    "hata": error.response.data.message
+                })
+            }),
             token       = data.token,
             stream_id   = data.stream_id,
             start_date  = await date(data.start_date),
             end_date    = await date(data.end_date)
+    if (!Object.keys(data).length > 0 ) {
+        res.status(500).json({
+            "hata": "Invalid UUID"
+        })
+    }
     async function date(date) {
         return date.split('+')[0];
     }
@@ -73,7 +107,6 @@ exports.pdf = async function (req, res, next) {
         var pdfFiles=[];
         pdfFiles.push(`assets/pdfs/giris.pdf`);
         for(var i=0; i<pdfUrls.length; i++){
-            console.log(`İşlem: ${pdfUrls[i].name}`);
             await page.goto(`http://127.0.0.1:${process.env.PORT}/${pdfUrls[i].url}`, {waitUntil: 'networkidle2'});
             await timeout(1000);
             var pdfFileName =  directory+`/${pdfUrls[i].name}.pdf`;
@@ -89,18 +122,16 @@ exports.pdf = async function (req, res, next) {
                     footerTemplate: `<div style='width:100%; margin-top:100px; text-align:center; font-size:10px; border-bottom: 20px solid #4e82c9;'>
                                         <strong>a:</strong> Mustafa Kemal Mahallesi, 2129. Sokak, No:6/2 Çankaya – ANKARA <strong>t:</strong> 0 850 303 41 05 <strong>m:</strong> info@teleskop.app
                                     </div>`,
-                    fullPage: true
+                    fullPage: true,
+                    printBackground: true,
                 }
             );
         }
         await browser.close();
         pdfFiles.push(`assets/pdfs/bitis.pdf`);
         await mergeMultiplePDF(pdfFiles);
-
         const path = `/pdfs/${directoryDate}/final.pdf`;
-        const gonder = await axios.post(`${process.env.TELESKOP_URL}/analysis/path/uuid/${uuid}`, {
-            "path": path
-        });
+        await axios.post(`${process.env.TELESKOP_URL}/analysis/path/uuid/${uuid}`, {"path": path});
         res.status(200).json({
             success :true,
             'path'  :path
@@ -120,10 +151,4 @@ exports.pdf = async function (req, res, next) {
             });
         });
     };
-}
-exports.report = async function (req, res, next) {
-    var     uuid = req.query.uuid,
-            data = await axios.get(`${TELESKOP_URL}/analysis/params/${uuid}`).then(function (response) { return response.data.params })
-    const file = path.join(path.join(rootDir,"assets"),data.pdf_path);
-    res.download(file);
 }

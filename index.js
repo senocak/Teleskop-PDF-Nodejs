@@ -3,6 +3,7 @@ const   express = require('express'),
         logger  = require('morgan'),
         moment  = require('moment'),
         path    = require('path'),
+        cors    = require('cors'),
         dotenv  = require('dotenv').config()
 const
         GenelController     = require('./controllers/genel'),
@@ -15,6 +16,7 @@ const
 app.locals.moment = moment; // Pass throught the moment library to ejs view pages
 global.rootDir = path.resolve(__dirname);
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+app.use(cors());
 app.use(logger('dev'));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/assets'));
