@@ -11,7 +11,7 @@ exports.haber_analiz = async function (req, res, next) {
             betweenDays     = moment(end_date).diff(moment(start_date), `days`),
             lastWeekStart   = moment(start_date).subtract(betweenDays, `days`).format(`YYYY-MM-DDTHH:mm:ss.sss`),
             lastWeekEnd     = start_date
-   
+
     axios.defaults.headers.common[`Authorization`] = `Bearer ${token}`;
     const currentRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/histogram?end_date=${end_date}&start_date=${start_date}&populer=1`)
     const lastWeekRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/histogram?end_date=${lastWeekEnd}&start_date=${lastWeekStart}&populer=1`)
@@ -25,9 +25,9 @@ exports.haber_analiz = async function (req, res, next) {
         lastWeekResTotal = lastWeekResTotal + lastWeekRes.data.stats[i].doc_count
     }
     if (currentResToplam > lastWeekResTotal) {
-        oran = `%${((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2) } oranında artma`;
+        oran = `<b>%${((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2) }</b> oranında artma`;
     } else {
-        oran = `%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2)} oranında azalma`;
+        oran = `<b>%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2) }</b> oranında azalma`;
     }
     const kaynaklardaCikanHaberSayilari = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}&populer=1`)
     const populerKaynaklardaCikanHaberSayilari = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}`)
