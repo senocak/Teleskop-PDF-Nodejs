@@ -105,7 +105,7 @@ exports.pdf = async function (req, res, next) {
         const page = await browser.newPage();
         await page.setViewport({ width: 2000, height: 768});
         var pdfFiles=[];
-        pdfFiles.push(`assets/pdfs/giris.pdf`);
+        //pdfFiles.push(`assets/pdfs/giris.pdf`);
         for(var i=0; i<pdfUrls.length; i++){
             await page.goto(`http://127.0.0.1:${process.env.PORT}/${pdfUrls[i].url}`, {waitUntil: 'networkidle2'});
             await timeout(1000);
