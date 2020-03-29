@@ -28,7 +28,7 @@ exports.rapor = async function (req, res, next) {
                     "hata": error.response.data.message
                 })
             });
-    if (!Object.keys(data).length > 0 ) {
+    if(JSON.stringify(data) === '{}' || JSON.stringify(data) === '[]'){
         res.status(500).json({
             "hata": "Invalid UUID"
         })
@@ -55,7 +55,7 @@ exports.pdf = async function (req, res, next) {
             stream_id   = data.stream_id,
             start_date  = await date(data.start_date),
             end_date    = await date(data.end_date)
-    if (!Object.keys(data).length > 0 ) {
+    if(JSON.stringify(data) === '{}' || JSON.stringify(data) === '[]'){
         res.status(500).json({
             "hata": "Invalid UUID"
         })

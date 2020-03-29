@@ -29,9 +29,9 @@ exports.video_analiz = async function (req, res, next) {
     // Oran
     var oran = ``;
     if (currentResToplam > lastWeekResTotal) {
-        oran = `<b>%${((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2) }<b> oranında artma`;
+        oran = `<b>%${((currentResToplam - lastWeekResTotal)/(currentResToplam)*100).toFixed(2) }</b> oranında artma`;
     } else {
-        oran = `<b>%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2) }<b> oranında azalma`;
+        oran = `<b>%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2) }</b> oranında azalma`;
     }
     // Popüler Videolar
     const populerTweetsRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/popular/analysis/video?end_date=${end_date}&start_date=${start_date}`)
