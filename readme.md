@@ -6,12 +6,20 @@ This project is for the making pdf files for the specific urls and merge them as
 
 Example Urls;
 
+- /kapak?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
 - /genel?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
-- /haber?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
-- /twitter?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
+- /haber/1/?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
+- /haber/2/?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
+- /haber/3/?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
+- /haber/4/?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
+- /twitter/1/?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
+- /twitter/2/?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
+- /twitter/3/?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
 - /instagram?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
-- /blogforum?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
-- /video?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
+- /blogforum/1/?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
+- /blogforum/2/?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
+- /video/1/?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
+- /video/2/?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
 	> **token** => get token from the backend
 	> **stream_id** => get stream_id from the backend
 	> **start_date** => starting date range for the pdf
@@ -19,10 +27,12 @@ Example Urls;
 
 ## Making the pdfs then merging the pdfs as one
 
-- /pdf
+- /pdf?uuid=**UUID**
+	> **UUID** => UUID for the variables
 	>Just visit the below url and verify that pdfs are made and one pdf which it is named as **final.pdf**  is created under current timestamp folder for example **pdfs/<timestamp>/final.pdf**
 
-- /rapor
+- /rapor?uuid=**UUID**
+	> **UUID** => UUID for the variables
 	>Just visit the url and verify that all pdfs are embedded
 
 ## Screenshoots
