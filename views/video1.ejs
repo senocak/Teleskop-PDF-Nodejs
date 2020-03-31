@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="tr">
+    <head>
+        <%- include('partials/header') -%>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <h1><%=currentRes.stream.name.toLocaleUpperCase()%> AKIŞ RAPORU</h1>
+                <div class="middle">
+                    <span><%=start_date%> - <%=end_date%></span>
+                    <hr/>
+                </div>
+                <div class="brand">
+                    <div class="logo">
+                        <img src="/logo.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="container">
+                <h1>VİDEO ANALİZİ ANALİZİ</h1>
+                <div class="text">
+                    <p style="text-align: justify !important;">
+                        <b><%=start_date%></b> – <b><%=end_date%></b> tarihleri arasında <b><%=currentRes.stream.name%></b> adlı akışınızda toplam <b><%=currentResToplam%></b> içerik bulunmuştur.
+                        İçeriklerin toplamında bir önceki aralığa göre <%-oran%> mevcuttur.
+                        Video Analizi ile ilgili detaylı grafikler aşağıda yer almaktadır.
+                    </p>
+                </div>
+                <h3>Zamana Göre Toplam Gönderi Sayıları</h3>
+                <div id="timeLineChart" class="chart"></div>
+
+                <h3>Günlük Gönderi Dağılımı</h3>
+                <div id="dailyChart" class="chart"></div>
+            </div>
+        </main>
+        <script>
+            let optionsTimeLineChart = {
+                chart: {
+                    type: 'line',
+                    height: 420,
+                    width: 800,
+                    toolbar: {
+                        show: false
+                    },
+                    dataLabels: {
+                        enabled: true,
+                    }
+                },
+                series: [{
+                    name: 'Seçilen aralık',
+                    data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>]
+                }, {
+                    name: 'Önceki aralık',
+                    data: [<% for(var i=0; i < lastWeekRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>]
+                }],
+                xaxis: {
+                    categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].key_as_string.split("T")[0] %>',<% } %>]
+                },
+                colors: colors,
+                markers: {
+                    size: 5
+                }
+            }
+            let chartTimeLineChart = new ApexCharts(document.getElementById("timeLineChart"), optionsTimeLineChart)
+            chartTimeLineChart.render()
+            //Second Chart
+            let optionsDaily = {
+                chart: {
+                    height: 420,
+                    width: 800,
+                    type: 'bar',
+                    toolbar: {
+                        show: false
+                    },
+                    dataLabels: {
+                        enabled: true,
+                    },
+                    parentHeightOffset: -5
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        distributed: false,
+                        endingShape: 'flat',
+                        columnWidth: '70%',
+                        dataLabels: {
+                            position: 'top',
+                        },
+                    },
+                },
+                dataLabels: {
+                    enabled: true,
+                    offsetY: -20,
+                    formatter: function (val) {
+                        return val;
+                    },
+                    style: {
+                        fontSize: '12px',
+                        colors: ['#444444']
+                    },
+                },
+                stroke: {
+                    show: true,
+                    width: 1,
+                    colors: ['#fff']
+                },
+                series: [{
+                            name: 'Önceki Aralık',
+                            data: [<% for(var i=0; i < lastWeekRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>]
+                        },{
+                            name: 'Seçilen Aralık',
+                            data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>]
+                        }
+                    ],
+                xaxis: {
+                    categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].day %>',<% } %>],
+                },
+                colors: colors
+            }
+            let chartDaily = new ApexCharts(document.getElementById("dailyChart"), optionsDaily);
+            chartDaily.render();
+        </script>
+        <%- include('partials/footer') -%>
+    </body>
+</html>

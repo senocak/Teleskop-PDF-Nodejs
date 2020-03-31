@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="tr">
+    <head>
+        <%- include('partials/header') -%>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <h1><%=currentRes.stream.name.toLocaleUpperCase()%> AKIŞ RAPORU</h1>
+                <div class="middle">
+                    <span><%=start_date%> - <%=end_date%></span>
+                    <hr/>
+                </div>
+                <div class="brand">
+                    <div class="logo">
+                        <img src="/logo.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="container">
+                <h1>HABER ANALİZİ</h1>
+                <div class="text">
+                    <p style="text-align: justify !important;">
+                        <b><%=start_date%></b> – <b><%=end_date%></b> tarihleri arasında <b><%=currentRes.stream.name%></b> adlı akışınızda toplam <b><%=currentResToplam%></b> içerik bulunmuştur.
+                        İçeriklerin toplamında bir önceki aralığa göre <%-oran%> mevcuttur.
+                        Haber analizi ile ilgili detaylı grafikler aşağıda yer almaktadır.
+                    </p>
+                </div>
+                <h3>Zamana Göre Toplam Gönderi Sayıları</h3><br>
+                <div class="chart time-line-chart"></div>
+
+                <h3>Popüler Kaynaklarda Çıkan Haberlerin Adet Bazlı Değişimi</h3><br>
+                <div id="popülerKaynaklardaCikanHaberlerinAdetBazliDegisimi" class="chart"></div>
+            </div>
+        </main>
+        <script>
+            $(function () {
+                let timeLineChart = document.querySelectorAll('.time-line-chart')
+                timeLineChart.forEach(element => {
+                    let options = {
+                        chart: {
+                            type: 'line',
+                            height: 420,
+                            width: 800,
+                            toolbar: {show: false},
+                            dataLabels: {enabled: true,}
+                        },
+                        series: [{
+                            name: 'Seçilen aralık',
+                            data: [<% for(var i=0; i < currentRes.stats.length; i++) { %> <%= currentRes.stats[i].doc_count %>,<% } %>],
+                            backgroundColor: "#afafaf3d",
+                            borderColor: "black",
+                            borderWidth: 2
+                        }, {
+                            name: 'Önceki aralık',
+                            data: [<% for(var i=0; i < lastWeekRes.stats.length; i++) { %> <%= lastWeekRes.stats[i].doc_count %>,<% } %>],
+                            backgroundColor: "#fff70038",
+                            borderColor: ["red"],
+                            borderWidth: 2
+                        }],
+                        xaxis: {
+                            categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].key_as_string.split("T")[0] %>',<% } %>]
+                        },
+                        colors: colors,
+                        markers: {
+                            size: 5
+                        },
+                    }
+                    let chart = new ApexCharts(element, options)
+                    chart.render()
+                })
+                //Popüler Kaynaklarda Çıkan Haberlerin Adet Bazlı Değişimi
+                let optionsPopülerKaynaklardaCikanHaberlerinAdetBazliDegisimi = {
+                    chart: {
+                        width: 800,
+                        height: 420,
+                        type: 'bar',
+                        toolbar: {show: false},
+                        dataLabels: {enabled: true,}
+                    },
+                    colors: colors,
+                    plotOptions: {
+                        bar: {
+                            columnWidth: '20%',
+                            distributed: true,
+                            dataLabels: {position: 'top'},
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        offsetY: -20,
+                        formatter: function (val, opt) {
+                            return val
+                        },
+                        style: {
+                            fontSize: '12px',
+                            colors: colors
+                        },
+                    },
+                    series: [{
+                        data: [<%=currentResToplamBarChart %>, <%=beforeResToplamBarChart %>]
+                    }],
+                    xaxis: {
+                        categories: ["Şimdiki Aralık","Önceki Aralık"],
+                    },
+                    tooltip: {
+                        theme: 'dark',
+                        x: {show: true},
+                        y: {
+                            title: {
+                                formatter: function () {
+                                    return ''
+                                }
+                            }
+                        }
+                    },
+                }
+                let chartPopülerKaynaklardaCikanHaberlerinAdetBazliDegisimi = new ApexCharts(document.querySelector('#popülerKaynaklardaCikanHaberlerinAdetBazliDegisimi'), optionsPopülerKaynaklardaCikanHaberlerinAdetBazliDegisimi);
+                chartPopülerKaynaklardaCikanHaberlerinAdetBazliDegisimi.render();
+            })
+        </script>
+        <%- include('partials/footer') -%>
+    </body>
+</html>

@@ -20,13 +20,32 @@ app.use(cors());
 app.use(logger('dev'));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/assets'));
+
 app.get('/genel', GenelController.genel_analiz)
-app.get('/haber', HaberController.haber_analiz)
-app.get('/twitter', TwitterController.twitter_analiz)
+
+app.get('/haber/1', HaberController.sayfaBir)
+app.get('/haber/2', HaberController.sayfaİki)
+app.get('/haber/3', HaberController.sayfaUc)
+app.get('/haber/4', HaberController.sayfaDort)
+
+app.get('/twitter/1', TwitterController.sayfaBir)
+app.get('/twitter/2', TwitterController.sayfaİki)
+app.get('/twitter/3', TwitterController.sayfaUc)
+
 app.get('/instagram', InstagramController.instagram_analiz)
-app.get('/blogforum', BlogController.blogforum_analiz)
-app.get('/video', VideoController.video_analiz)
+
+app.get('/blogforum/1', BlogController.sayfaBir)
+app.get('/blogforum/2', BlogController.sayfaİki)
+
+app.get('/video/1', VideoController.sayfaBir)
+app.get('/video/2', VideoController.sayfaİki)
+
 app.get('/rapor', RaporController.rapor)
+
 app.get('/pdf', RaporController.pdf)
+
 app.get('/report', RaporController.report)
+
+app.get('/kapak', RaporController.kapak)
+
 app.listen(process.env.PORT, () => console.log(`http://127.0.0.1:${process.env.PORT}`))

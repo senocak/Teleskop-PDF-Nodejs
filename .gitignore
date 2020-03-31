@@ -1,3 +1,4 @@
 /node_modules
 /assets/pdfs/**/
+/assets/pdfs/
 package-lock.json

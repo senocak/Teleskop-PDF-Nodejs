@@ -3,7 +3,7 @@ const   moment      = require('moment'),
         sortValues  = require('sort-values'),
         TELESKOP_URL= process.env.TELESKOP_URL;
 
-exports.haber_analiz = async function (req, res, next) {
+exports.sayfaBir = async function (req, res, next) {
     const   token           = req.query.token,
             stream_id       = req.query.stream_id,
             start_date      = moment(req.query.start_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`),
@@ -29,25 +29,18 @@ exports.haber_analiz = async function (req, res, next) {
     } else {
         oran = `<b>%${((lastWeekResTotal - currentResToplam)/(currentResToplam)*100).toFixed(2) }</b> oranında azalış`;
     }
-    const kaynaklardaCikanHaberSayilari = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}&populer=1`)
-    const populerKaynaklardaCikanHaberSayilari = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}`)
-    const popularNewsRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/popular/news?end_date=${end_date}&start_date=${start_date}`)
-    const turkiyeIlHaritasi = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/analysis/city/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
-    const turkiyeIlHaritasiSorted = sortValues(turkiyeIlHaritasi.count, 'desc');
-    const turkiyeBolgeHaritasi = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/analysis/state/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
-    const turkiyeBolgeHaritasiSorted = sortValues(turkiyeBolgeHaritasi.count, 'desc');
-    const ulusalBolgeselYerelGrafik = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/analysis/natloc/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
     const currentResToplamRequest = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/populer/histogram?end_date=${end_date}&start_date=${start_date}`)    
     var currentResToplamBarChart = 0;
     for(var i=0; i < currentResToplamRequest.data.stats.length; i++){
         currentResToplamBarChart += currentResToplamRequest.data.stats[i].doc_count
     }
+
     const beforeResToplamRequest = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/populer/histogram?end_date=${lastWeekEnd}&start_date=${lastWeekStart}`)
     var beforeResToplamBarChart = 0;
     for(var i=0; i < beforeResToplamRequest.data.stats.length; i++){
         beforeResToplamBarChart += beforeResToplamRequest.data.stats[i].doc_count
     }
-    res.render('haber',{
+    res.render('haber1',{
         start_date                              : moment(start_date).format("D.MM.Y"),
         end_date                                : moment(end_date).format("D.MM.Y"),
         currentRes                              : currentRes.data,
@@ -55,14 +48,71 @@ exports.haber_analiz = async function (req, res, next) {
         lastWeekRes                             : lastWeekRes.data,
         lastWeekResTotal                        : lastWeekResTotal,
         oran                                    : oran,
-        kaynaklardaCikanHaberSayilari           : kaynaklardaCikanHaberSayilari.data,
-        populerKaynaklardaCikanHaberSayilari    : populerKaynaklardaCikanHaberSayilari.data,
-        popularNewsRes                          : popularNewsRes.data,
-        turkiyeIlHaritasi                       : turkiyeIlHaritasiSorted,
-        turkiyeBolgeHaritasi                    : turkiyeBolgeHaritasiSorted,
-        ulusalBolgeselYerelGrafik               : ulusalBolgeselYerelGrafik.count,
         currentResToplamBarChart                : currentResToplamBarChart,
         beforeResToplamBarChart                 : beforeResToplamBarChart
     });
-    console.log('\x1b[33m%s\x1b[0m', "Haber");
+    console.log('\x1b[33m%s\x1b[0m', "Haber Sayfa 1");
+}
+
+exports.sayfaİki = async function (req, res, next) {
+    const   token           = req.query.token,
+            stream_id       = req.query.stream_id,
+            start_date      = moment(req.query.start_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`),
+            end_date        = moment(req.query.end_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`)
+
+    axios.defaults.headers.common[`Authorization`] = `Bearer ${token}`;
+    const currentRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/histogram?end_date=${end_date}&start_date=${start_date}&populer=1`)
+    const kaynaklardaCikanHaberSayilari = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}&populer=1`)
+    const populerKaynaklardaCikanHaberSayilari = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}`)
+    const turkiyeIlHaritasi = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/analysis/city/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
+    const turkiyeIlHaritasiSorted = sortValues(turkiyeIlHaritasi.count, 'desc');
+    res.render('haber2',{
+        start_date                              : moment(start_date).format("D.MM.Y"),
+        end_date                                : moment(end_date).format("D.MM.Y"),
+        currentRes                              : currentRes.data,
+        kaynaklardaCikanHaberSayilari           : kaynaklardaCikanHaberSayilari.data,
+        populerKaynaklardaCikanHaberSayilari    : populerKaynaklardaCikanHaberSayilari.data,
+        turkiyeIlHaritasi                       : turkiyeIlHaritasiSorted
+    });
+    console.log('\x1b[33m%s\x1b[0m', "Haber Sayfa 2");
+}
+exports.sayfaUc = async function (req, res, next) {
+    const   token           = req.query.token,
+            stream_id       = req.query.stream_id,
+            start_date      = moment(req.query.start_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`),
+            end_date        = moment(req.query.end_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`);
+
+    axios.defaults.headers.common[`Authorization`] = `Bearer ${token}`;
+    const currentRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/histogram?end_date=${end_date}&start_date=${start_date}&populer=1`)
+    const turkiyeBolgeHaritasi = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/analysis/state/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
+    const turkiyeBolgeHaritasiSorted = sortValues(turkiyeBolgeHaritasi.count, 'desc');
+    const ulusalBolgeselYerelGrafik = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/analysis/natloc/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
+
+    res.render('haber3',{
+        start_date                              : moment(start_date).format("D.MM.Y"),
+        end_date                                : moment(end_date).format("D.MM.Y"),
+        currentRes                              : currentRes.data,
+        turkiyeBolgeHaritasi                    : turkiyeBolgeHaritasiSorted,
+        ulusalBolgeselYerelGrafik               : ulusalBolgeselYerelGrafik.count
+    });
+    console.log('\x1b[33m%s\x1b[0m', "Haber Sayfa 3");
+}
+
+exports.sayfaDort = async function (req, res, next) {
+
+    const   token           = req.query.token,
+            stream_id       = req.query.stream_id,
+            start_date      = moment(req.query.start_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`),
+            end_date        = moment(req.query.end_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`)
+
+    axios.defaults.headers.common[`Authorization`] = `Bearer ${token}`;
+    const currentRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/histogram?end_date=${end_date}&start_date=${start_date}&populer=1`)
+    const popularNewsRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/popular/news?end_date=${end_date}&start_date=${start_date}`)
+    res.render('haber4',{
+        start_date                              : moment(start_date).format("D.MM.Y"),
+        end_date                                : moment(end_date).format("D.MM.Y"),
+        currentRes                              : currentRes.data,
+        popularNewsRes                          : popularNewsRes.data
+    });
+    console.log('\x1b[33m%s\x1b[0m', "Haber Sayfa 4");
 }
