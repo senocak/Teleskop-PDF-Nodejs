@@ -21,8 +21,11 @@ Example Urls;
 - /video/1/?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
 - /video/2/?token=**token**&stream_id=**stream_id**&start_date=**start_date**&end_date=**end_date**
 	> **token** => get token from the backend
+
 	> **stream_id** => get stream_id from the backend
+
 	> **start_date** => starting date range for the pdf
+
 	> **end_date** => ending date range for the pdf
 
 ## Making the pdfs then merging the pdfs as one
