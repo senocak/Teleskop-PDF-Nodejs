@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="tr">
+    <head>
+        <%- include('partials/header') -%>
+    </head>
+    <body>
+        <div class="cover">
+            <div class="picture">
+                <img src="/arka.png" alt="">
+            </div>
+            <div class="desc" style="top: 800px !important;">
+                <p style="font-size: 38px;">
+                    <%-yazi%>
+                </p>
+                <br>
+                <a href="<%=googlePlay%>" target="_blank"><img src="/googlePlay.png" style="width: 200px;"></a>
+                <a href="<%=appStore%>" target="_blank"><img src="/appStore.png" style="width: 200px;"></a>
+            </div>
+            <div class="desc" style="top: 1400px !important;">
+                <img src="/<%=logo%>" style="width: 300px;">
+            </div>
+        </div>
+    </body>
+</html>

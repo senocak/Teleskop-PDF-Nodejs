@@ -20,9 +20,17 @@ exports.kapak = async function (req, res, next) {
         "start_date"    : moment(start_date).format("D.MM.Y"),
         "end_date"      : moment(end_date).format("D.MM.Y"),
     });
-    console.log('\x1b[33m%s\x1b[0m', "Kapak");
+    console.log('\x1b[33m%s\x1b[0m', "Ön Kapak");
 }
-
+exports.arka = async function (req, res, next) {
+    res.render("arka", {
+        "googlePlay": "https://play.google.com/store/apps/details?id=com.teleskop",
+        "appStore"  : "https://apps.apple.com/tr/app/teleskop/id1442063161?l=tr",
+        "yazi"      : "Teleskop Digital Gözlemci <br> <b>Ücretsiz</b> İndirmek İçin:",
+        "logo"      : "logo2.png"
+    });
+    console.log('\x1b[33m%s\x1b[0m', "Arka Kapak");
+}
 exports.report = async function (req, res, next) {
     var     uuid = req.query.uuid,
             data = await axios.get(`${TELESKOP_URL}/analysis/params/${uuid}`).then(function (response) { return response.data.params }).catch(function (error) {
@@ -130,7 +138,11 @@ exports.pdf = async function (req, res, next) {
         {
             'name':`video2`,
             'url':`video/2/?token=${token}&stream_id=${stream_id}&start_date=${start_date}&end_date=${end_date}`
-        }
+        },
+        {
+            'name':'arka',
+            'url':`arka`
+        },
     ]
     async function timeout(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -165,7 +177,7 @@ exports.pdf = async function (req, res, next) {
             );
         }
         await browser.close();
-        pdfFiles.push(`assets/bitis.pdf`);
+        //pdfFiles.push(`assets/bitis.pdf`);
         await mergeMultiplePDF(pdfFiles);
         const path = `/pdfs/${directoryDate}.pdf`;
         await axios.post(`${process.env.TELESKOP_URL}/analysis/path/uuid/${uuid}`, {"path": path});

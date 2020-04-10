@@ -61,7 +61,7 @@
                             borderWidth: 2
                         }],
                         xaxis: {
-                            categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= currentRes.stats[i].key_as_string.split("T")[0] %>',<% } %>]
+                            categories: [<% for(var i=0; i < currentRes.stats.length; i++) { %> '<%= moment(currentRes.stats[i].key_as_string.split("T")[0]).format("DD/MM/YYYY") %>',<% } %>]
                         },
                         colors: colors,
                         markers: {

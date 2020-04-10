@@ -47,5 +47,6 @@ app.get('/pdf', RaporController.pdf)
 app.get('/report', RaporController.report)
 
 app.get('/kapak', RaporController.kapak)
+app.get('/arka', RaporController.arka)
 
 app.listen(process.env.PORT, () => console.log(`http://127.0.0.1:${process.env.PORT}`))

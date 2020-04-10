@@ -21,7 +21,6 @@
         <main>
             <div class="container">
                 <h3>En Fazla İçerik Çıkan Kaynaklar</h3>
-                <hr>
                 <center>
                     <ul>
                         <% for(var i=0; i < popularForumBlogCountRes.stats.sources.length; i++) { %>
@@ -32,6 +31,7 @@
                         <% } %>
                     </ul>
                 </center>
+                <br>
                 <h3>En fazla İçerik oluşan Başlıklar</h3>
                 <div class="grid-container">
                     <% for(var i=0; i < populerForumBlogsRes.documents.length; i++) { %>
@@ -44,7 +44,7 @@
                                 <br><br>
                                 <section>
                                     <div style="width: 20%;float: left;"><a href="<%= populerForumBlogsRes.documents[i].original_url %>" target="_blank"><%= populerForumBlogsRes.documents[i].source.domain %></a></div>
-                                    <div style="float: right;"><%= moment(populerForumBlogsRes.documents[i].publish_date).format('DD.MM.YYYY HH:mm:ss') %></div>
+                                    <div style="float: right;"><%= moment(populerForumBlogsRes.documents[i].publish_date).format('DD/MM/YYYY HH:mm:ss') %></div>
                                 </section>
                             </div>
                         </div>
