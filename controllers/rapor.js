@@ -17,8 +17,8 @@ exports.kapak = async function (req, res, next) {
     const data = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/all/stats/histogram?end_date=${end_date}&start_date=`+start_date).then(function (response) { return response.data })
     res.render("kapak", {
         "data"          : data,
-        "start_date"    : moment(start_date).format("D.MM.Y"),
-        "end_date"      : moment(end_date).format("D.MM.Y"),
+        "start_date"    : moment(start_date).add(1, "days").format("D.MM.Y"),
+        "end_date"      : moment(end_date).add(1, "days").format("D.MM.Y"),
     });
     console.log('\x1b[33m%s\x1b[0m', "Ön Kapak");
 }
@@ -58,6 +58,12 @@ exports.rapor = async function (req, res, next) {
             "hata": "Invalid UUID"
         })
     }
+    data.end_date = moment(data.end_date).subtract(1, "days").format("YYYY-MM-DDT21:00:00.000000+00:00");
+    if (data.choose == "1") {
+        data.start_date = moment(data.end_date).subtract(2, "days").format("YYYY-MM-DDT21:00:00.000000+00:00");
+    }else{
+        data.start_date = moment(data.start_date).subtract(1, "days").format("YYYY-MM-DDT21:00:00.000000+00:00");
+    }
     res.render('rapor',{
         token       : data.token,
         stream_id   : data.stream_id,
@@ -66,17 +72,22 @@ exports.rapor = async function (req, res, next) {
     });
 }
 exports.pdf = async function (req, res, next) {
-    const   uuid        = req.query.uuid,
+    let     uuid        = req.query.uuid,
             data        = await axios.get(`${TELESKOP_URL}/analysis/params/${uuid}`).then(function (response) { return response.data.params }).catch(function (error) {
                 res.status(500).json({
                     "hata": error.response.data.message
                 })
-            }),
-            token       = data.token,
+            })
+    data.end_date = moment(data.end_date).subtract(1, "days").format("YYYY-MM-DDT21:00:00.000000+00:00");
+    if (data.choose == "1") {
+        data.start_date = moment(data.end_date).subtract(2, "days").format("YYYY-MM-DDT21:00:00.000000+00:00");
+    }else{
+        data.start_date = moment(data.start_date).subtract(1, "days").format("YYYY-MM-DDT21:00:00.000000+00:00");
+    }
+    let     token       = data.token,
             stream_id   = data.stream_id,
             start_date  = data.start_date.split('+')[0],
             end_date    = data.end_date.split('+')[0]
-
     if(JSON.stringify(data) === '{}' || JSON.stringify(data) === '[]'){
         res.status(500).json({
             "hata": "Invalid UUID"

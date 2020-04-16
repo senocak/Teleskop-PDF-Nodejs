@@ -5,8 +5,8 @@ const   moment      = require('moment'),
 exports.sayfaBir = async function (req, res, next) {
     const   token           = req.query.token,
             stream_id       = req.query.stream_id,
-            start_date      = moment(req.query.start_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`),
-            end_date        = moment(req.query.end_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`),
+            start_date      = req.query.start_date,
+            end_date        = req.query.end_date,
             betweenDays     = moment(end_date).diff(moment(start_date), `days`),
             lastWeekStart   = moment(start_date).subtract(betweenDays, `days`).format(`YYYY-MM-DDTHH:mm:ss.sss`),
             lastWeekEnd     = start_date,
@@ -48,8 +48,8 @@ exports.sayfaBir = async function (req, res, next) {
 exports.sayfaİki = async function (req, res, next) {
     const   token           = req.query.token,
             stream_id       = req.query.stream_id,
-            start_date      = moment(req.query.start_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`),
-            end_date        = moment(req.query.end_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`)
+            start_date      = req.query.start_date,
+            end_date        = req.query.end_date
 
     axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
     const currentRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/video/stats/histogram?end_date=${end_date}&start_date=`+start_date)
