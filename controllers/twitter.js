@@ -4,7 +4,7 @@ const   moment      = require(`moment`),
         TELESKOP_URL= process.env.TELESKOP_URL;
 
 exports.sayfaBir = async function (req, res, next) {
-    const   token           = req.query.token,
+    let     token           = req.query.token,
             stream_id       = req.query.stream_id,
             start_date      = req.query.start_date,
             end_date        = req.query.end_date,
@@ -39,9 +39,16 @@ exports.sayfaBir = async function (req, res, next) {
     for(var i=0; i < populerTweetsRes.data.documents.length; i++){
         populerTweetsRes.data.documents[i].created_at = new Date(populerTweetsRes.data.documents[i].created_at).toLocaleDateString("en-US",{ weekday: `long`, year: `numeric`, month: `long`, day: `numeric` })
     }
+    if (betweenDays != 0) {
+        start_date = moment(start_date).add(1, 'days').format("D.MM.Y");
+        end_date = moment(end_date).add(1, 'days').format("D.MM.Y")
+    }else{
+        start_date = moment(start_date).format("D.MM.Y");
+        end_date = moment(end_date).format("D.MM.Y")
+    }
     res.render(`twitter1`,{
-        start_date      : moment(start_date).format("D.MM.Y"),
-        end_date        : moment(end_date).format("D.MM.Y"),
+        start_date      : start_date,
+        end_date        : end_date,
         currentRes      : currentRes.data,
         lastWeekRes     : lastWeekRes.data,
         currentResToplam: currentResToplam.toLocaleString(),
@@ -52,10 +59,11 @@ exports.sayfaBir = async function (req, res, next) {
 }
 
 exports.sayfaİki = async function (req, res, next) {
-    const   token           = req.query.token,
+    let     token           = req.query.token,
             stream_id       = req.query.stream_id,
             start_date      = req.query.start_date,
-            end_date        = req.query.end_date
+            end_date        = req.query.end_date,
+            betweenDays     = moment(end_date).diff(moment(start_date), `days`)
 
     axios.defaults.headers.common[`Authorization`] = `Bearer `+token;
     // Current Week datas
@@ -79,9 +87,16 @@ exports.sayfaİki = async function (req, res, next) {
             genderKadınRes  = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/twitter/analysis/gender?gender=2`),
             genderErkekRes  = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/twitter/analysis/gender?gender=1`),
             genderUniRes    = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/twitter/analysis/gender?gender=0`)
+    if (betweenDays != 0) {
+        start_date = moment(start_date).add(1, 'days').format("D.MM.Y");
+        end_date = moment(end_date).add(1, 'days').format("D.MM.Y")
+    }else{
+        start_date = moment(start_date).format("D.MM.Y");
+        end_date = moment(end_date).format("D.MM.Y")
+    }
     res.render(`twitter2`,{
-        start_date      : moment(start_date).format("D.MM.Y"),
-        end_date        : moment(end_date).format("D.MM.Y"),
+        start_date      : start_date,
+        end_date        : end_date,
         currentRes      : currentRes.data,
         currentResToplam: currentResToplam.toLocaleString(),
         hakaretRes      : hakaretRes.data,
@@ -95,10 +110,11 @@ exports.sayfaİki = async function (req, res, next) {
 }
 
 exports.sayfaUc = async function (req, res, next) {
-    const   token           = req.query.token,
+    let     token           = req.query.token,
             stream_id       = req.query.stream_id,
             start_date      = req.query.start_date,
-            end_date        = req.query.end_date
+            end_date        = req.query.end_date,
+            betweenDays     = moment(end_date).diff(moment(start_date), `days`)
 
     axios.defaults.headers.common[`Authorization`] = `Bearer `+token;
     const currentRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/twitter/stats/histogram?end_date=${end_date}&start_date=`+start_date)
@@ -106,9 +122,16 @@ exports.sayfaUc = async function (req, res, next) {
     for(var i=0; i < populerTweetsRes.data.documents.length; i++){
         populerTweetsRes.data.documents[i].created_at = new Date(populerTweetsRes.data.documents[i].created_at).toLocaleDateString("en-US",{ weekday: `long`, year: `numeric`, month: `long`, day: `numeric` })
     }
+    if (betweenDays != 0) {
+        start_date = moment(start_date).add(1, 'days').format("D.MM.Y");
+        end_date = moment(end_date).add(1, 'days').format("D.MM.Y")
+    }else{
+        start_date = moment(start_date).format("D.MM.Y");
+        end_date = moment(end_date).format("D.MM.Y")
+    }
     res.render(`twitter3`,{
-        start_date      : moment(start_date).format("D.MM.Y"),
-        end_date        : moment(end_date).format("D.MM.Y"),
+        start_date      : start_date,
+        end_date        : end_date,
         currentRes      : currentRes.data,
         populerTweetsRes: populerTweetsRes.data
     });

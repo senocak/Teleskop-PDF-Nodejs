@@ -4,7 +4,7 @@ const   moment      = require('moment'),
         TELESKOP_URL= process.env.TELESKOP_URL;
 
 exports.sayfaBir = async function (req, res, next) {
-    const   token           = req.query.token,
+    let     token           = req.query.token,
             stream_id       = req.query.stream_id,
             start_date      = req.query.start_date,
             end_date        = req.query.end_date,
@@ -40,9 +40,16 @@ exports.sayfaBir = async function (req, res, next) {
     for(var i=0; i < beforeResToplamRequest.data.stats.length; i++){
         beforeResToplamBarChart += beforeResToplamRequest.data.stats[i].doc_count
     }
+    if (betweenDays != 0) {
+        start_date = moment(start_date).add(1, 'days').format("D.MM.Y");
+        end_date = moment(end_date).add(1, 'days').format("D.MM.Y")
+    }else{
+        start_date = moment(start_date).format("D.MM.Y");
+        end_date = moment(end_date).format("D.MM.Y")
+    }
     res.render('haber1',{
-        start_date                              : moment(start_date).format("D.MM.Y"),
-        end_date                                : moment(end_date).format("D.MM.Y"),
+        start_date                              : start_date,
+        end_date                                : end_date,
         currentRes                              : currentRes.data,
         currentResToplam                        : currentResToplam.toLocaleString(),
         lastWeekRes                             : lastWeekRes.data,
@@ -55,10 +62,11 @@ exports.sayfaBir = async function (req, res, next) {
 }
 
 exports.sayfaİki = async function (req, res, next) {
-    const   token           = req.query.token,
+    let     token           = req.query.token,
             stream_id       = req.query.stream_id,
             start_date      = req.query.start_date,
-            end_date        = req.query.end_date
+            end_date        = req.query.end_date,
+            betweenDays     = moment(end_date).diff(moment(start_date), `days`)
 
     axios.defaults.headers.common[`Authorization`] = `Bearer ${token}`;
     const currentRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/histogram?end_date=${end_date}&start_date=${start_date}&populer=1`)
@@ -66,9 +74,17 @@ exports.sayfaİki = async function (req, res, next) {
     const populerKaynaklardaCikanHaberSayilari = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/sources?end_date=${end_date}&start_date=${start_date}`)
     const turkiyeIlHaritasi = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/analysis/city/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
     const turkiyeIlHaritasiSorted = sortValues(turkiyeIlHaritasi.count, 'desc');
+
+    if (betweenDays != 0) {
+        start_date = moment(start_date).add(1, 'days').format("D.MM.Y");
+        end_date = moment(end_date).add(1, 'days').format("D.MM.Y")
+    }else{
+        start_date = moment(start_date).format("D.MM.Y");
+        end_date = moment(end_date).format("D.MM.Y")
+    }
     res.render('haber2',{
-        start_date                              : moment(start_date).format("D.MM.Y"),
-        end_date                                : moment(end_date).format("D.MM.Y"),
+        start_date                              : start_date,
+        end_date                                : end_date,
         currentRes                              : currentRes.data,
         kaynaklardaCikanHaberSayilari           : kaynaklardaCikanHaberSayilari.data,
         populerKaynaklardaCikanHaberSayilari    : populerKaynaklardaCikanHaberSayilari.data,
@@ -77,20 +93,27 @@ exports.sayfaİki = async function (req, res, next) {
     console.log('\x1b[33m%s\x1b[0m', "Haber Sayfa 2");
 }
 exports.sayfaUc = async function (req, res, next) {
-    const   token           = req.query.token,
+    let     token           = req.query.token,
             stream_id       = req.query.stream_id,
-            start_date      = moment(req.query.start_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`),
-            end_date        = moment(req.query.end_date).subtract(1, `days`).format(`YYYY-MM-DDT21:00:00.000`);
+            start_date      = req.query.start_date,
+            end_date        = req.query.end_date,
+            betweenDays     = moment(end_date).diff(moment(start_date), `days`)
 
     axios.defaults.headers.common[`Authorization`] = `Bearer ${token}`;
     const currentRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/histogram?end_date=${end_date}&start_date=${start_date}&populer=1`)
     const turkiyeBolgeHaritasi = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/analysis/state/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
     const turkiyeBolgeHaritasiSorted = sortValues(turkiyeBolgeHaritasi.count, 'desc');
     const ulusalBolgeselYerelGrafik = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/analysis/natloc/count?end_date=${end_date}&start_date=${start_date}`).then(function (response) { return response.data })
-
+    if (betweenDays != 0) {
+        start_date = moment(start_date).add(1, 'days').format("D.MM.Y");
+        end_date = moment(end_date).add(1, 'days').format("D.MM.Y")
+    }else{
+        start_date = moment(start_date).format("D.MM.Y");
+        end_date = moment(end_date).format("D.MM.Y")
+    }
     res.render('haber3',{
-        start_date                              : moment(start_date).format("D.MM.Y"),
-        end_date                                : moment(end_date).format("D.MM.Y"),
+        start_date                              : start_date,
+        end_date                                : end_date,
         currentRes                              : currentRes.data,
         turkiyeBolgeHaritasi                    : turkiyeBolgeHaritasiSorted,
         ulusalBolgeselYerelGrafik               : ulusalBolgeselYerelGrafik.count
@@ -99,17 +122,25 @@ exports.sayfaUc = async function (req, res, next) {
 }
 
 exports.sayfaDort = async function (req, res, next) {
-    const   token           = req.query.token,
+    let     token           = req.query.token,
             stream_id       = req.query.stream_id,
             start_date      = req.query.start_date,
-            end_date        = req.query.end_date
+            end_date        = req.query.end_date,
+            betweenDays     = moment(end_date).diff(moment(start_date), `days`)
 
     axios.defaults.headers.common[`Authorization`] = `Bearer ${token}`;
     const currentRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/news/stats/histogram?end_date=${end_date}&start_date=${start_date}&populer=1`)
     const popularNewsRes = await axios.get(`${TELESKOP_URL}/streams/${stream_id}/popular/news?end_date=${end_date}&start_date=${start_date}`)
+    if (betweenDays != 0) {
+        start_date = moment(start_date).add(1, 'days').format("D.MM.Y");
+        end_date = moment(end_date).add(1, 'days').format("D.MM.Y")
+    }else{
+        start_date = moment(start_date).format("D.MM.Y");
+        end_date = moment(end_date).format("D.MM.Y")
+    }
     res.render('haber4',{
-        start_date                              : moment(start_date).format("D.MM.Y"),
-        end_date                                : moment(end_date).format("D.MM.Y"),
+        start_date                              : start_date,
+        end_date                                : end_date,
         currentRes                              : currentRes.data,
         popularNewsRes                          : popularNewsRes.data
     });
